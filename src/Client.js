@@ -13,6 +13,7 @@ class SwsClient {
       id: serviceUri.id ? serviceUri.id : serviceUriDefault.id,
       license: serviceUri.license ? serviceUri.license : serviceUriDefault.license 
     }
+    this._accessToken = ''
   }
 
   /**
@@ -40,6 +41,24 @@ class SwsClient {
    */
   get serviceUri () {
     return this._serviceUri
+  }
+
+  /**
+   * Set access token
+   *
+   * @param {String} data Token
+   */
+  set accessToken (data) {
+    this._accessToken = data
+  }
+
+  /**
+   * Get the current token
+   *
+   * @return {String} Current access token
+   */
+  get accessToken () {
+    return this._accessToken
   }
 }
 
