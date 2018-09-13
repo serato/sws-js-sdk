@@ -1,3 +1,3 @@
 'use strict'
 
-export * from './Client'
+export * from './SwsClient'
