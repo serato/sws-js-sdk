@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "lint": "./node_modules/.bin/eslint ./src/*",
-    "test": "mocha --require @babel/register ./test/*.js"
+    "test": "mocha --require @babel/register --recursive"
   },
   "repository": {
     "type": "git",
@@ -29,5 +29,9 @@
     "eslint-plugin-promise": "^4.0.0",
     "eslint-plugin-standard": "^4.0.0",
     "mocha": "^5.2.0"
+  },
+  "dependencies": {
+    "js-base64": "^2.4.9",
+    "node-fetch": "^2.2.0"
   }
 }
