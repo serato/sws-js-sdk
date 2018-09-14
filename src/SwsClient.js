@@ -1,5 +1,7 @@
 'use strict'
 
+import License from './service/License'
+
 const serviceUriDefault = { id: 'id.serato.io', license: 'license.serato.io' }
 
 class SwsClient {
@@ -11,9 +13,10 @@ class SwsClient {
     this._secret = secret
     this._serviceUri = {
       id: serviceUri.id ? serviceUri.id : serviceUriDefault.id,
-      license: serviceUri.license ? serviceUri.license : serviceUriDefault.license 
+      license: serviceUri.license ? serviceUri.license : serviceUriDefault.license
     }
     this._accessToken = ''
+    this._licenseService = new License(this)
   }
 
   /**
@@ -59,6 +62,15 @@ class SwsClient {
    */
   get accessToken () {
     return this._accessToken
+  }
+
+  /**
+   * Get the license service instance
+   *
+   * @return {License} License service
+   */
+  get license () {
+    return this._licenseService
   }
 }
 
