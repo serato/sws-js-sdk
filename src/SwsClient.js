@@ -11,11 +11,13 @@ class SwsClient {
   constructor ({ appId, secret = '', serviceUri = {} }) {
     this._appId = appId
     this._secret = secret
+    // Set custom service URIs if provided
     this._serviceUri = {
       id: serviceUri.id ? serviceUri.id : serviceUriDefault.id,
       license: serviceUri.license ? serviceUri.license : serviceUriDefault.license
     }
     this._accessToken = ''
+    // Create service clients
     this._licenseService = new License(this)
   }
 

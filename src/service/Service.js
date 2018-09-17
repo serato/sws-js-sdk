@@ -73,6 +73,13 @@ class Service {
     return str.join('&')
   }
 
+  /**
+   * @param  {String} auth Authorisation header value
+   * @param  {String} endpoint API endpoint
+   * @param  {Object} body Object to send in the body
+   * @param  {String} method HTTP Method GET, POST, PUT or DELETE (defaults to GET)
+   * @return {Promise}
+   */
   fetch (auth, endpoint, body, method = 'GET') {
     let _headers = { 'Accept': 'application/json', 'Authorization': auth }
     let _url = (this.serviceUri.indexOf('://') === -1 ? 'https://' : '') + this.serviceUri + endpoint

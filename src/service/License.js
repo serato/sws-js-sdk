@@ -14,7 +14,7 @@ class License extends Service {
    * Requires a valid access token.
    * Uses the current user from the access token if `userId` is not specified.
    *
-   * @param {*} param0
+   * @param {*} param0 Filter options
    * @return {Promise}
    */
   getLicenses ({ appName = '', appVersion = '', term = '', userId = '' } = {}) {
