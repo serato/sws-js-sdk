@@ -73,13 +73,6 @@ class Service {
     return str.join('&')
   }
 
-  /**
-   * @param  {String} auth Authorisation header value
-   * @param  {String} endpoint API endpoint
-   * @param  {Object} body Object to send in the body
-   * @param  {String} method HTTP Method GET, POST, PUT or DELETE (defaults to GET)
-   * @return {Promise}
-   */
   fetch (auth, endpoint, body, method = 'GET') {
     let _headers = { 'Accept': 'application/json', 'Authorization': auth }
     let _url = (this.serviceUri.indexOf('://') === -1 ? 'https://' : '') + this.serviceUri + endpoint
@@ -87,40 +80,34 @@ class Service {
 
     if (method === 'GET') {
       if (body) {
-        let separator = _url.indexOf('?') !== -1 ? '&' : '?'
-        _url = _url + separator + this.toQueryString(body)
+        let q = this.toQueryString(body)
+        if (q !== '') {
+          let separator = _url.indexOf('?') !== -1 ? '&' : '?'
+          _url = _url + separator + q
+        }
       }
     } else {
       _body = JSON.stringify(body)
-    }
-
-    let checkStatus = (response) => {
-      if (response.status >= 200 && response.status < 300) {
-        return response
-      } else {
-        let error = new Error(response.statusText)
-        error.status = response.status
-        error.response = response
-        throw error
-        // response.json().then((r) => {
-        //   throw error
-        // })
-      }
-    }
-
-    let parseJSON = (response) => {
-      if (response.statusText === '') {
-        return { type: 'undefineds' }
-      }
-      return response.json()
     }
 
     return fetch(_url, {
       method: method,
       headers: _headers,
       body: _body
-    }).then(checkStatus)
-      .then(parseJSON)
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json()
+        } else {
+          let error = new Error(response.statusText)
+          error.httpStatus = response.status
+          error.response = response
+          throw error
+        }
+      })
+      .then((json) => {
+        return json
+      })
   }
 }
 
