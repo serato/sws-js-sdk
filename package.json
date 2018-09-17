@@ -5,7 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "lint": "./node_modules/.bin/eslint ./src/*",
-    "test": "mocha --require @babel/register --recursive"
+    "test": "mocha --require @babel/register --recursive test/spec/*.js",
+    "test-integration": "mocha --require @babel/register --recursive test/integration/*.js"
   },
   "repository": {
     "type": "git",

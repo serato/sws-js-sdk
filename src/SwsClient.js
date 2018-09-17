@@ -1,6 +1,6 @@
 'use strict'
 
-import License from './service/License'
+import License from './License'
 
 const serviceUriDefault = { id: 'id.serato.io', license: 'license.serato.io' }
 

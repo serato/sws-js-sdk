@@ -20,7 +20,7 @@ class License extends Service {
   getLicenses ({ appName = '', appVersion = '', term = '', userId = '' } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      userId === '' ? '/api/v1/me/licenses' : `/api/v1/user/{userId}/licenses`,
+      userId === '' ? '/api/v1/me/licenses' : '/api/v1/users/' + userId + '/licenses',
       this.toBody({ app_name: appName, app_version: appVersion, term: term })
     )
   }

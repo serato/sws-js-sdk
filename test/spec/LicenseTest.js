@@ -1,4 +1,4 @@
-import { SwsClient, serviceUriDefault } from '../../src/index'
+import { SwsClient, serviceUriDefault } from '../../src'
 import { describe, it } from 'mocha'
 import assert from 'assert'
 import nock from 'nock'
