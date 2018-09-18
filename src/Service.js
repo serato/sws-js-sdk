@@ -68,24 +68,6 @@ export default class Service {
   }
 
   /**
-   * Encodes an object into a URL safe query string
-   *
-   * @private
-   *
-   * @param {Object} data Request params
-   * @return {String} Query string
-   */
-  toQueryString (data) {
-    let str = []
-    for (let p in data) {
-      if (data.hasOwnProperty(p)) {
-        str.push(encodeURIComponent(p) + '=' + encodeURIComponent(data[p]))
-      }
-    }
-    return str.join('&')
-  }
-
-  /**
    * Makes a request to an API endpoint
    *
    * @protected
@@ -97,7 +79,9 @@ export default class Service {
    * @return {Promise}
    */
   fetch (auth, endpoint, body, method = 'GET') {
-    let request = this.buildRequest(auth, endpoint, body, method)
+    let url = (this.serviceUri.indexOf('://') === -1 ? 'https://' : '') + this.serviceUri + endpoint
+
+    let request = buildRequest(auth, url, body, method)
     this._lastRequest = request
 
     return fetch(request)
@@ -116,47 +100,60 @@ export default class Service {
         return json
       })
   }
+}
 
-  /**
-   * Constructs a Request object
-   *
-   * @private
-   *
-   * @param  {String} auth Authorisation header value
-   * @param  {String} endpoint API endpoint
-   * @param  {Object} body Object to send in the body
-   * @param  {String} method HTTP Method GET, POST, PUT or DELETE (defaults to GET)
-   * @return {Request}
-   */
-  buildRequest (auth, endpoint, body, method = 'GET') {
-    let url = (this.serviceUri.indexOf('://') === -1 ? 'https://' : '') + this.serviceUri + endpoint
-    let headers = new Headers()
+/**
+ * Constructs a Request object
+ *
+ * @param  {String} auth Authorisation header value
+ * @param  {String} endpoint API endpoint
+ * @param  {Object} body Object to send in the body
+ * @param  {String} method HTTP Method GET, POST, PUT or DELETE (defaults to GET)
+ * @return {Request}
+ */
+function buildRequest (auth, url, body, method = 'GET') {
+  let headers = new Headers()
 
-    headers.append('Accept', 'application/json')
-    headers.append('Content-Type', 'application/json')
+  headers.append('Accept', 'application/json')
+  headers.append('Content-Type', 'application/json')
 
-    if (auth !== null) {
-      headers.append('Authorization', auth)
-    }
-
-    let init = {
-      method: method,
-      headers: headers
-    }
-
-    if (method === 'GET') {
-      if (body) {
-        let q = this.toQueryString(body)
-        if (q !== '') {
-          let separator = url.indexOf('?') !== -1 ? '&' : '?'
-          url = url + separator + q
-        }
-      }
-    } else {
-      // Is this right? Should we be JSON-encoding the data?
-      init['body'] = JSON.stringify(body)
-    }
-
-    return new Request(url, init)
+  if (auth !== null) {
+    headers.append('Authorization', auth)
   }
+
+  let init = {
+    method: method,
+    headers: headers
+  }
+
+  if (method === 'GET') {
+    if (body) {
+      let q = toQueryString(body)
+      if (q !== '') {
+        let separator = url.indexOf('?') !== -1 ? '&' : '?'
+        url = url + separator + q
+      }
+    }
+  } else {
+    // Is this right? Should we be JSON-encoding the data?
+    init['body'] = JSON.stringify(body)
+  }
+
+  return new Request(url, init)
+}
+
+/**
+ * Encodes an object into a URL safe query string
+ *
+ * @param {Object} data Request params
+ * @return {String} Query string
+ */
+function toQueryString (data) {
+  let str = []
+  for (let p in data) {
+    if (data.hasOwnProperty(p)) {
+      str.push(encodeURIComponent(p) + '=' + encodeURIComponent(data[p]))
+    }
+  }
+  return str.join('&')
 }
