@@ -1,5 +1,5 @@
 import { Base64 } from 'js-base64'
-import fetch from 'node-fetch'
+import fetch, { Request, Headers } from 'node-fetch'
 
 class Service {
   /**
@@ -8,6 +8,7 @@ class Service {
   constructor (SwsClient) {
     this._client = SwsClient
     this._serviceUri = ''
+    this._lastRequest = null
   }
 
   /**
@@ -74,6 +75,8 @@ class Service {
   }
 
   /**
+   * Makes a request to an API endpoint
+   *
    * @param  {String} auth Authorisation header value
    * @param  {String} endpoint API endpoint
    * @param  {Object} body Object to send in the body
@@ -81,27 +84,10 @@ class Service {
    * @return {Promise}
    */
   fetch (auth, endpoint, body, method = 'GET') {
-    let _headers = { 'Accept': 'application/json', 'Authorization': auth }
-    let _url = (this.serviceUri.indexOf('://') === -1 ? 'https://' : '') + this.serviceUri + endpoint
-    let _body
+    let request = this.buildRequest(auth, endpoint, body, method)
+    this._lastRequest = request
 
-    if (method === 'GET') {
-      if (body) {
-        let q = this.toQueryString(body)
-        if (q !== '') {
-          let separator = _url.indexOf('?') !== -1 ? '&' : '?'
-          _url = _url + separator + q
-        }
-      }
-    } else {
-      _body = JSON.stringify(body)
-    }
-
-    return fetch(_url, {
-      method: method,
-      headers: _headers,
-      body: _body
-    })
+    return fetch(request)
       .then((response) => {
         if (response.ok) {
           return response.json()
@@ -109,12 +95,54 @@ class Service {
           let error = new Error(response.statusText)
           error.httpStatus = response.status
           error.response = response
+          error.request = request
           throw error
         }
       })
       .then((json) => {
         return json
       })
+  }
+
+  /**
+   * Constructs a Request object
+   *
+   * @param  {String} auth Authorisation header value
+   * @param  {String} endpoint API endpoint
+   * @param  {Object} body Object to send in the body
+   * @param  {String} method HTTP Method GET, POST, PUT or DELETE (defaults to GET)
+   * @return {Request}
+   */
+  buildRequest (auth, endpoint, body, method = 'GET') {
+    let url = (this.serviceUri.indexOf('://') === -1 ? 'https://' : '') + this.serviceUri + endpoint
+    let headers = new Headers()
+
+    headers.append('Accept', 'application/json')
+    headers.append('Content-Type', 'application/json')
+
+    if (auth !== null) {
+      headers.append('Authorization', auth)
+    }
+
+    let init = {
+      method: method,
+      headers: headers
+    }
+
+    if (method === 'GET') {
+      if (body) {
+        let q = this.toQueryString(body)
+        if (q !== '') {
+          let separator = url.indexOf('?') !== -1 ? '&' : '?'
+          url = url + separator + q
+        }
+      }
+    } else {
+      // Is this right? Should we be JSON-encoding the data?
+      init['body'] = JSON.stringify(body)
+    }
+
+    return new Request(url, init)
   }
 }
 
