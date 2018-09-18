@@ -8,7 +8,7 @@ import Service from './Service'
 export default class License extends Service {
   /**
    * Constructor
-   * 
+   *
    * @param {Sws} Sws Configured Sws instance
    * @return {void}
    */
