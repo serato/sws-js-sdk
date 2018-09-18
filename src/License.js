@@ -1,12 +1,20 @@
 import Service from './Service'
 
-class License extends Service {
+/**
+ * License Service class
+ *
+ * Exposes SWS License API endpoints via class methods
+ */
+export default class License extends Service {
   /**
    * Constructor
+   * 
+   * @param {Sws} Sws Configured Sws instance
+   * @return {void}
    */
-  constructor (SwsClient) {
-    super(SwsClient)
-    this._serviceUri = SwsClient.serviceUri.license
+  constructor (Sws) {
+    super(Sws)
+    this._serviceUri = Sws.serviceUri.license
   }
 
   /**
@@ -14,7 +22,11 @@ class License extends Service {
    * Requires a valid access token.
    * Uses the current user from the access token if `userId` is not specified.
    *
-   * @param {*} param0 Filter options
+   * @param {Object} param Options
+   * @param {String} param.appName Only return licenses compatible with app
+   * @param {String} param.appVersion Only return licenses compatible with app version `Major.minor.point`
+   * @param {String} param.term Only return licenses of specified term
+   * @param {Number} param.userId Return licenses belonging to user
    * @return {Promise}
    */
   getLicenses ({ appName = '', appVersion = '', term = '', userId = '' } = {}) {
@@ -25,5 +37,3 @@ class License extends Service {
     )
   }
 }
-
-export default License

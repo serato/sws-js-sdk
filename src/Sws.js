@@ -4,9 +4,22 @@ import License from './License'
 
 const serviceUriDefault = { id: 'id.serato.io', license: 'license.serato.io' }
 
+/**
+ * Sws class.
+ *
+ * Provides single point of configuration and access to service clients.
+ */
 export default class Sws {
   /**
    * Constructor
+   *
+   * @param {Object} param Configuration options
+   * @param {String} param.appId Application ID
+   * @param {String} param.secret Application secret
+   * @param {Object} param.serviceUri Base URIs for SWS services
+   * @param {String} param.serviceUri.id Base URI for SWS ID Service
+   * @param {String} param.serviceUri.license Base URI for SWS License Service
+   * @return {void}
    */
   constructor ({ appId, secret = '', serviceUri = {} }) {
     this._appId = appId
@@ -52,6 +65,7 @@ export default class Sws {
    * Set access token
    *
    * @param {String} data Token
+   * @return {Void}
    */
   set accessToken (data) {
     this._accessToken = data

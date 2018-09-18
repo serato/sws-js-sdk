@@ -1,12 +1,15 @@
 import { Base64 } from 'js-base64'
 import fetch, { Request, Headers } from 'node-fetch'
 
-class Service {
+export default class Service {
   /**
    * Constructor
+   *
+   * @param {Sws} Sws Configured Sws instance
+   * @return {void}
    */
-  constructor (SwsClient) {
-    this._client = SwsClient
+  constructor (Sws) {
+    this._client = Sws
     this._serviceUri = ''
     this._lastRequest = null
   }
@@ -14,6 +17,8 @@ class Service {
   /**
    * Returns an `Authorisation` header value comprised of
    * a bearer token
+   *
+   * @protected
    *
    * @return {String} Auth header value
    */
@@ -24,6 +29,8 @@ class Service {
   /**
    * Returns an `Authorisation` header value comprised of
    * an application ID and secret
+   *
+   * @protected
    *
    * @return {String} Auth header value
    */
@@ -44,6 +51,8 @@ class Service {
    * Filters out empty and invalid values and returns a object
    * containing parameters for a request
    *
+   * @protected
+   *
    * @param {Object} data Request params
    * @return {Object} Params
    */
@@ -61,6 +70,8 @@ class Service {
   /**
    * Encodes an object into a URL safe query string
    *
+   * @private
+   *
    * @param {Object} data Request params
    * @return {String} Query string
    */
@@ -76,6 +87,8 @@ class Service {
 
   /**
    * Makes a request to an API endpoint
+   *
+   * @protected
    *
    * @param  {String} auth Authorisation header value
    * @param  {String} endpoint API endpoint
@@ -106,6 +119,8 @@ class Service {
 
   /**
    * Constructs a Request object
+   *
+   * @private
    *
    * @param  {String} auth Authorisation header value
    * @param  {String} endpoint API endpoint
@@ -145,5 +160,3 @@ class Service {
     return new Request(url, init)
   }
 }
-
-export default Service
