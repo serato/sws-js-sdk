@@ -1,2 +1,3 @@
-# sws-js-sdk
-Serato Web Services SDK for JavaScript
+# Serato Web Services SDK for JavaScript
+
+
