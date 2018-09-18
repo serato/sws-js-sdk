@@ -33,7 +33,7 @@
     "nock": "^10.0.0"
   },
   "dependencies": {
-    "js-base64": "^2.4.9",
-    "node-fetch": "^2.2.0"
+    "axios": "^0.18.0",
+    "js-base64": "^2.4.9"
   }
 }
