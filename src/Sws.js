@@ -4,7 +4,7 @@ import License from './License'
 
 const serviceUriDefault = { id: 'id.serato.io', license: 'license.serato.io' }
 
-class Sws {
+export default class Sws {
   /**
    * Constructor
    */
@@ -77,6 +77,5 @@ class Sws {
 }
 
 export {
-  Sws,
   serviceUriDefault
 }

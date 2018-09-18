@@ -1,4 +1,4 @@
-import { Sws } from '../../src/index'
+import Sws from '../../src/index'
 import { describe, it } from 'mocha'
 // import assert from 'assert'
 // import nock from 'nock'
