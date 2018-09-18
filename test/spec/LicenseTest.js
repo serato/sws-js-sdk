@@ -1,4 +1,4 @@
-import { SwsClient, serviceUriDefault } from '../../src'
+import { Sws, serviceUriDefault } from '../../src'
 import { describe, it } from 'mocha'
 import assert from 'assert'
 import nock from 'nock'
@@ -15,7 +15,7 @@ describe('License', function () {
         'error': 'Access denied. Invalid grants.'
       })
 
-    let client = new SwsClient({ appId: appId })
+    let client = new Sws({ appId: appId })
 
     return client.license.getLicenses().then(
       () => Promise.reject(new Error('Expected non-2xx HTTP response code')),

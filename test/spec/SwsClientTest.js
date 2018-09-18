@@ -1,4 +1,4 @@
-import { SwsClient, serviceUriDefault } from '../../src/index'
+import { Sws, serviceUriDefault } from '../../src/index'
 import { describe, it } from 'mocha'
 import assert from 'assert'
 import { expect } from 'chai'
@@ -10,13 +10,13 @@ const licenseServiceUri = 'my.license-service.uri'
 describe('SwsClient', function () {
   it('fails constructing client with no app ID', function () {
     let bad = function () {
-      return new SwsClient()
+      return new Sws()
     }
     expect(bad).to.throw('Cannot read property \'appId\' of undefined')
   })
 
   it('constructs client with app password and default service URIs', function () {
-    let client = new SwsClient({ appId: appId, secret: 'myAppSecret' })
+    let client = new Sws({ appId: appId, secret: 'myAppSecret' })
     assert.strict.equal(client.appId, appId)
     assert.strict.equal(client.appSecret, 'myAppSecret')
     assert.strict.equal(client.serviceUri.id, serviceUriDefault.id)
@@ -24,7 +24,7 @@ describe('SwsClient', function () {
   })
 
   it('constructs client with custom service URIs', function () {
-    let client = new SwsClient({ appId: appId, serviceUri: { id: idServiceUri, license: licenseServiceUri } })
+    let client = new Sws({ appId: appId, serviceUri: { id: idServiceUri, license: licenseServiceUri } })
     assert.strict.equal(client.appId, appId)
     assert.strict.equal(client.appSecret, '')
     assert.strict.equal(client.serviceUri.id, idServiceUri)
@@ -33,7 +33,7 @@ describe('SwsClient', function () {
 
   it('tests `accessToken` get and set', function () {
     let tokenValue = '123abc456'
-    let client = new SwsClient({ appId: appId })
+    let client = new Sws({ appId: appId })
     client.accessToken = tokenValue
     assert.strict.equal(client.accessToken, tokenValue)
   })
