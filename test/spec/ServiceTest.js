@@ -102,13 +102,10 @@ describe('Service', function () {
     }
   ]
 
-  customHandlerTests.forEach(test => {
-    it(`handles '${test.httpStatus} ${test.statusText}, error code ${test.code}' with default error handler`, function () {
+  customHandlerTests.forEach(({ httpStatus, statusText, code, error, handlerName, attachHandler }) => {
+    it(`handles '${httpStatus} ${statusText}, error code ${code}' with default error handler`, function () {
       // Intercept the HTTP request and return the desired HTTP status and JSON message body
-      nock(licenseServiceHost).get(getLicensesUri, '').reply(
-        test.httpStatus,
-        { 'code': test.code, 'error': test.error }
-      )
+      nock(licenseServiceHost).get(getLicensesUri, '').reply(httpStatus, { 'code': code, 'error': error })
 
       let client = new Sws({ appId: appId })
 
@@ -117,31 +114,28 @@ describe('Service', function () {
         () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
         // Should always hit the `reject` callback
         err => {
-          expect(err.httpStatus).to.equal(test.httpStatus)
-          expect(err.code).to.equal(test.code)
-          expect(err.response.status).to.equal(test.httpStatus)
+          expect(err.httpStatus).to.equal(httpStatus)
+          expect(err.code).to.equal(code)
+          expect(err.response.status).to.equal(httpStatus)
         }
       )
     })
 
-    it(`handles '${test.httpStatus} ${test.statusText}, error code ${test.code}' with custom handler`, function () {
+    it(`handles '${httpStatus} ${statusText}, error code ${code}' with custom handler`, function () {
       // Intercept the HTTP request and return the desired HTTP status and JSON message body
-      nock(licenseServiceHost).get(getLicensesUri, '').reply(
-        test.httpStatus,
-        { 'code': test.code, 'error': test.error }
-      )
+      nock(licenseServiceHost).get(getLicensesUri, '').reply(httpStatus, { 'code': code, 'error': error })
 
       let client = new Sws({ appId: appId })
 
       // Attach the customer handler to the client
-      test.attachHandler(client.license)
+      attachHandler(client.license)
 
       return client.license.getLicenses().then(
         // Should always hit the `resolve` callback because we're using our custom handler
-        data => expect(data).to.equal(`${customHandlerResponse} ${test.httpStatus} - ${test.code}`),
+        data => expect(data).to.equal(`${customHandlerResponse} ${httpStatus} - ${code}`),
         // Should never hit the `reject` callback
         err => {
-          let error = new Error(`Expected error to be handled by custom ${test.handlerName} handler`)
+          let error = new Error(`Expected error to be handled by custom ${handlerName} handler`)
           error.error = err
           Promise.reject(error)
         }
