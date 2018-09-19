@@ -1,3 +1,4 @@
 'use strict'
 
-export * from './SwsClient'
+export { default } from './Sws'
+export * from './Sws'

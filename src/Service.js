@@ -1,18 +1,24 @@
 import { Base64 } from 'js-base64'
-import fetch from 'node-fetch'
+import axios from 'axios'
 
-class Service {
+export default class Service {
   /**
    * Constructor
+   *
+   * @param {Sws} Sws Configured Sws instance
+   * @return {void}
    */
-  constructor (SwsClient) {
-    this._client = SwsClient
+  constructor (Sws) {
+    this._client = Sws
     this._serviceUri = ''
+    this._lastRequest = null
   }
 
   /**
    * Returns an `Authorisation` header value comprised of
    * a bearer token
+   *
+   * @protected
    *
    * @return {String} Auth header value
    */
@@ -23,6 +29,8 @@ class Service {
   /**
    * Returns an `Authorisation` header value comprised of
    * an application ID and secret
+   *
+   * @protected
    *
    * @return {String} Auth header value
    */
@@ -43,6 +51,8 @@ class Service {
    * Filters out empty and invalid values and returns a object
    * containing parameters for a request
    *
+   * @protected
+   *
    * @param {Object} data Request params
    * @return {Object} Params
    */
@@ -58,22 +68,10 @@ class Service {
   }
 
   /**
-   * Encodes an object into a URL safe query string
+   * Makes a request to an API endpoint
    *
-   * @param {Object} data Request params
-   * @return {String} Query string
-   */
-  toQueryString (data) {
-    let str = []
-    for (let p in data) {
-      if (data.hasOwnProperty(p)) {
-        str.push(encodeURIComponent(p) + '=' + encodeURIComponent(data[p]))
-      }
-    }
-    return str.join('&')
-  }
-
-  /**
+   * @protected
+   *
    * @param  {String} auth Authorisation header value
    * @param  {String} endpoint API endpoint
    * @param  {Object} body Object to send in the body
@@ -81,41 +79,66 @@ class Service {
    * @return {Promise}
    */
   fetch (auth, endpoint, body, method = 'GET') {
-    let _headers = { 'Accept': 'application/json', 'Authorization': auth }
-    let _url = (this.serviceUri.indexOf('://') === -1 ? 'https://' : '') + this.serviceUri + endpoint
-    let _body
+    let url = (this.serviceUri.indexOf('://') === -1 ? 'https://' : '') + this.serviceUri + endpoint
 
-    if (method === 'GET') {
-      if (body) {
-        let q = this.toQueryString(body)
-        if (q !== '') {
-          let separator = _url.indexOf('?') !== -1 ? '&' : '?'
-          _url = _url + separator + q
-        }
-      }
-    } else {
-      _body = JSON.stringify(body)
-    }
+    let request = buildRequest(auth, url, body, method)
+    this._lastRequest = request
 
-    return fetch(_url, {
-      method: method,
-      headers: _headers,
-      body: _body
-    })
+    return axios(request)
       .then((response) => {
-        if (response.ok) {
-          return response.json()
+        if (response.status >= 200 && response.status < 300) {
+          return response.data
         } else {
-          let error = new Error(response.statusText)
+          let error = new Error(response.data.error)
           error.httpStatus = response.status
+          error.code = response.data.code
           error.response = response
           throw error
         }
       })
-      .then((json) => {
-        return json
-      })
   }
 }
 
-export default Service
+/**
+ * Constructs a Request object
+ *
+ * @param  {String} auth Authorisation header value
+ * @param  {String} endpoint API endpoint
+ * @param  {Object} body Object to send in the body
+ * @param  {String} method HTTP Method GET, POST, PUT or DELETE (defaults to GET)
+ * @return {Request}
+ */
+function buildRequest (auth, url, body, method = 'GET') {
+  let request = {
+    timeout: 3000,
+    url: url,
+    method: method,
+    responseType: 'json',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    // Handle all non-200 responses ourselves
+    validateStatus: function (status) {
+      return true
+    }
+  }
+
+  if (auth !== null) {
+    request.headers['Authorization'] = auth
+  }
+
+  if (method === 'GET') {
+    request.params = body
+  }
+
+  if (method === 'PUT' || method === 'PATCH' || method === 'POST') {
+    request.data = body
+    // // Do we need to do this??
+    // request.transformRequest = function (data, headers) {
+    //   return JSON.stringify(body)
+    // }
+  }
+
+  return request
+}
