@@ -90,6 +90,16 @@ export default class Service {
     let request = buildRequest(auth, url, body, method, timeout === null ? this._client.timeout : timeout)
     this._lastRequest = request
 
+    return this.fetchRequest(request)
+  }
+
+  /**
+   * Executes a request to an API endpoint
+   *
+   * @param {Object} request Request object
+   * @returns {Promise}
+   */
+  fetchRequest (request) {
     return axios(request)
       .then((response) => { return response.data })
       .catch((err) => {
