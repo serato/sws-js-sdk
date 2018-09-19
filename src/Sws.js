@@ -22,10 +22,7 @@ export default class Sws {
    * @param {String} config.serviceUri.license Base URI for SWS License Service
    * @return {void}
    */
-  constructor (
-    { appId, secret = '', timeout = 3000, serviceUri = {} },
-    { invalidAccessTokenHandler = null, invalidRefreshTokenHandler = null, accessDeniedHandler = null } = {}
-  ) {
+  constructor ({ appId, secret = '', timeout = 3000, serviceUri = {} }) {
     this._appId = appId
     this._secret = secret
     this._timeout = timeout
