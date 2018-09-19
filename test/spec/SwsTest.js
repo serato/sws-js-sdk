@@ -7,7 +7,7 @@ const appId = 'myClientAppId'
 const idServiceUri = 'my.id-service.uri'
 const licenseServiceUri = 'my.license-service.uri'
 
-describe('SwsClient', function () {
+describe('Sws', function () {
   it('fails constructing client with no app ID', function () {
     let bad = function () {
       return new Sws()
