@@ -16,14 +16,16 @@ export default class Sws {
    * @param {Object} param Configuration options
    * @param {String} param.appId Application ID
    * @param {String} param.secret Application secret
+   * @param {Number} param.timeout Request timeout
    * @param {Object} param.serviceUri Base URIs for SWS services
    * @param {String} param.serviceUri.id Base URI for SWS ID Service
    * @param {String} param.serviceUri.license Base URI for SWS License Service
    * @return {void}
    */
-  constructor ({ appId, secret = '', serviceUri = {} }) {
+  constructor ({ appId, secret = '', timeout = 3000, serviceUri = {} }) {
     this._appId = appId
     this._secret = secret
+    this._timeout = timeout
     // Set custom service URIs if provided
     this._serviceUri = {
       id: serviceUri.id ? serviceUri.id : serviceUriDefault.id,
@@ -78,6 +80,25 @@ export default class Sws {
    */
   get accessToken () {
     return this._accessToken
+  }
+
+  /**
+   * Set the request timeout
+   *
+   * @param {Number} t Request timeout (ms)
+   * @return {Void}
+   */
+  set timeout (t) {
+    this._timeout = t
+  }
+
+  /**
+   * Get the request timeout
+   *
+   * @return {Number} Request timeout (ms)
+   */
+  get timeout () {
+    return this._timeout
   }
 
   /**

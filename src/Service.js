@@ -78,10 +78,10 @@ export default class Service {
    * @param  {String} method HTTP Method GET, POST, PUT or DELETE (defaults to GET)
    * @return {Promise}
    */
-  fetch (auth, endpoint, body, method = 'GET') {
+  fetch (auth, endpoint, body, method = 'GET', timeout = null) {
     let url = (this.serviceUri.indexOf('://') === -1 ? 'https://' : '') + this.serviceUri + endpoint
 
-    let request = buildRequest(auth, url, body, method)
+    let request = buildRequest(auth, url, body, method, timeout === null ? this._client.timeout : timeout)
     this._lastRequest = request
 
     return axios(request)
@@ -108,9 +108,9 @@ export default class Service {
  * @param  {String} method HTTP Method GET, POST, PUT or DELETE (defaults to GET)
  * @return {Request}
  */
-function buildRequest (auth, url, body, method = 'GET') {
+function buildRequest (auth, url, body, method, timeout) {
   let request = {
-    timeout: 3000,
+    timeout: timeout,
     url: url,
     method: method,
     responseType: 'json',
