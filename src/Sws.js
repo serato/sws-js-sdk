@@ -27,6 +27,7 @@ export default class Sws {
     this._secret = secret
     this._timeout = timeout
     this._accessToken = ''
+    this._refreshToken = ''
     // Set custom service URIs if provided
     this._serviceUri = {
       id: serviceUri.id ? serviceUri.id : serviceUriDefault.id,
@@ -80,6 +81,25 @@ export default class Sws {
    */
   get accessToken () {
     return this._accessToken
+  }
+
+  /**
+   * Set refresh token
+   *
+   * @param {String} data Token
+   * @return {Void}
+   */
+  set refreshToken (data) {
+    this._refreshToken = data
+  }
+
+  /**
+   * Get the current token
+   *
+   * @return {String} Current access token
+   */
+  get refreshToken () {
+    return this._refreshToken
   }
 
   /**
