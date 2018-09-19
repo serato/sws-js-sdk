@@ -21,11 +21,28 @@ describe('License', function () {
       err => {
         // Error codes should be exposed via Error object...
         expect(err.httpStatus).to.equal(403)
-        expect(err.code).to.equal(200)
+        expect(err.code).to.equal(2000)
         // But check that we have the underlying axion response object
         // in the Error too
         expect(err.response.status).to.equal(403)
       }
+    )
+  })
+
+  it('returns message body when `getLicenses` executed successfully', function () {
+    let body = {
+      'some': 'body content',
+      'more': ['body', 'content']
+    }
+
+    nock('https://' + serviceUriDefault.license)
+      .get('/api/v1/me/licenses', '')
+      .reply(200, body)
+
+    let client = new Sws({ appId: appId })
+
+    return client.license.getLicenses().then(
+      data => expect(data).to.eql(body) // FYI `eql` is non-strict "deep equal"
     )
   })
 })
