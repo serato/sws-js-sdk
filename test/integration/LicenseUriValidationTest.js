@@ -1,7 +1,5 @@
 import Sws from '../../src/index'
 import { describe, it } from 'mocha'
-// import assert from 'assert'
-// import nock from 'nock'
 import { expect } from 'chai'
 
 const appId = 'myClientAppId'
@@ -14,7 +12,6 @@ describe('License', function () {
       () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
       err => {
         expect(err.httpStatus).not.to.equal(404)
-        return err.response.json()
       }
     )
   })
@@ -26,7 +23,6 @@ describe('License', function () {
       () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
       err => {
         expect(err.httpStatus).not.to.equal(404)
-        return err.response.json()
       }
     )
   })

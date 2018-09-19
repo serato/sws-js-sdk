@@ -1,5 +1,5 @@
 import { Base64 } from 'js-base64'
-import fetch, { Request, Headers } from 'node-fetch'
+import axios from 'axios'
 
 export default class Service {
   /**
@@ -84,20 +84,17 @@ export default class Service {
     let request = buildRequest(auth, url, body, method)
     this._lastRequest = request
 
-    return fetch(request)
+    return axios(request)
       .then((response) => {
-        if (response.ok) {
-          return response.json()
+        if (response.status >= 200 && response.status < 300) {
+          return response.data
         } else {
-          let error = new Error(response.statusText)
+          let error = new Error(response.data.error)
           error.httpStatus = response.status
+          error.code = response.data.code
           error.response = response
-          error.request = request
           throw error
         }
-      })
-      .then((json) => {
-        return json
       })
   }
 }
@@ -112,48 +109,36 @@ export default class Service {
  * @return {Request}
  */
 function buildRequest (auth, url, body, method = 'GET') {
-  let headers = new Headers()
-
-  headers.append('Accept', 'application/json')
-  headers.append('Content-Type', 'application/json')
-
-  if (auth !== null) {
-    headers.append('Authorization', auth)
+  let request = {
+    timeout: 3000,
+    url: url,
+    method: method,
+    responseType: 'json',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    // Handle all non-200 responses ourselves
+    validateStatus: function (status) {
+      return true
+    }
   }
 
-  let init = {
-    method: method,
-    headers: headers
+  if (auth !== null) {
+    request.headers['Authorization'] = auth
   }
 
   if (method === 'GET') {
-    if (body) {
-      let q = toQueryString(body)
-      if (q !== '') {
-        let separator = url.indexOf('?') !== -1 ? '&' : '?'
-        url = url + separator + q
-      }
-    }
-  } else {
-    // Is this right? Should we be JSON-encoding the data?
-    init['body'] = JSON.stringify(body)
+    request.params = body
   }
 
-  return new Request(url, init)
-}
-
-/**
- * Encodes an object into a URL safe query string
- *
- * @param {Object} data Request params
- * @return {String} Query string
- */
-function toQueryString (data) {
-  let str = []
-  for (let p in data) {
-    if (data.hasOwnProperty(p)) {
-      str.push(encodeURIComponent(p) + '=' + encodeURIComponent(data[p]))
-    }
+  if (method === 'PUT' || method === 'PATCH' || method === 'POST') {
+    request.data = body
+    // // Do we need to do this??
+    // request.transformRequest = function (data, headers) {
+    //   return JSON.stringify(body)
+    // }
   }
-  return str.join('&')
+
+  return request
 }

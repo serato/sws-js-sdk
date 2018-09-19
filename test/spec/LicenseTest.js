@@ -1,6 +1,5 @@
 import Sws, { serviceUriDefault } from '../../src'
 import { describe, it } from 'mocha'
-import assert from 'assert'
 import nock from 'nock'
 import { expect } from 'chai'
 
@@ -20,11 +19,13 @@ describe('License', function () {
     return client.license.getLicenses().then(
       () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
       err => {
+        // Error codes should be exposed via Error object...
         expect(err.httpStatus).to.equal(403)
-        return err.response.json()
+        expect(err.code).to.equal(200)
+        // But check that we have the underlying axion response object
+        // in the Error too
+        expect(err.response.status).to.equal(403)
       }
-    ).then(
-      data => assert.strictEqual(data.code, 2000)
     )
   })
 })
