@@ -3,7 +3,19 @@ import { describe, it } from 'mocha'
 import nock from 'nock'
 import { expect } from 'chai'
 
+/**
+ * Tests for the Service module that cover common functionality
+ * used by all service clients.
+ *
+ * Tests are executed using the License service client as an exemplar
+ * child instance of Service. But the tests in this module only cover
+ * common functionality contained within the Service module.
+ */
+
 const appId = 'myClientAppId'
+const licenseServiceHost = 'https://' + serviceUriDefault.license
+const getLicensesUri = '/api/v1/me/licenses'
+const customAccessDeniedHandlerResponse = 'This value is returned by our custom accessDeniedHandler'
 
 describe('Service', function () {
   it('returns message body when `getLicenses` executed successfully', function () {
@@ -12,9 +24,7 @@ describe('Service', function () {
       'more': ['body', 'content']
     }
 
-    nock('https://' + serviceUriDefault.license)
-      .get('/api/v1/me/licenses', '')
-      .reply(200, body)
+    nock(licenseServiceHost).get(getLicensesUri, '').reply(200, body)
 
     let client = new Sws({ appId: appId })
 
@@ -23,13 +33,10 @@ describe('Service', function () {
     )
   })
 
-  it('throws default error with `Access denied` response', function () {
-    nock('https://' + serviceUriDefault.license)
-      .get('/api/v1/me/licenses', '')
-      .reply(403, {
-        'code': 2000,
-        'error': 'Access denied. Invalid grants.'
-      })
+  it('handles `403 Forbidden` + error code `2000` with default Promise reject when no custom handler is supplied', function () {
+    nock(licenseServiceHost).get(getLicensesUri, '').reply(
+      403, { 'code': 2000, 'error': 'Access denied. Invalid grants.' }
+    )
 
     let client = new Sws({ appId: appId })
 
@@ -46,26 +53,19 @@ describe('Service', function () {
     )
   })
 
-  it('handles `Access denied` response with custom handler', function () {
-    nock('https://' + serviceUriDefault.license)
-      .get('/api/v1/me/licenses', '')
-      .reply(403, {
-        'code': 2000,
-        'error': 'Access denied. Invalid grants.'
-      })
-
-    let customHandlerResponse = 'This value is returned by our custom accessDeniedHandler'
-    let accessDeniedHandler = function () {
-      return customHandlerResponse
-    }
-
-    let client = new Sws(
-      { appId: appId },
-      { accessDeniedHandler: accessDeniedHandler }
+  it('handles `403 Forbidden` + error code `2000` with custom handler when supplied', function () {
+    nock(licenseServiceHost).get(getLicensesUri, '').reply(
+      403, { 'code': 2000, 'error': 'Access denied. Invalid grants.' }
     )
 
+    let client = new Sws({ appId: appId })
+
+    client.license.accessDeniedHandler = (err) => {
+      return customAccessDeniedHandlerResponse + ' ' + err.response.status + ' - ' + err.response.data.code
+    }
+
     return client.license.getLicenses().then(
-      data => expect(data).to.equal(customHandlerResponse),
+      data => expect(data).to.equal(customAccessDeniedHandlerResponse + ' 403 - 2000'),
       err => {
         let error = new Error('Expected error to be handled by custom `accessDeniedHandler` handler')
         error.error = err

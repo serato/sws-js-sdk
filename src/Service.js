@@ -1,3 +1,5 @@
+'use strict'
+
 import { Base64 } from 'js-base64'
 import axios from 'axios'
 
@@ -12,6 +14,10 @@ export default class Service {
     this._client = Sws
     this._serviceUri = ''
     this._lastRequest = null
+
+    this._invalidAccessTokenHandler = handleFetchError
+    this._invalidRefreshTokenHandler = handleFetchError
+    this._accessDeniedHandler = handleFetchError
   }
 
   /**
@@ -85,18 +91,97 @@ export default class Service {
     this._lastRequest = request
 
     return axios(request)
-      .then((response) => {
-        if (response.status >= 200 && response.status < 300) {
-          return response.data
+      .then((response) => { return response.data })
+      .catch((err) => {
+        let status = err.response.status
+        let code = err.response.data.code
+
+        if (status >= 500) {
+          // TODO - Handle 500 and 503 responses
+        } else if ((status === 403 && code === 2001) || (status === 401 && code === 2002)) {
+          // Access token is invalid or expired
+          // 403 2001 - Invalid access token
+          // 401 2002 - Expired access token
+          return Promise.resolve(this.invalidAccessTokenHandler(err))
+        } else if (status === 400 && (code === 1001 || code === 1007)) {
+          // Refresh token is invalid or expired
+          // 400 1001 - Invalid Refresh token
+          // 400 1007 - Expired Refresh token
+          return Promise.resolve(this.invalidRefreshTokenHandler(err))
+        } else if (status === 403 && code === 2000) {
+          // Permissions error
+          // 403 2000 - Access token has insufficient scopes
+          return Promise.resolve(this.accessDeniedHandler(err))
         } else {
-          let error = new Error(response.data.error)
-          error.httpStatus = response.status
-          error.code = response.data.code
-          error.response = response
-          throw error
+          handleFetchError(err)
         }
       })
   }
+
+  /**
+   * Set the invalid access token callback
+   * @param {function} f Callback
+   * @return {void}
+   */
+  set invalidAccessTokenHandler (f) {
+    this._invalidAccessTokenHandler = f
+  }
+
+  /**
+   * Get the invalid access token callback
+   * @return {function}
+   */
+  get invalidAccessTokenHandler () {
+    return this._invalidAccessTokenHandler
+  }
+
+  /**
+   * Set the invalid refresh token callback
+   * @param {function} f Callback
+   * @return {void}
+   */
+  set invalidRefreshTokenHandler (f) {
+    this._invalidRefreshTokenHandler = f
+  }
+
+  /**
+   * Get the invalid refresh token callback
+   * @return {function}
+   */
+  get invalidRefreshTokenHandler () {
+    return this._invalidRefreshTokenHandler
+  }
+
+  /**
+   * Set the access denied callback
+   * @param {function} f Callback
+   * @return {void}
+   */
+  set accessDeniedHandler (f) {
+    this._accessDeniedHandler = f
+  }
+
+  /**
+   * Get the access denied callback
+   * @return {function}
+   */
+  get accessDeniedHandler () {
+    return this._accessDeniedHandler
+  }
+}
+
+/**
+ * Default error handler for HTTP fetch error
+ *
+ * @param {Error} err Fetch Error
+ * @throws {Error}
+ */
+function handleFetchError (err) {
+  let error = new Error(err.response.data.error)
+  error.httpStatus = err.response.status
+  error.code = err.response.data.code
+  error.response = err.response
+  throw error
 }
 
 /**
@@ -117,10 +202,6 @@ function buildRequest (auth, url, body, method, timeout) {
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
-    },
-    // Handle all non-200 responses ourselves
-    validateStatus: function (status) {
-      return true
     }
   }
 
@@ -133,11 +214,8 @@ function buildRequest (auth, url, body, method, timeout) {
   }
 
   if (method === 'PUT' || method === 'PATCH' || method === 'POST') {
+    // TODO: is this right?
     request.data = body
-    // // Do we need to do this??
-    // request.transformRequest = function (data, headers) {
-    //   return JSON.stringify(body)
-    // }
   }
 
   return request
