@@ -100,14 +100,24 @@ let invalidRefreshTokenCallback = (err) => {
 let accessDeniedCallback = (err) => {
   return 'Access is denied'
 }
+let serviceErrorCallback = (err) => {
+  return 'Access is denied'
+}
+let serviceUnavailableCallback = (err) => {
+  return 'Access is denied'
+}
 
 // Attach the callback to all service clients
 sws.setInvalidAccessTokenHandler(invalidAccessTokenCallback)
 sws.setInvalidRefreshTokenHandler(invalidRefreshTokenCallback)
 sws.setAccessDeniedHandler(accessDeniedCallback)
+sws.setServiceErrorHandler(serviceErrorCallback)
+sws.setServiceUnavailableHandler(serviceUnavailableCallback)
 
 // Attach the callback to an individual service client
 sws.license.invalidAccessTokenHandler = invalidAccessTokenCallback
 sws.license.invalidRefreshTokenHandler = invalidRefreshTokenCallback
-sws.accessDeniedHandler = accessDeniedCallback
+sws.license.accessDeniedHandler = accessDeniedCallback
+sws.license.serviceErrorHandler = serviceErrorCallback
+sws.license.serviceUnavailableHandler = serviceUnavailableCallback
 ```
