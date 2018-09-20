@@ -7,7 +7,7 @@ import Sws from './Sws'
  *
  * Extends Sws to provide functionality for use in client side applications.
  */
-export default class SwsClient extends Sws {
+export class SwsClient extends Sws {
   /**
    * Constructor
    *
@@ -22,5 +22,40 @@ export default class SwsClient extends Sws {
    */
   constructor ({ appId, secret = '', timeout = 3000, serviceUri = {} }) {
     super({ appId: appId, secret: secret, timeout: timeout, serviceUri: serviceUri })
+
+    this._accessTokenUpdatedHandler = () => {}
+
+    this.setInvalidAccessTokenHandler(err => {
+      let previousRequest = err.config
+
+      this.id.tokenRefresh(this.refreshToken).then(
+        (data) => {
+          console.log('Got dat NOO')
+          console.log(data)
+        },
+        err => {
+          console.log(err)
+        }
+      )
+    })
+  }
+
+  /**
+   * Set the access token updated callback
+   *
+   * @param {function} f Callback
+   * @return {void}
+   */
+  set accessTokenUpdatedHandler (f) {
+    this._accessTokenUpdatedHandler = f
+  }
+
+  /**
+   * Get the access token updated callback
+   *
+   * @return {function}
+   */
+  get accessTokenUpdatedHandler () {
+    return this._accessTokenUpdatedHandler
   }
 }

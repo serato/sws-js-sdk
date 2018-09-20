@@ -1,6 +1,7 @@
 'use strict'
 
 import License from './License'
+import Identity from './Identity'
 
 const serviceUriDefault = { id: 'id.serato.io', license: 'license.serato.io' }
 
@@ -35,7 +36,8 @@ export default class Sws {
     }
     // Create service clients
     this._service = {
-      license: new License(this)
+      license: new License(this),
+      id: new Identity(this)
       // Define more clients here,
       // and add a getter method
     }
@@ -186,12 +188,21 @@ export default class Sws {
   }
 
   /**
-   * Get the license service instance
+   * Get the license service client instance
    *
-   * @return {License} License service
+   * @return {License} License service client
    */
   get license () {
     return this._service.license
+  }
+
+  /**
+   * Get the identity service client instance
+   *
+   * @return {Identity} Identity service client
+   */
+  get id () {
+    return this._service.id
   }
 }
 
