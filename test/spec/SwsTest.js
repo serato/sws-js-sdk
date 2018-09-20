@@ -37,4 +37,25 @@ describe('Sws', function () {
     client.accessToken = tokenValue
     assert.strict.equal(client.accessToken, tokenValue)
   })
+
+  it('tests that `setInvalidAccessTokenHandler` sets the correct callback to a service client', function () {
+    let customErrorHandler = () => { return 'A value' }
+    let client = new Sws({ appId: appId })
+    client.setInvalidAccessTokenHandler(customErrorHandler)
+    assert.strict.equal(customErrorHandler, client.license.invalidAccessTokenHandler)
+  })
+
+  it('tests that `setInvalidRefreshTokenHandler` sets the correct callback to a service client', function () {
+    let customErrorHandler = () => { return 'A value' }
+    let client = new Sws({ appId: appId })
+    client.setInvalidRefreshTokenHandler(customErrorHandler)
+    assert.strict.equal(customErrorHandler, client.license.invalidRefreshTokenHandler)
+  })
+
+  it('tests that `setAccessDeniedHandler` sets the correct callback to a service client', function () {
+    let customErrorHandler = () => { return 'A value' }
+    let client = new Sws({ appId: appId })
+    client.setAccessDeniedHandler(customErrorHandler)
+    assert.strict.equal(customErrorHandler, client.license.accessDeniedHandler)
+  })
 })

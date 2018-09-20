@@ -34,7 +34,47 @@ export default class Sws {
       license: serviceUri.license ? serviceUri.license : serviceUriDefault.license
     }
     // Create service clients
-    this._licenseService = new License(this)
+    this._service = {
+      license: new License(this)
+      // Define more clients here,
+      // and add a getter method
+    }
+  }
+
+  /**
+   * Sets the invalid access token callback for all clients
+   *
+   * @param {Function} f Callback function
+   * @return {Void}
+   */
+  setInvalidAccessTokenHandler (f) {
+    for (let service in this._service) {
+      this._service[service].invalidAccessTokenHandler = f
+    }
+  }
+
+  /**
+   * Sets the invalid refresh token callback for all clients
+   *
+   * @param {Function} f Callback function
+   * @return {Void}
+   */
+  setInvalidRefreshTokenHandler (f) {
+    for (let service in this._service) {
+      this._service[service].invalidRefreshTokenHandler = f
+    }
+  }
+
+  /**
+   * Sets the access denied callback for all clients
+   *
+   * @param {Function} f Callback function
+   * @return {Void}
+   */
+  setAccessDeniedHandler (f) {
+    for (let service in this._service) {
+      this._service[service].accessDeniedHandler = f
+    }
   }
 
   /**
@@ -127,7 +167,7 @@ export default class Sws {
    * @return {License} License service
    */
   get license () {
-    return this._licenseService
+    return this._service.license
   }
 }
 
