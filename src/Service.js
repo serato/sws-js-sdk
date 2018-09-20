@@ -91,7 +91,6 @@ export default class Service {
     let url = (this.serviceUri.indexOf('://') === -1 ? 'https://' : '') + this.serviceUri + endpoint
 
     let request = buildRequest(auth, url, body, method, timeout === null ? this._client.timeout : timeout)
-    this._lastRequest = request
 
     return this.fetchRequest(request)
   }
@@ -103,9 +102,13 @@ export default class Service {
    * @returns {Promise}
    */
   fetchRequest (request) {
+    this._lastRequest = request
+
     return axios(request)
       .then((response) => { return response.data })
       .catch((err) => {
+        err.client = this
+
         let status = err.response.status
         let code = err.response.data.code
 
@@ -219,6 +222,15 @@ export default class Service {
   get serviceUnavailableHandler () {
     return this._serviceUnavailableHandler
   }
+
+  /**
+   * Returns the configuration of the last request
+   *
+   * @return {Object}
+   */
+  get lastRequest () {
+    return this._lastRequest
+  }
 }
 
 /**
@@ -246,7 +258,7 @@ function handleFetchError (err) {
  * @param  {Object} body Object to send in the body
  * @param  {String} method HTTP Method GET, POST, PUT or DELETE (defaults to GET)
  * @param  {Number} timeout Request timout (ms)
- * @return {Request}
+ * @return {Object}
  */
 function buildRequest (auth, endpoint, body, method, timeout) {
   let request = {

@@ -26,12 +26,29 @@ export class SwsClient extends Sws {
     this._accessTokenUpdatedHandler = () => {}
 
     this.setInvalidAccessTokenHandler(err => {
-      let previousRequest = err.config
-
       this.id.tokenRefresh(this.refreshToken).then(
         (data) => {
-          console.log('Got dat NOO')
-          console.log(data)
+          // Update the access token property
+          this.accessToken = data.tokens.access.token
+
+          // Call the callback
+          this.accessTokenUpdatedHandler(
+            this.accessToken,
+            new Date(Date.parse(data.tokens.access.token.expires_at))
+          )
+
+          // `err.client` is the specific client instance that made the inital request
+          // when the `invalid access token` error was received.
+          let client = err.client
+
+          // Fetch the `last request` object from the service client
+          let request = client.lastRequest
+
+          // Set a new Authorization header for the request
+          request.headers.Authorization = client.bearerTokenAuthHeader()
+
+          // Re-execute the request again
+          return client.fetchRequest(request)
         },
         err => {
           console.log(err)

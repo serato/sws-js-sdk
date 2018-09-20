@@ -29,6 +29,7 @@ const getLicensesUri = '/api/v1/me/licenses'
 
 describe('SwsClient', function () {
   it('should retry a request if it initially results in `invalid access token` error', function () {
+    let accessTokenExpiresAt = new Date(Date.now() + 3600)
     let scope = nock(/serato/)
       .get(getLicensesUri, '')
       .reply(403, { 'code': 2001, 'error': 'Invalid Access token' })
@@ -37,7 +38,7 @@ describe('SwsClient', function () {
         'tokens': {
           'access': {
             'token': 'New.Access.Token',
-            'expires_at': '' // TODO
+            'expires_at': accessTokenExpiresAt.toISOString()
           }
         }
       })
