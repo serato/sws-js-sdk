@@ -82,6 +82,7 @@ export default class Service {
    * @param  {String} endpoint API endpoint
    * @param  {Object} body Object to send in the body
    * @param  {String} method HTTP Method GET, POST, PUT or DELETE (defaults to GET)
+   * @param  {Number} timeout Request timout (ms)
    * @return {Promise}
    */
   fetch (auth, endpoint, body, method = 'GET', timeout = null) {
@@ -201,12 +202,13 @@ function handleFetchError (err) {
  * @param  {String} endpoint API endpoint
  * @param  {Object} body Object to send in the body
  * @param  {String} method HTTP Method GET, POST, PUT or DELETE (defaults to GET)
+ * @param  {Number} timeout Request timout (ms)
  * @return {Request}
  */
-function buildRequest (auth, url, body, method, timeout) {
+function buildRequest (auth, endpoint, body, method, timeout) {
   let request = {
     timeout: timeout,
-    url: url,
+    url: endpoint,
     method: method,
     responseType: 'json',
     headers: {
