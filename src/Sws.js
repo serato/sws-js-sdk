@@ -13,25 +13,68 @@ export default class Sws {
   /**
    * Constructor
    *
-   * @param {Object} param Configuration options
-   * @param {String} param.appId Application ID
-   * @param {String} param.secret Application secret
-   * @param {Object} param.serviceUri Base URIs for SWS services
-   * @param {String} param.serviceUri.id Base URI for SWS ID Service
-   * @param {String} param.serviceUri.license Base URI for SWS License Service
+   * @param {Object} config Configuration options
+   * @param {String} config.appId Application ID
+   * @param {String} config.secret Application secret
+   * @param {Number} config.timeout Request timeout
+   * @param {Object} config.serviceUri Base URIs for SWS services
+   * @param {String} config.serviceUri.id Base URI for SWS ID Service
+   * @param {String} config.serviceUri.license Base URI for SWS License Service
    * @return {void}
    */
-  constructor ({ appId, secret = '', serviceUri = {} }) {
+  constructor ({ appId, secret = '', timeout = 3000, serviceUri = {} }) {
     this._appId = appId
     this._secret = secret
+    this._timeout = timeout
+    this._accessToken = ''
+    this._refreshToken = ''
     // Set custom service URIs if provided
     this._serviceUri = {
       id: serviceUri.id ? serviceUri.id : serviceUriDefault.id,
       license: serviceUri.license ? serviceUri.license : serviceUriDefault.license
     }
-    this._accessToken = ''
     // Create service clients
-    this._licenseService = new License(this)
+    this._service = {
+      license: new License(this)
+      // Define more clients here,
+      // and add a getter method
+    }
+  }
+
+  /**
+   * Sets the invalid access token callback for all clients
+   *
+   * @param {Function} f Callback function
+   * @return {Void}
+   */
+  setInvalidAccessTokenHandler (f) {
+    for (let service in this._service) {
+      this._service[service].invalidAccessTokenHandler = f
+    }
+  }
+
+  /**
+   * Sets the invalid refresh token callback for all clients
+   *
+   * @param {Function} f Callback function
+   * @return {Void}
+   */
+  setInvalidRefreshTokenHandler (f) {
+    for (let service in this._service) {
+      this._service[service].invalidRefreshTokenHandler = f
+    }
+  }
+
+  /**
+   * Sets the access denied callback for all clients
+   *
+   * @param {Function} f Callback function
+   * @return {Void}
+   */
+  setAccessDeniedHandler (f) {
+    for (let service in this._service) {
+      this._service[service].accessDeniedHandler = f
+    }
   }
 
   /**
@@ -81,12 +124,50 @@ export default class Sws {
   }
 
   /**
+   * Set refresh token
+   *
+   * @param {String} data Token
+   * @return {Void}
+   */
+  set refreshToken (data) {
+    this._refreshToken = data
+  }
+
+  /**
+   * Get the current token
+   *
+   * @return {String} Current access token
+   */
+  get refreshToken () {
+    return this._refreshToken
+  }
+
+  /**
+   * Set the request timeout
+   *
+   * @param {Number} t Request timeout (ms)
+   * @return {Void}
+   */
+  set timeout (t) {
+    this._timeout = t
+  }
+
+  /**
+   * Get the request timeout
+   *
+   * @return {Number} Request timeout (ms)
+   */
+  get timeout () {
+    return this._timeout
+  }
+
+  /**
    * Get the license service instance
    *
    * @return {License} License service
    */
   get license () {
-    return this._licenseService
+    return this._service.license
   }
 }
 
