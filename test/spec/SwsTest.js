@@ -58,4 +58,18 @@ describe('Sws', function () {
     sws.setAccessDeniedHandler(customErrorHandler)
     assert.strict.equal(customErrorHandler, sws.license.accessDeniedHandler)
   })
+
+  it('tests that `setServiceErrorHandler` sets the correct callback to a service client', function () {
+    let customErrorHandler = () => { return 'A value' }
+    let sws = new Sws({ appId: appId })
+    sws.setServiceErrorHandler(customErrorHandler)
+    assert.strict.equal(customErrorHandler, sws.license.serviceErrorHandler)
+  })
+
+  it('tests that `setServiceUnavailableHandler` sets the correct callback to a service client', function () {
+    let customErrorHandler = () => { return 'A value' }
+    let sws = new Sws({ appId: appId })
+    sws.setServiceUnavailableHandler(customErrorHandler)
+    assert.strict.equal(customErrorHandler, sws.license.serviceUnavailableHandler)
+  })
 })

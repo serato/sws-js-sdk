@@ -78,6 +78,30 @@ export default class Sws {
   }
 
   /**
+   * Sets the service error callback for all clients
+   *
+   * @param {Function} f Callback function
+   * @return {Void}
+   */
+  setServiceErrorHandler (f) {
+    for (let service in this._service) {
+      this._service[service].serviceErrorHandler = f
+    }
+  }
+
+  /**
+   * Sets the service unavailable callback for all clients
+   *
+   * @param {Function} f Callback function
+   * @return {Void}
+   */
+  setServiceUnavailableHandler (f) {
+    for (let service in this._service) {
+      this._service[service].serviceUnavailableHandler = f
+    }
+  }
+
+  /**
    * Get the client application ID
    *
    * @return {String} Application ID

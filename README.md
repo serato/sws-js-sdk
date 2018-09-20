@@ -65,15 +65,23 @@ of the custom callback.
 
 #### Invalid Access Token callback
 
-This callback occurs if an SWS service indicates that an Access token has either expired or is otherwise invalid.
+This callback is called when an SWS service indicates that an Access token has either expired or is otherwise invalid.
 
 #### Invalid Refresh Token callback
 
-This callback occurs if the SWS Identity service indicates that a Refresh token has either expired or is otherwise invalid.
+This callback is called when the SWS Identity service indicates that a Refresh token has either expired or is otherwise invalid.
 
 #### Access Denied callback
 
-This callback occurs if an SWS service indicates that a user has insufficient permissions to access the requested resource.
+This callback is called when an SWS service indicates that a user has insufficient permissions to access the requested resource.
+
+#### Service Error callback
+
+This callback is called when an SWS service returns a HTTP 500 Application Error response.
+
+#### Service Unavailable callback
+
+This callback is called when an SWS service returns a HTTP 503 Service Unavailable response.
 
 ### Setting callbacks
 

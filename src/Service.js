@@ -18,6 +18,8 @@ export default class Service {
     this._invalidAccessTokenHandler = handleFetchError
     this._invalidRefreshTokenHandler = handleFetchError
     this._accessDeniedHandler = handleFetchError
+    this._serviceErrorHandler = handleFetchError
+    this._serviceUnavailableHandler = handleFetchError
   }
 
   /**
@@ -107,8 +109,10 @@ export default class Service {
         let status = err.response.status
         let code = err.response.data.code
 
-        if (status >= 500) {
-          // TODO - Handle 500 and 503 responses
+        if (status === 500) {
+          return Promise.resolve(this.serviceErrorHandler(err))
+        } else if (status === 503) {
+          return Promise.resolve(this.serviceUnavailableHandler(err))
         } else if ((status === 403 && code === 2001) || (status === 401 && code === 2002)) {
           // Access token is invalid or expired
           // 403 2001 - Invalid access token
@@ -124,6 +128,8 @@ export default class Service {
           // 403 2000 - Access token has insufficient scopes
           return Promise.resolve(this.accessDeniedHandler(err))
         } else {
+          // TODO (maybe): a generic way of injecting custom handlers
+          // for any combination of HTTP response + error code.
           handleFetchError(err)
         }
       })
@@ -179,6 +185,40 @@ export default class Service {
   get accessDeniedHandler () {
     return this._accessDeniedHandler
   }
+
+  /**
+   * Set the service error callback
+   * @param {function} f Callback
+   * @return {void}
+   */
+  set serviceErrorHandler (f) {
+    this._serviceErrorHandler = f
+  }
+
+  /**
+   * Get the service error callback
+   * @return {function}
+   */
+  get serviceErrorHandler () {
+    return this._serviceErrorHandler
+  }
+
+  /**
+   * Set the service unavailable callback
+   * @param {function} f Callback
+   * @return {void}
+   */
+  set serviceUnavailableHandler (f) {
+    this._serviceUnavailableHandler = f
+  }
+
+  /**
+   * Get the service unavailable callback
+   * @return {function}
+   */
+  get serviceUnavailableHandler () {
+    return this._serviceUnavailableHandler
+  }
 }
 
 /**
@@ -188,9 +228,12 @@ export default class Service {
  * @throws {Error}
  */
 function handleFetchError (err) {
-  let error = new Error(err.response.data.error)
+  let errText = err.response.data.error ? err.response.data.error : err.response.data.message
+  let error = new Error(errText)
   error.httpStatus = err.response.status
-  error.code = err.response.data.code
+  if (err.response.data.code) {
+    error.code = err.response.data.code
+  }
   error.response = err.response
   throw error
 }
