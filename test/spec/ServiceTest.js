@@ -29,9 +29,9 @@ describe('Service', function () {
 
     nock(licenseServiceHost).get(getLicensesUri, '').reply(200, body)
 
-    let client = new Sws({ appId: appId })
+    let sws = new Sws({ appId: appId })
 
-    return client.license.getLicenses().then(
+    return sws.license.getLicenses().then(
       data => expect(data).to.eql(body) // FYI `eql` is non-strict "deep equal"
     )
   })
@@ -107,9 +107,9 @@ describe('Service', function () {
       // Intercept the HTTP request and return the desired HTTP status and JSON message body
       nock(licenseServiceHost).get(getLicensesUri, '').reply(httpStatus, { 'code': code, 'error': error })
 
-      let client = new Sws({ appId: appId })
+      let sws = new Sws({ appId: appId })
 
-      return client.license.getLicenses().then(
+      return sws.license.getLicenses().then(
         // Should never hit the `resolve` callback
         () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
         // Should always hit the `reject` callback
@@ -125,12 +125,12 @@ describe('Service', function () {
       // Intercept the HTTP request and return the desired HTTP status and JSON message body
       nock(licenseServiceHost).get(getLicensesUri, '').reply(httpStatus, { 'code': code, 'error': error })
 
-      let client = new Sws({ appId: appId })
+      let sws = new Sws({ appId: appId })
 
       // Attach the customer handler to the client
-      attachHandler(client.license)
+      attachHandler(sws.license)
 
-      return client.license.getLicenses().then(
+      return sws.license.getLicenses().then(
         // Should always hit the `resolve` callback because we're using our custom handler
         data => expect(data).to.equal(`${customHandlerResponse} ${httpStatus} - ${code}`),
         // Should never hit the `reject` callback
