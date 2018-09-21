@@ -88,11 +88,14 @@ export default class Service {
    * @return {Promise}
    */
   fetch (auth, endpoint, body, method = 'GET', timeout = null) {
-    let url = (this.serviceUri.indexOf('://') === -1 ? 'https://' : '') + this.serviceUri + endpoint
-
-    let request = buildRequest(auth, url, body, method, timeout === null ? this._client.timeout : timeout)
-
-    return this.fetchRequest(request)
+    this._lastRequest = buildRequest(
+      auth,
+      (this.serviceUri.indexOf('://') === -1 ? 'https://' : '') + this.serviceUri + endpoint,
+      body,
+      method,
+      timeout === null ? this._client.timeout : timeout
+    )
+    return this.fetchRequest(this._lastRequest)
   }
 
   /**
@@ -102,7 +105,6 @@ export default class Service {
    * @returns {Promise}
    */
   fetchRequest (request) {
-    this._lastRequest = request
 
     return axios(request)
       .then((response) => { return response.data })
