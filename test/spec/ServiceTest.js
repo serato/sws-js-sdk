@@ -1,4 +1,4 @@
-import Sws, { serviceUriDefault } from '../../src'
+import Sws from '../../src'
 import { describe, it } from 'mocha'
 import nock from 'nock'
 import { expect } from 'chai'
@@ -13,7 +13,6 @@ import { expect } from 'chai'
  */
 
 const appId = 'myClientAppId'
-const licenseServiceHost = 'https://' + serviceUriDefault.license
 const getLicensesUri = '/api/v1/me/licenses'
 const customHandlerResponse = 'This value is returned by our custom handler'
 
@@ -27,12 +26,16 @@ describe('Service', function () {
       'more': ['body', 'content']
     }
 
-    nock(licenseServiceHost).get(getLicensesUri, '').reply(200, body)
+    let scope = nock(/serato/).get(getLicensesUri, '').reply(200, body)
 
     let sws = new Sws({ appId: appId })
 
     return sws.license.getLicenses().then(
-      data => expect(data).to.eql(body) // FYI `eql` is non-strict "deep equal"
+      data => {
+        expect(data).to.eql(body) // FYI `eql` is non-strict "deep equal"
+        // Confirm that all mock requests have been made
+        expect(scope.isDone()).to.equal(true)
+      }
     )
   })
 
@@ -55,7 +58,7 @@ describe('Service', function () {
     return `${customHandlerResponse} ${err.response.status} - ${err.response.data.code}`
   }
 
-  let errorsWithCodesTests = [
+  const errorsWithCodesTests = [
     // Access token is invalid (eg. bad signature)
     {
       httpStatus: 403,
@@ -106,7 +109,7 @@ describe('Service', function () {
   errorsWithCodesTests.forEach(({ httpStatus, statusText, code, error, handlerName, attachHandler }) => {
     it(`handles '${httpStatus} ${statusText}, error code ${code}' with default error handler`, function () {
       // Intercept the HTTP request and return the desired HTTP status and JSON message body
-      nock(licenseServiceHost).get(getLicensesUri, '').reply(httpStatus, { 'code': code, 'error': error })
+      let scope = nock(/serato/).get(getLicensesUri, '').reply(httpStatus, { 'code': code, 'error': error })
 
       let sws = new Sws({ appId: appId })
 
@@ -118,13 +121,15 @@ describe('Service', function () {
           expect(err.httpStatus).to.equal(httpStatus)
           expect(err.code).to.equal(code)
           expect(err.response.status).to.equal(httpStatus)
+          // Confirm that all mock requests have been made
+          expect(scope.isDone()).to.equal(true)
         }
       )
     })
 
     it(`handles '${httpStatus} ${statusText}, error code ${code}' with custom handler`, function () {
       // Intercept the HTTP request and return the desired HTTP status and JSON message body
-      nock(licenseServiceHost).get(getLicensesUri, '').reply(httpStatus, { 'code': code, 'error': error })
+      let scope = nock(/serato/).get(getLicensesUri, '').reply(httpStatus, { 'code': code, 'error': error })
 
       let sws = new Sws({ appId: appId })
 
@@ -133,7 +138,11 @@ describe('Service', function () {
 
       return sws.license.getLicenses().then(
         // Should always hit the `resolve` callback because we're using our custom handler
-        data => expect(data).to.equal(`${customHandlerResponse} ${httpStatus} - ${code}`),
+        data => {
+          expect(data).to.equal(`${customHandlerResponse} ${httpStatus} - ${code}`)
+          // Confirm that all mock requests have been made
+          expect(scope.isDone()).to.equal(true)
+        },
         // Should never hit the `reject` callback
         err => {
           let error = new Error(`Expected error to be handled by custom ${handlerName} handler`)
@@ -143,7 +152,6 @@ describe('Service', function () {
       )
     })
   })
-
 
   /**
    * Test the custom error handlers for errors that do NOT specify an error code.
@@ -160,11 +168,11 @@ describe('Service', function () {
 
   // Define the custom error handler. The err handler receives the error object returned
   // from the HTTP request.
-  let customErrorHandler = (err) => {
+  const customErrorHandler = (err) => {
     return `${customHandlerResponse} ${err.response.status}`
   }
 
-  let errorsWithoutCodesTests = [
+  const errorsWithoutCodesTests = [
     // Unhandled application error
     {
       httpStatus: 500,
@@ -186,7 +194,7 @@ describe('Service', function () {
   errorsWithoutCodesTests.forEach(({ httpStatus, statusText, errorMessage, handlerName, attachHandler }) => {
     it(`handles '${httpStatus} ${statusText}' with default error handler`, function () {
       // Intercept the HTTP request and return the desired HTTP status and JSON message body
-      nock(licenseServiceHost).get(getLicensesUri, '').reply(httpStatus, { 'message': errorMessage })
+      let scope = nock(/serato/).get(getLicensesUri, '').reply(httpStatus, { 'message': errorMessage })
 
       let sws = new Sws({ appId: appId })
 
@@ -197,13 +205,15 @@ describe('Service', function () {
         err => {
           expect(err.httpStatus).to.equal(httpStatus)
           expect(err.response.status).to.equal(httpStatus)
+          // Confirm that all mock requests have been made
+          expect(scope.isDone()).to.equal(true)
         }
       )
     })
 
     it(`handles '${httpStatus} ${statusText}' with custom handler`, function () {
       // Intercept the HTTP request and return the desired HTTP status and JSON message body
-      nock(licenseServiceHost).get(getLicensesUri, '').reply(httpStatus, { 'message': errorMessage })
+      let scope = nock(/serato/).get(getLicensesUri, '').reply(httpStatus, { 'message': errorMessage })
 
       let sws = new Sws({ appId: appId })
 
@@ -212,7 +222,11 @@ describe('Service', function () {
 
       return sws.license.getLicenses().then(
         // Should always hit the `resolve` callback because we're using our custom handler
-        data => expect(data).to.equal(`${customHandlerResponse} ${httpStatus}`),
+        data => {
+          expect(data).to.equal(`${customHandlerResponse} ${httpStatus}`)
+          // Confirm that all mock requests have been made
+          expect(scope.isDone()).to.equal(true)
+        },
         // Should never hit the `reject` callback
         err => {
           let error = new Error(`Expected error to be handled by custom ${handlerName} handler`)
@@ -222,5 +236,4 @@ describe('Service', function () {
       )
     })
   })
-
 })
