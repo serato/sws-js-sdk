@@ -26,34 +26,37 @@ export class SwsClient extends Sws {
     this._accessTokenUpdatedHandler = () => {}
 
     this.setInvalidAccessTokenHandler(err => {
-      this.id.tokenRefresh(this.refreshToken).then(
-        (data) => {
-          // Update the access token property
-          this.accessToken = data.tokens.access.token
+      // `err.client` is the specific client instance that made the inital request
+      // when the `invalid access token` error was received.
+      let client = err.client
+      // Fetch the `last request` object from the service client
+      let request = client.lastRequest
 
-          // Call the callback
-          this.accessTokenUpdatedHandler(
-            this.accessToken,
-            new Date(Date.parse(data.tokens.access.token.expires_at))
-          )
+      return this.id.tokenRefresh(this.refreshToken)
+        .then(
+          data => {
+            // This token refresh request may have resulted in an error that was
+            // handled by a custom error handler.
+            // If so, call `Promise.resolve` with `data` so that the
+            // outer Promise (ie. the one that failed before refreshing tokens)
+            // has the expected result.
+            if (!data.tokens) {
+              return Promise.resolve(data)
+            }
 
-          // `err.client` is the specific client instance that made the inital request
-          // when the `invalid access token` error was received.
-          let client = err.client
-
-          // Fetch the `last request` object from the service client
-          let request = client.lastRequest
-
-          // Set a new Authorization header for the request
-          request.headers.Authorization = client.bearerTokenAuthHeader()
-
-          // Re-execute the request again
-          return client.fetchRequest(request)
-        },
-        err => {
-          console.log(err)
-        }
-      )
+            // Update the access token property
+            this.accessToken = data.tokens.access.token
+            // Call the callback
+            this.accessTokenUpdatedHandler(
+              this.accessToken,
+              new Date(Date.parse(data.tokens.access.token.expires_at))
+            )
+            // Set a new Authorization header for the request
+            request.headers.Authorization = client.bearerTokenAuthHeader()
+            // Re-execute the 'last request'
+            return client.fetchRequest(request)
+          }
+        )
     })
   }
 
