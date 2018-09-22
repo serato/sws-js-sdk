@@ -5,6 +5,7 @@ import { expect } from 'chai'
 
 const appId = 'myClientAppId'
 const getLicensesUri = '/api/v1/me/licenses'
+const newAccessTokenValue = 'New.Access.Token.Value'
 
 describe('SwsClient', function () {
   describe('receives invalid access token errors', function () {
@@ -34,7 +35,7 @@ describe('SwsClient', function () {
           .reply(200, {
             'tokens': {
               'access': {
-                'token': 'New.Access.Token',
+                'token': newAccessTokenValue,
                 'expires_at': accessTokenExpiresAt.toISOString()
               }
             }
@@ -46,6 +47,7 @@ describe('SwsClient', function () {
 
         return sws.license.getLicenses().then(
           data => {
+            expect(sws.accessToken).to.equal(newAccessTokenValue)
             expect(data).to.eql(successBody) // FYI `eql` is non-strict "deep equal"
             // Confirm that all mock requests have been made
             expect(scope.isDone()).to.equal(true)
@@ -66,7 +68,7 @@ describe('SwsClient', function () {
           .reply(200, {
             'tokens': {
               'access': {
-                'token': 'New.Access.Token',
+                'token': newAccessTokenValue,
                 'expires_at': accessTokenExpiresAt.toISOString()
               }
             }
@@ -81,6 +83,7 @@ describe('SwsClient', function () {
           () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
           // Should always hit the `reject` callback
           err => {
+            expect(sws.accessToken).to.equal(newAccessTokenValue)
             expect(err.httpStatus).to.equal(secondErrorHttpStatus)
             expect(err.code).to.equal(secondErrorCode)
             // Confirm that all mock requests have been made
@@ -99,7 +102,7 @@ describe('SwsClient', function () {
           .reply(200, {
             'tokens': {
               'access': {
-                'token': 'New.Access.Token',
+                'token': newAccessTokenValue,
                 'expires_at': accessTokenExpiresAt.toISOString()
               }
             }
@@ -114,6 +117,7 @@ describe('SwsClient', function () {
           () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
           // Should always hit the `reject` callback
           err => {
+            expect(sws.accessToken).to.equal(newAccessTokenValue)
             expect(err.httpStatus).to.equal(500)
             // Confirm that all mock requests have been made
             expect(scope.isDone()).to.equal(true)
@@ -135,7 +139,7 @@ describe('SwsClient', function () {
           .reply(200, {
             'tokens': {
               'access': {
-                'token': 'New.Access.Token',
+                'token': newAccessTokenValue,
                 'expires_at': accessTokenExpiresAt.toISOString()
               }
             }
@@ -150,6 +154,7 @@ describe('SwsClient', function () {
         return sws.license.getLicenses().then(
           // Should always hit the `resolve` callback because we're using our custom handler
           data => {
+            expect(sws.accessToken).to.equal(newAccessTokenValue)
             expect(data).to.equal(`${customHandlerResponse} 500`)
             expect(scope.isDone()).to.equal(true)
           },
@@ -176,6 +181,7 @@ describe('SwsClient', function () {
           () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
           // Should always hit the `reject` callback
           err => {
+            expect(sws.accessToken).not.to.equal(newAccessTokenValue)
             expect(err.httpStatus).to.equal(500)
             // Confirm that all mock requests have been made
             expect(scope.isDone()).to.equal(true)
@@ -203,6 +209,7 @@ describe('SwsClient', function () {
         return sws.license.getLicenses().then(
           // Should always hit the `resolve` callback because we're using our custom handler
           data => {
+            expect(sws.accessToken).not.to.equal(newAccessTokenValue)
             expect(data).to.equal(`${customHandlerResponse} 500`)
             expect(scope.isDone()).to.equal(true)
           },
@@ -229,6 +236,7 @@ describe('SwsClient', function () {
           () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
           // Should always hit the `reject` callback
           err => {
+            expect(sws.accessToken).not.to.equal(newAccessTokenValue)
             expect(err.httpStatus).to.equal(400)
             expect(err.code).to.equal(1007)
             // Confirm that all mock requests have been made
@@ -257,6 +265,7 @@ describe('SwsClient', function () {
         return sws.license.getLicenses().then(
           // Should always hit the `resolve` callback because we're using our custom handler
           data => {
+            expect(sws.accessToken).not.to.equal(newAccessTokenValue)
             expect(data).to.equal(`${customHandlerResponse} 400`)
             expect(scope.isDone()).to.equal(true)
           },
@@ -273,7 +282,6 @@ describe('SwsClient', function () {
 
   describe('successfully updates expired access token', function () {
     it(`calls 'accessTokenUpdatedHandler' handler after successfully updating access token`, function () {
-      let accessTokenValue = 'New.Access.Token.Value'
       let accessTokenExpiresAt = new Date(Date.now() + 3600)
 
       let scope = nock(/serato/)
@@ -283,7 +291,7 @@ describe('SwsClient', function () {
         .reply(200, {
           'tokens': {
             'access': {
-              'token': accessTokenValue,
+              'token': newAccessTokenValue,
               'expires_at': accessTokenExpiresAt.toISOString()
             }
           }
@@ -292,7 +300,7 @@ describe('SwsClient', function () {
         .reply(200, { 'some': 'response' })
 
       let accessTokenUpdatedHandler = (token, expires) => {
-        expect(token).to.equal(accessTokenValue)
+        expect(token).to.equal(newAccessTokenValue)
         expect(expires).to.eql(accessTokenExpiresAt)
       }
 
@@ -302,6 +310,7 @@ describe('SwsClient', function () {
       return sws.license.getLicenses().then(
         // Should always hit the `resolve` callback because we're using our custom handler
         data => {
+          expect(sws.accessToken).to.equal(newAccessTokenValue)
           expect(scope.isDone()).to.equal(true)
         },
         // Should never hit the `reject` callback
