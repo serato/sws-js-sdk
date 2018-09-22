@@ -23,7 +23,7 @@ describe('SwsClient', function () {
     ]
 
     invalidAccessTokenErrors.forEach(({ httpStatus, code, errorText }) => {
-      it(`receives '${errorText}' error then successfully fetches a new access token and successfully retries original request`, function () {
+      it(`'${errorText}' error then successfully fetches a new access token and successfully retries original request`, function () {
         let successBody = { 'some': 'body content', 'more': ['body', 'content'] }
         let accessTokenExpiresAt = new Date(Date.now() + 3600)
 
@@ -53,7 +53,7 @@ describe('SwsClient', function () {
         )
       })
 
-      it(`receives '${errorText}' error then successfully fetches a new access token but receives a generic HTTP 400 error when retrying original request`, function () {
+      it(`'${errorText}' error then successfully fetches a new access token but receives a generic HTTP 400 error when retrying original request`, function () {
         let secondErrorHttpStatus = 400
         let secondErrorCode = 1
         let secondErrorText = 'Some kind of error'
@@ -89,7 +89,7 @@ describe('SwsClient', function () {
         )
       })
 
-      it(`receives '${errorText}' error then successfully fetches a new access token but receives HTTP 500 error when retrying original request`, function () {
+      it(`'${errorText}' error then successfully fetches a new access token but receives HTTP 500 error when retrying original request`, function () {
         let accessTokenExpiresAt = new Date(Date.now() + 3600)
 
         let scope = nock(/serato/)
@@ -121,7 +121,7 @@ describe('SwsClient', function () {
         )
       })
 
-      it(`receives '${errorText}' error then successfully fetches a new access token but receives HTTP 500 error when retrying original request and uses custom 'serviceErrorHandler' handler`, function () {
+      it(`'${errorText}' error then successfully fetches a new access token but receives HTTP 500 error when retrying original request and uses custom 'serviceErrorHandler' handler`, function () {
         let accessTokenExpiresAt = new Date(Date.now() + 3600)
         let customHandlerResponse = 'This value is returned by our custom handler'
         let customErrorHandler = (err) => {
@@ -162,7 +162,7 @@ describe('SwsClient', function () {
         )
       })
 
-      it(`receives '${errorText}' error then receives a HTTP 500 error when fetching a new access token`, function () {
+      it(`'${errorText}' error then receives a HTTP 500 error when fetching a new access token`, function () {
         let scope = nock(/serato/)
           .get(getLicensesUri, '')
           .reply(httpStatus, { 'code': code, 'error': errorText })
@@ -183,7 +183,7 @@ describe('SwsClient', function () {
         )
       })
 
-      it(`receives '${errorText}' error then receives a HTTP 500 error when fetching a new access token and uses custom 'serviceErrorHandler' handler`, function () {
+      it(`'${errorText}' error then receives a HTTP 500 error when fetching a new access token and uses custom 'serviceErrorHandler' handler`, function () {
         let customHandlerResponse = 'This value is returned by our custom handler'
         let customErrorHandler = (err) => {
           return `${customHandlerResponse} ${err.response.status}`
@@ -215,7 +215,7 @@ describe('SwsClient', function () {
         )
       })
 
-      it(`receives '${errorText}' error then receives 'Refresh token expired' error when fetching new access token`, function () {
+      it(`'${errorText}' error then receives 'Refresh token expired' error when fetching new access token`, function () {
         let scope = nock(/serato/)
           .get(getLicensesUri, '')
           .reply(httpStatus, { 'code': code, 'error': errorText })
@@ -237,7 +237,7 @@ describe('SwsClient', function () {
         )
       })
 
-      it(`receives '${errorText}' error then receives 'Refresh token expired' error when fetching new access token and handles error with custom handler`, function () {
+      it(`'${errorText}' error then receives 'Refresh token expired' error when fetching new access token and handles error with custom handler`, function () {
         let customHandlerResponse = 'This value is returned by our custom handler'
         let customErrorHandler = (err) => {
           return `${customHandlerResponse} ${err.response.status}`
