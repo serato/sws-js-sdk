@@ -121,3 +121,31 @@ sws.license.accessDeniedHandler = accessDeniedCallback
 sws.license.serviceErrorHandler = serviceErrorCallback
 sws.license.serviceUnavailableHandler = serviceUnavailableCallback
 ```
+
+# SwsClient class
+
+The SDK also includes a `SwsClient` class.
+
+The class extends `Sws` and provides some useful functionality when implementing the SDK in a client side application.
+
+Specifically, it adds a **Invalid Access Token** handler that:
+
+* Retrieves a new Access Token from the Identity Service and updates the `Sws` instance with it.
+* Provides a **Access Token Updated** callback that is called whenever a new Access Token is successfully received from the Identity Service.
+
+#### Access Token Updated callback
+
+The **Access Token Updated** token callback accepts two arguments: the value of the Access token, and a date object representing the expiry time of the access token.
+
+```javascript
+let sws = new SwsClient({ appId: 'myAppId' })
+
+let accessTokenUpdatedCallback = (token, exp) => {
+  console.log('Access token value is ' + token)
+  console.log('Access token expires on ' + exp.toISOString())
+}
+
+// Attach the callback
+sws.accessTokenUpdatedHandler = accessTokenUpdatedCallback
+
+```
