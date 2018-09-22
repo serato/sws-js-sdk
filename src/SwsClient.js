@@ -49,7 +49,7 @@ export class SwsClient extends Sws {
             // Call the callback
             this.accessTokenUpdatedHandler(
               this.accessToken,
-              new Date(Date.parse(data.tokens.access.token.expires_at))
+              new Date(data.tokens.access.expires_at)
             )
             // Set a new Authorization header for the request
             request.headers.Authorization = client.bearerTokenAuthHeader()
