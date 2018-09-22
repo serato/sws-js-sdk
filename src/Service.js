@@ -105,7 +105,6 @@ export default class Service {
    * @returns {Promise}
    */
   fetchRequest (request) {
-
     return axios(request)
       .then((response) => { return response.data })
       .catch((err) => {
