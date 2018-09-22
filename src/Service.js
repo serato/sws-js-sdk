@@ -11,7 +11,7 @@ export default class Service {
    * @return {void}
    */
   constructor (Sws) {
-    this._client = Sws
+    this._sws = Sws
     this._serviceUri = ''
     this._lastRequest = null
 
@@ -31,7 +31,7 @@ export default class Service {
    * @return {String} Auth header value
    */
   bearerTokenAuthHeader () {
-    return 'Bearer ' + this._client.accessToken
+    return 'Bearer ' + this._sws.accessToken
   }
 
   /**
@@ -43,7 +43,7 @@ export default class Service {
    * @return {String} Auth header value
    */
   basicAuthHeader () {
-    return 'Basic ' + Base64.encode(this._client.appId + ':' + this._client.appSecret)
+    return 'Basic ' + Base64.encode(this._sws.appId + ':' + this._sws.appSecret)
   }
 
   /**
@@ -93,7 +93,7 @@ export default class Service {
       (this.serviceUri.indexOf('://') === -1 ? 'https://' : '') + this.serviceUri + endpoint,
       body,
       method,
-      timeout === null ? this._client.timeout : timeout
+      timeout === null ? this._sws.timeout : timeout
     )
     return this.fetchRequest(this._lastRequest)
   }

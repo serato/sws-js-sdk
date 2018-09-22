@@ -6,6 +6,13 @@ import Sws from './Sws'
  * SwsClient class.
  *
  * Extends Sws to provide functionality for use in client side applications.
+ *
+ * Specifically, it adds:
+ *
+ * - A `setInvalidAccessTokenHandler` handler that refreshes the access token
+ *   and retries the original request.
+ * - Adds an `accessTokenUpdatedHandler` callback that is called whenever the
+ *   access token is successfully refreshed.
  */
 export class SwsClient extends Sws {
   /**
