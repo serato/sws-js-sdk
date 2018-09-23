@@ -5,7 +5,7 @@ import Service from './Service'
 /**
  * License Service class
  *
- * Exposes SWS License API endpoints via class methods
+ * Exposes SWS License Service API endpoints via class methods
  */
 export default class License extends Service {
   /**

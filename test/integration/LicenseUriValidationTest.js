@@ -5,7 +5,7 @@ import { expect } from 'chai'
 const appId = 'myClientAppId'
 
 describe('License', function () {
-  it('confirms `/me/licenses` URI by returning a non-404 HTTP response', function () {
+  it(`confirms URI used in 'getLicenses()' method with no user ID, by returning a non-404 HTTP response`, function () {
     let sws = new Sws({ appId: appId })
 
     return sws.license.getLicenses().then(
@@ -16,7 +16,7 @@ describe('License', function () {
     )
   })
 
-  it('confirms `/user/{user_id}/licenses` URI by returning a non-404 HTTP response', function () {
+  it(`confirms URI used in 'getLicenses()' method with user ID, by returning a non-404 HTTP response`, function () {
     let sws = new Sws({ appId: appId })
 
     return sws.license.getLicenses({ userId: 123 }).then(

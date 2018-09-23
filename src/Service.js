@@ -11,13 +11,15 @@ export default class Service {
    * @return {void}
    */
   constructor (Sws) {
-    this._client = Sws
+    this._sws = Sws
     this._serviceUri = ''
     this._lastRequest = null
 
     this._invalidAccessTokenHandler = handleFetchError
     this._invalidRefreshTokenHandler = handleFetchError
     this._accessDeniedHandler = handleFetchError
+    this._serviceErrorHandler = handleFetchError
+    this._serviceUnavailableHandler = handleFetchError
   }
 
   /**
@@ -29,7 +31,7 @@ export default class Service {
    * @return {String} Auth header value
    */
   bearerTokenAuthHeader () {
-    return 'Bearer ' + this._client.accessToken
+    return 'Bearer ' + this._sws.accessToken
   }
 
   /**
@@ -41,7 +43,7 @@ export default class Service {
    * @return {String} Auth header value
    */
   basicAuthHeader () {
-    return 'Basic ' + Base64.encode(this._client.appId + ':' + this._client.appSecret)
+    return 'Basic ' + Base64.encode(this._sws.appId + ':' + this._sws.appSecret)
   }
 
   /**
@@ -82,15 +84,18 @@ export default class Service {
    * @param  {String} endpoint API endpoint
    * @param  {Object} body Object to send in the body
    * @param  {String} method HTTP Method GET, POST, PUT or DELETE (defaults to GET)
+   * @param  {Number} timeout Request timout (ms)
    * @return {Promise}
    */
   fetch (auth, endpoint, body, method = 'GET', timeout = null) {
-    let url = (this.serviceUri.indexOf('://') === -1 ? 'https://' : '') + this.serviceUri + endpoint
-
-    let request = buildRequest(auth, url, body, method, timeout === null ? this._client.timeout : timeout)
-    this._lastRequest = request
-
-    return this.fetchRequest(request)
+    this._lastRequest = buildRequest(
+      auth,
+      (this.serviceUri.indexOf('://') === -1 ? 'https://' : '') + this.serviceUri + endpoint,
+      body,
+      method,
+      timeout === null ? this._sws.timeout : timeout
+    )
+    return this.fetchRequest(this._lastRequest)
   }
 
   /**
@@ -103,11 +108,15 @@ export default class Service {
     return axios(request)
       .then((response) => { return response.data })
       .catch((err) => {
+        err.client = this
+
         let status = err.response.status
         let code = err.response.data.code
 
-        if (status >= 500) {
-          // TODO - Handle 500 and 503 responses
+        if (status === 500) {
+          return Promise.resolve(this.serviceErrorHandler(err))
+        } else if (status === 503) {
+          return Promise.resolve(this.serviceUnavailableHandler(err))
         } else if ((status === 403 && code === 2001) || (status === 401 && code === 2002)) {
           // Access token is invalid or expired
           // 403 2001 - Invalid access token
@@ -123,6 +132,8 @@ export default class Service {
           // 403 2000 - Access token has insufficient scopes
           return Promise.resolve(this.accessDeniedHandler(err))
         } else {
+          // TODO (maybe): a generic way of injecting custom handlers
+          // for any combination of HTTP response + error code.
           handleFetchError(err)
         }
       })
@@ -178,6 +189,49 @@ export default class Service {
   get accessDeniedHandler () {
     return this._accessDeniedHandler
   }
+
+  /**
+   * Set the service error callback
+   * @param {function} f Callback
+   * @return {void}
+   */
+  set serviceErrorHandler (f) {
+    this._serviceErrorHandler = f
+  }
+
+  /**
+   * Get the service error callback
+   * @return {function}
+   */
+  get serviceErrorHandler () {
+    return this._serviceErrorHandler
+  }
+
+  /**
+   * Set the service unavailable callback
+   * @param {function} f Callback
+   * @return {void}
+   */
+  set serviceUnavailableHandler (f) {
+    this._serviceUnavailableHandler = f
+  }
+
+  /**
+   * Get the service unavailable callback
+   * @return {function}
+   */
+  get serviceUnavailableHandler () {
+    return this._serviceUnavailableHandler
+  }
+
+  /**
+   * Returns the configuration of the last request
+   *
+   * @return {Object}
+   */
+  get lastRequest () {
+    return this._lastRequest
+  }
 }
 
 /**
@@ -187,9 +241,12 @@ export default class Service {
  * @throws {Error}
  */
 function handleFetchError (err) {
-  let error = new Error(err.response.data.error)
+  let errText = err.response.data.error ? err.response.data.error : err.response.data.message
+  let error = new Error(errText)
   error.httpStatus = err.response.status
-  error.code = err.response.data.code
+  if (err.response.data.code) {
+    error.code = err.response.data.code
+  }
   error.response = err.response
   throw error
 }
@@ -201,12 +258,13 @@ function handleFetchError (err) {
  * @param  {String} endpoint API endpoint
  * @param  {Object} body Object to send in the body
  * @param  {String} method HTTP Method GET, POST, PUT or DELETE (defaults to GET)
- * @return {Request}
+ * @param  {Number} timeout Request timout (ms)
+ * @return {Object}
  */
-function buildRequest (auth, url, body, method, timeout) {
+function buildRequest (auth, endpoint, body, method, timeout) {
   let request = {
     timeout: timeout,
-    url: url,
+    url: endpoint,
     method: method,
     responseType: 'json',
     headers: {
