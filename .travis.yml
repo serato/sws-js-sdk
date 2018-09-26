@@ -1,7 +1,9 @@
 language: node_js
 node_js:
-  - "iojs"
-  - "7"
+  - "10"
+cache:
+  directories:
+    - "node_modules"
 branches:
   only:
   - master
@@ -22,7 +24,7 @@ addons:
 notifications:
   slack:
     rooms:
-      secure: X4GK5ej/WzBeDokQVM7X0eHx0KEm1bqDb82iFubMogqbU7O6ivlapfnKla2Dvy7xlqn42u32s6OkC8Id7cgsxijJ8Uh+J3nl/pAyTY3SD1CT+PzyiJPp4UlSjkG29AIaR22l+cd3zoCr5LfyKcAGkA6eX35KD8TJwyw7GHCyp3vniWAwa9c1suOvIfkrRBCwN8Tf67Ig3rJ3/GctLhOBysqb7774GXiD8J1CTNs76nD8jCfePPY5Z5M58NFJNhRTnT00kD7zu5LEfj2plvYapl+zrC6kDZbEJ913MQAFNk2R2rOeiMduzmiG7QX9c54BTE2k0ezzoMG0+d3+qtFkwVuZmCpA4hKdoZzHq7U+SxtTXA1FRi7NpyFBEC4RXe2XjGfAIgloHyseYgsPgIdyBaw4XjBb2eUbXUuQVEgybPQR2DMJMFp/7tO0Bjw5IElqpJ/BeLB12PlXEjmnyALsbqCZjI/nh+ahqjK0Z8Y16F8dI1lgwtb3J9aGvqea7KGce5fV1YxA4yThvAMZRx5lWXN3dgp+NT3dzDWmGmOpZMomaWFtiaR4gYZTk5F2K454gS5SBv7MSv3yHm3Cz8R6ysNI3SftwjsWFeI1rV505/2Y89IdmCZqHgjXkUSwUlxB0We1BGTRlzrLM4ephz1+RcNzOQYeJkqOk/MmqA2ceuI=
+      secure: C9E+FYhown1Fkkrx892fAClW5bzvFNFm7jrOoALDZekNqRld0RXRiIlSj5Tmi6dFxMftg6bYp73BQpSYXIbkXR5i1CtHHNa4fpQpFL+jzwkuehipvKt+0ncZmZSfhzRAvDfkY/iBGLaWEfsSvNhAmh8wMNDtjgyM5oJOBDEGCp0uCnNgUTydWfsYQTA7XWdvvb4A/iC6LFXphAuZkgEPvF9kkBDT/S3RronjHgUuxTxUDkVCgFGJWJdZtuk49U+hFs1tE300Cdpyi8oqFLzCQDxeuVp15YfE9FhNoPdZNdSteJGvll7fB9qHJCBQ4nueGRYvV8zqaquudeXdjNVnloOR2qPZmoew4/AmpIAs/RAEWTnr8LO7fFt0crLEHdz63t/n6wl6Bu1Jqf0HmK1rVQepEkrHc78I1LV7vBh28kgb+0rZN5nSAMzs5DQ3ORFNYJQBk9tXhBmoxSxeJ7b4Y8KwpiirgIMCPBeWl+d9A2jRb2P7f6JItGAAfvrWXJP/OB/32EzbptLs65K0u/KE7utNQHwkJOSQRhR7ah7YIDux/Jf2vPXc6kie+Lswp2XRL2xqoiS356n6s22W/vYDSO1IBbv4JJOR4P/3ngEBaAgRGDrfaqYQV0ly9Sh95ho+OsIBJV2d2/F7WOoEKeHLVK7bpIvbBestfphaQfZb57s=
   on_success: change
   on_failure: always
 deploy:
