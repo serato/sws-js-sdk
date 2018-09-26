@@ -18,6 +18,7 @@ export default class Service {
     this._invalidAccessTokenHandler = handleFetchError
     this._invalidRefreshTokenHandler = handleFetchError
     this._accessDeniedHandler = handleFetchError
+    this._timeoutExceededHandler = handleFetchError
     this._serviceErrorHandler = handleFetchError
     this._serviceUnavailableHandler = handleFetchError
   }
@@ -110,6 +111,11 @@ export default class Service {
       .catch((err) => {
         err.client = this
 
+        if (err.code === 'ECONNABORTED') {
+          // Timeout
+          return Promise.resolve(this.timeoutExceededHandler(err))
+        }
+
         let status = err.response.status
         let code = err.response.data.code
 
@@ -191,6 +197,23 @@ export default class Service {
   }
 
   /**
+   * Set the timeout exceeded callback
+   * @param {function} f Callback
+   * @return {void}
+   */
+  set timeoutExceededHandler (f) {
+    this._timeoutExceededHandler = f
+  }
+
+  /**
+   * Get the timeout exceeded callback
+   * @return {function}
+   */
+  get timeoutExceededHandler () {
+    return this._timeoutExceededHandler
+  }
+
+  /**
    * Set the service error callback
    * @param {function} f Callback
    * @return {void}
@@ -241,14 +264,19 @@ export default class Service {
  * @throws {Error}
  */
 function handleFetchError (err) {
-  let errText = err.response.data.error ? err.response.data.error : err.response.data.message
-  let error = new Error(errText)
-  error.httpStatus = err.response.status
-  if (err.response.data.code) {
-    error.code = err.response.data.code
+  if (err.response) {
+    let errText = err.response.data.error ? err.response.data.error : err.response.data.message
+    let error = new Error(errText)
+    error.httpStatus = err.response.status
+    if (err.response.data.code) {
+      error.code = err.response.data.code
+    }
+    error.response = err.response
+    throw error
+  } else {
+    // If response is undefined, re-throw the exception
+    throw err
   }
-  error.response = err.response
-  throw error
 }
 
 /**
