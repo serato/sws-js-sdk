@@ -104,6 +104,18 @@ export default class Sws {
   }
 
   /**
+   * Sets the timeout exceeded callback for all clients
+   *
+   * @param {Function} f Callback function
+   * @return {Void}
+   */
+  setTimesoutExceededHandler (f) {
+    for (let service in this._service) {
+      this._service[service].timeoutExceededHandler = f
+    }
+  }
+
+  /**
    * Get the client application ID
    *
    * @return {String} Application ID
@@ -134,7 +146,7 @@ export default class Sws {
    * Set access token
    *
    * @param {String} data Token
-   * @return {Void}
+   * @return {void}
    */
   set accessToken (data) {
     this._accessToken = data
@@ -153,7 +165,7 @@ export default class Sws {
    * Set refresh token
    *
    * @param {String} data Token
-   * @return {Void}
+   * @return {void}
    */
   set refreshToken (data) {
     this._refreshToken = data
@@ -172,7 +184,7 @@ export default class Sws {
    * Set the request timeout
    *
    * @param {Number} t Request timeout (ms)
-   * @return {Void}
+   * @return {void}
    */
   set timeout (t) {
     this._timeout = t

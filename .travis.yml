@@ -1,0 +1,39 @@
+language: node_js
+node_js:
+  - "10"
+cache:
+  directories:
+    - "node_modules"
+branches:
+  only:
+  - master
+install:
+- npm install
+script:
+- npm run lint
+- npm test
+- npm run test-integration
+- npm run test-slow
+after_success:
+- npm run docs
+addons:
+  artifacts:
+    s3_region: us-east-1
+    target_paths: "$TRAVIS_REPO_SLUG/$TRAVIS_BRANCH"
+notifications:
+  slack:
+    rooms:
+      secure: C9E+FYhown1Fkkrx892fAClW5bzvFNFm7jrOoALDZekNqRld0RXRiIlSj5Tmi6dFxMftg6bYp73BQpSYXIbkXR5i1CtHHNa4fpQpFL+jzwkuehipvKt+0ncZmZSfhzRAvDfkY/iBGLaWEfsSvNhAmh8wMNDtjgyM5oJOBDEGCp0uCnNgUTydWfsYQTA7XWdvvb4A/iC6LFXphAuZkgEPvF9kkBDT/S3RronjHgUuxTxUDkVCgFGJWJdZtuk49U+hFs1tE300Cdpyi8oqFLzCQDxeuVp15YfE9FhNoPdZNdSteJGvll7fB9qHJCBQ4nueGRYvV8zqaquudeXdjNVnloOR2qPZmoew4/AmpIAs/RAEWTnr8LO7fFt0crLEHdz63t/n6wl6Bu1Jqf0HmK1rVQepEkrHc78I1LV7vBh28kgb+0rZN5nSAMzs5DQ3ORFNYJQBk9tXhBmoxSxeJ7b4Y8KwpiirgIMCPBeWl+d9A2jRb2P7f6JItGAAfvrWXJP/OB/32EzbptLs65K0u/KE7utNQHwkJOSQRhR7ah7YIDux/Jf2vPXc6kie+Lswp2XRL2xqoiS356n6s22W/vYDSO1IBbv4JJOR4P/3ngEBaAgRGDrfaqYQV0ly9Sh95ho+OsIBJV2d2/F7WOoEKeHLVK7bpIvbBestfphaQfZb57s=
+  on_success: change
+  on_failure: always
+deploy:
+  provider: s3
+  access_key_id: AKIAJ6ENFBD5DOJXMCWA
+  secret_access_key:
+    secure: kbw8yAU+r2tJO6Xxh1MYbSjeE7LffZ8BcH2SACiQmupQVzf0j3NZV1PGwy4/WBZUUVoYjhS/vXtF6RwEeGGIJyM+mpfzSE7SyeQkK70zuJ79hrinn21CDFRL2ULa2tEHeiYnX4e0/1sNz/C55TEDCk0p3CmD6PLrE9i6+VqEfNlZv2Uv4bvvruE0wAMqFuU6dXOildpeDqcKrKYKlKkQCO93fD1/YIHh2gbvEOIPvNIfL7hwWGRZTo1OpAqEcf481w/NAxlQUWOyd0Ak48k8u8in3zL5HSlFpuOgbLaQKW7p20J65Soj3ZlCrREdd+2F+hnuAGVauI3HCr2cad0HHLVuDMkfsuG6M4X3AeM2TnPyIGVaVZP83JCr/dhWQiu84c2rYXimbvSLCrcm16UnEaVvRPD2KZHbY6MPKTl0iSL1QafYgJ/cJ9rZJ42R8ncBtRkuG3xiLKlFfSaB77cN8LoMc3QulUR3ErvZunCg70MNRW2LVqOhAY8Rnhm/h4WRCfZMgQD/BLfo+Doaw89x6uDR56YmcSMXRek4wJShYKPBVtMv3/Q4Q2Pe2oKZ9/wxgE3vV2RjTAKgqH0wzVe/05UGR1vqYE/2OBYOoNOPhWTP9nrVVG81rkkv9DRPOxuuNMiR953nB4seOZYEJgsR49fZGPJy+xEjh3+96YKn5+g=
+  skip_cleanup: true
+  detect_encoding: true
+  cache_control: "max-age=31536000"
+  default_text_charset: 'utf-8'
+  on:
+    all_branches: true
