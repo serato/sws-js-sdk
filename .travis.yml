@@ -1,0 +1,41 @@
+language: node_js
+node_js:
+  - "iojs"
+  - "7"
+cache:
+  directories:
+    - "node_modules"
+branches:
+  only:
+  - master
+  - develop
+install:
+- npm install
+script:
+- npm run lint
+- npm test
+- npm run test-integration
+- npm run test-slow
+after_success:
+- npm run docs
+addons:
+  artifacts:
+    s3_region: us-east-1
+    target_paths: "$TRAVIS_REPO_SLUG/$TRAVIS_BRANCH"
+notifications:
+  slack:
+    rooms:
+      secure: X4GK5ej/WzBeDokQVM7X0eHx0KEm1bqDb82iFubMogqbU7O6ivlapfnKla2Dvy7xlqn42u32s6OkC8Id7cgsxijJ8Uh+J3nl/pAyTY3SD1CT+PzyiJPp4UlSjkG29AIaR22l+cd3zoCr5LfyKcAGkA6eX35KD8TJwyw7GHCyp3vniWAwa9c1suOvIfkrRBCwN8Tf67Ig3rJ3/GctLhOBysqb7774GXiD8J1CTNs76nD8jCfePPY5Z5M58NFJNhRTnT00kD7zu5LEfj2plvYapl+zrC6kDZbEJ913MQAFNk2R2rOeiMduzmiG7QX9c54BTE2k0ezzoMG0+d3+qtFkwVuZmCpA4hKdoZzHq7U+SxtTXA1FRi7NpyFBEC4RXe2XjGfAIgloHyseYgsPgIdyBaw4XjBb2eUbXUuQVEgybPQR2DMJMFp/7tO0Bjw5IElqpJ/BeLB12PlXEjmnyALsbqCZjI/nh+ahqjK0Z8Y16F8dI1lgwtb3J9aGvqea7KGce5fV1YxA4yThvAMZRx5lWXN3dgp+NT3dzDWmGmOpZMomaWFtiaR4gYZTk5F2K454gS5SBv7MSv3yHm3Cz8R6ysNI3SftwjsWFeI1rV505/2Y89IdmCZqHgjXkUSwUlxB0We1BGTRlzrLM4ephz1+RcNzOQYeJkqOk/MmqA2ceuI=
+  on_success: change
+  on_failure: always
+deploy:
+  provider: s3
+  access_key_id: AKIAJ6ENFBD5DOJXMCWA
+  secret_access_key:
+    secure: kbw8yAU+r2tJO6Xxh1MYbSjeE7LffZ8BcH2SACiQmupQVzf0j3NZV1PGwy4/WBZUUVoYjhS/vXtF6RwEeGGIJyM+mpfzSE7SyeQkK70zuJ79hrinn21CDFRL2ULa2tEHeiYnX4e0/1sNz/C55TEDCk0p3CmD6PLrE9i6+VqEfNlZv2Uv4bvvruE0wAMqFuU6dXOildpeDqcKrKYKlKkQCO93fD1/YIHh2gbvEOIPvNIfL7hwWGRZTo1OpAqEcf481w/NAxlQUWOyd0Ak48k8u8in3zL5HSlFpuOgbLaQKW7p20J65Soj3ZlCrREdd+2F+hnuAGVauI3HCr2cad0HHLVuDMkfsuG6M4X3AeM2TnPyIGVaVZP83JCr/dhWQiu84c2rYXimbvSLCrcm16UnEaVvRPD2KZHbY6MPKTl0iSL1QafYgJ/cJ9rZJ42R8ncBtRkuG3xiLKlFfSaB77cN8LoMc3QulUR3ErvZunCg70MNRW2LVqOhAY8Rnhm/h4WRCfZMgQD/BLfo+Doaw89x6uDR56YmcSMXRek4wJShYKPBVtMv3/Q4Q2Pe2oKZ9/wxgE3vV2RjTAKgqH0wzVe/05UGR1vqYE/2OBYOoNOPhWTP9nrVVG81rkkv9DRPOxuuNMiR953nB4seOZYEJgsR49fZGPJy+xEjh3+96YKn5+g=
+  skip_cleanup: true
+  detect_encoding: true
+  cache_control: "max-age=31536000"
+  default_text_charset: 'utf-8'
+  on:
+    all_branches: true
