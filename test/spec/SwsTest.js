@@ -71,4 +71,11 @@ describe('Sws', function () {
     sws.setServiceUnavailableHandler(customErrorHandler)
     expect(customErrorHandler).to.equal(sws.license.serviceUnavailableHandler)
   })
+
+  it('tests that `setTimeoutExceededHandler` sets the correct callback to a service client', function () {
+    let customErrorHandler = () => { return 'A value' }
+    let sws = new Sws({ appId: appId })
+    sws.setTimesoutExceededHandler(customErrorHandler)
+    expect(customErrorHandler).to.equal(sws.license.timeoutExceededHandler)
+  })
 })
