@@ -109,7 +109,7 @@ export default class License extends Service {
    * @param {Number} param.userId
    * @returns {Promise}
    */
-  postProducts ({ hostMachineId = '', productTypeId = '', productSerialNumber = '', userId = '' }) {
+  postProducts ({ hostMachineId = '', productTypeId = '', productSerialNumber = '', userId = '' } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       userId === '' ? '/api/v1/me/products' : '/api/v1/users/' + userId + '/products',
@@ -117,6 +117,49 @@ export default class License extends Service {
         host_machine_id: hostMachineId,
         product_type_id: productTypeId,
         product_serial_number: productSerialNumber
+      }),
+      'POST'
+    )
+  }
+
+  /**
+   * Create a new license authorization for a host.
+   *
+   * Requires a valid access token.
+   * Uses the current user from the access token if `userId` is not specified.
+
+   * @param {Object} param Options
+   * @param {String} param.action
+   * @param {String} param.appName
+   * @param {String} param.appVersion
+   * @param {String} param.hostMachineId
+   * @param {String} param.hostMachineName
+   * @param {Number} param.licenseId
+   * @param {String} param.systemTime
+   * @param {Number} param.userId
+   * @returns {Promise}
+   */
+  postLicensesAuthorizations ({
+    action = '',
+    appName = '',
+    appVersion = '',
+    hostMachineId = '',
+    hostMachineName = '',
+    licenseId = '',
+    systemTime = '',
+    userId = '' }
+  = {}) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      userId === '' ? '/api/v1/me/licenses/authorizations' : '/api/v1/users/' + userId + '/licenses/authorizations',
+      this.toBody({
+        action: action,
+        app_name: appName,
+        app_version: appVersion,
+        host_machine_id: hostMachineId,
+        host_machine_name: hostMachineName,
+        license_id: licenseId,
+        system_time: systemTime
       }),
       'POST'
     )
