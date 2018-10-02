@@ -11,7 +11,7 @@ const {
   'service_uri': serviceUri
 } = environment
 
-const timeout = 5000
+const timeout = 50000
 
 describe('License Tests', function () {
   describe('License URI Validation Tests', function () {
@@ -227,35 +227,88 @@ describe('License Tests', function () {
     })
   })
 
-  describe('Valid requests to the /me/licenses/authorizations endpoint', function () {
-    let sws // Initialised in the before hook
+  describe('Post requests to /me/products and /users/{user_id}/products endpoints', function () {
+    let hostMachineId = Math.random().toString(36).substring(2, 15)
+    let productTypeId = 108 // Serato DJ Suite Trial
 
-    /**
-     * Log in once, setting the access and refresh tokens for the client.
-     */
-    before(function () {
-      // The login request can be slow in a dev environment, therefore specified timeout to 5000
-      // Initialise the client with parameters for the environment defined in `environment.json`
-      sws = new Sws({ appId: appId, secret: appSecret, serviceUri: serviceUri, timeout: 5000 })
-
-      sws.accessTokenUpdatedHandler = (token) => {
-        sws.accessToken = token
-      }
-
-      // Login request/promise to the 'old' login endpoint
-      let login = sws.id.login({ emailAddress: userEmail, password: userPassword })
-
-      // Set the access and refresh tokens from the response body returned from the login request
-      return login.then(
-        data => {
-          sws.accessTokenUpdatedHandler(
-            data.tokens.access.token,
-            new Date(data.tokens.access.expires_at)
+    describe('Invalid requests', function () {
+      it(`confirms URI used in 'postProducts()' method with no user ID, by returning a non-404 HTTP response`,
+        function () {
+          let sws = new Sws({ appId: 'myClientAppId' })
+          return sws.license.postProducts({ hostMachineId, productTypeId }).then(
+            () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+            err => {
+              expect(err.httpStatus).not.to.equal(404)
+            }
           )
+        })
 
-          sws.refreshToken = data.tokens.refresh.token
+      it(`confirms URI used in 'postProducts()' method with user ID, by returning a non-404 HTTP response`,
+        function () {
+          let sws = new Sws({ appId: 'myClientAppId' })
+          return sws.license.postProducts({ hostMachineId, productTypeId, userId: 123 }).then(
+            () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+            err => {
+              expect(err.httpStatus).not.to.equal(404)
+            }
+          )
+        })
+    })
+
+    describe('Valid requests', function () {
+      // The requests can be very slow in a dev environment
+      this.timeout(timeout)
+      let swsClient
+      let userId
+      let timestamp = new Date()
+      let time = timestamp.getTime()
+      let emailAddress = 'test' + time + '@serato.com'
+      let password = 'test123'
+
+      /**
+       * Log in, setting the access and refresh tokens for the client.
+       */
+      before(function () {
+        // Initialise the client with parameters for the environment defined in `environment.json`
+        swsClient = new SwsClient({ appId: appId, secret: appSecret, serviceUri: serviceUri, timeout: timeout })
+
+        swsClient.accessTokenUpdatedHandler = (token) => {
+          swsClient.accessToken = token
         }
-      )
+
+        // Create a new user
+        return swsClient.id.postUsers({
+          emailAddress,
+          password,
+          timestamp
+        }).then(
+          data => {
+            userId = data.id
+            expect(data.email_address).to.equal(emailAddress)
+          }
+        ).then(() => {
+          // Login request/promise to the newly created account
+          return swsClient.id.login({ emailAddress, password }).then(
+            data => {
+              swsClient.accessTokenUpdatedHandler(
+                data.tokens.access.token,
+                new Date(data.tokens.access.expires_at)
+              )
+              // Set the access and refresh tokens from the response body returned from the login request
+              swsClient.refreshToken = data.tokens.refresh.token
+            }
+          )
+        })
+      })
+      it(`makes a request to /me/products endpoint`, function () {
+        // Assign a product to the newly created user
+        return swsClient.license.postProducts({ hostMachineId, productTypeId }).then(
+          data => {
+            expect(data.product_type.id).to.equal(productTypeId)
+            expect(data.user_id).to.equal(userId)
+          }
+        )
+      })
     })
   })
 })

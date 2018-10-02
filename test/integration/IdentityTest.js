@@ -13,7 +13,7 @@ const {
 
 const timeout = 5000
 
-describe('Identity', function () {
+describe('Identity Tests', function () {
   describe('Identity URI Validation Tests', function () {
     it(`confirms URI used in 'tokenRefresh()' method, by returning a non-404 HTTP response`, function () {
       let sws = new Sws({ appId: appId })
