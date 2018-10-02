@@ -97,41 +97,26 @@ export default class License extends Service {
   }
 
   /**
-   * Create a new license authorization for a host.
+   * Add a product to the authenticated client user.
    *
    * Requires a valid access token.
    * Uses the current user from the access token if `userId` is not specified.
    *
-   * @param action
-   * @param appName
-   * @param appVersion
-   * @param hostMachineId
-   * @param hostMachineName
-   * @param licenseId
-   * @param systemTime
-   * @param userId
+   * @param {Object} param Options
+   * @param {String} param.hostMachineId
+   * @param {Number} param.productTypeId
+   * @param {String} param.productSerialNumber
+   * @param {Number} param.userId
    * @returns {Promise}
    */
-  postLicensesAuthorizations({
-    action = '',
-    appName = '',
-    appVersion = '',
-    hostMachineId = '',
-    hostMachineName = '',
-    licenseId = '',
-    systemTime = '',
-    userId = '' }) {
+  postProducts ({ hostMachineId = '', productTypeId = '', productSerialNumber = '', userId = '' }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      userId === '' ? '/api/v1/me/licenses/authorizations' : '/api/v1/users/' + userId + '/licenses/authorizations',
+      userId === '' ? '/api/v1/me/products' : '/api/v1/users/' + userId + '/products',
       this.toBody({
-        action: action,
-        app_name: appName,
-        app_version: appVersion,
         host_machine_id: hostMachineId,
-        host_machine_name: hostMachineName,
-        license_id: licenseId,
-        system_time: systemTime
+        product_type_id: productTypeId,
+        product_serial_number: productSerialNumber
       }),
       'POST'
     )
