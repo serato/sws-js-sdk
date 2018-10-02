@@ -34,7 +34,8 @@
     "eslint-plugin-promise": "^4",
     "eslint-plugin-standard": "^4",
     "mocha": "^5",
-    "nock": "^10"
+    "nock": "^10",
+    "qs": "^6.5.2"
   },
   "dependencies": {
     "axios": "^0.18.0",

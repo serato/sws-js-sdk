@@ -33,4 +33,40 @@ export default class Identity extends Service {
       'POST'
     )
   }
+
+  /**
+   * Request user data for the user identified by the current access token.
+   * Requires a valid access token.
+   *
+   * @return {Promise}
+   */
+  getUserMe () {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      '/api/v1/me',
+      null,
+      'GET'
+    )
+  }
+
+  /**
+   * Request a new access and refresh token for the user identified by the given credentials.
+   *
+   * @param {Object} param Options
+   * @param {String} param.emailAddress Email address of the user to log in as
+   * @param {String} param.password Password of the user to log in as
+   * @param {String} param.deviceId ID of the user's device
+   * @param {String} param.deviceName Name of the user's device
+   * @return {Promise}
+   */
+  login ({ emailAddress = '', password = '', deviceId = '', deviceName = '' } = {}) {
+    return this.fetch(
+      this.basicAuthHeader(),
+      '/api/v1/login',
+      this.toBody({
+        'email_address': emailAddress, 'password': password, 'device_id': deviceId, 'device_name': deviceName
+      }),
+      'POST'
+    )
+  }
 }
