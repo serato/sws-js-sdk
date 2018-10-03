@@ -3,6 +3,9 @@ import { describe, it, before } from 'mocha'
 import { expect } from 'chai'
 import environment from '../../environment.json'
 
+// Some assumptions here: the user specified owns Serato products, which include Sample (may be a trial) and at least
+// one permanent license.
+// TODO: Add these products / activate these licenses during test setup
 const {
   'app_id': appId,
   'app_secret': appSecret,
@@ -123,13 +126,46 @@ describe('License Tests', function () {
           expect(data.items).to.not.be.empty
 
           // Check that the items are not malformed
-          let item = data.items.pop()
-          expect(item).to.have.all.keys('id', 'term', 'name')
+          data.items.map(item => expect(item).to.have.all.keys('id', 'term', 'name'))
 
           // Check that only product types with the requested term were returned
-          let types = new Set(data.items.map(type => type.term))
-          expect(types.size).to.equal(1)
-          expect(types.has('permanent')).to.be.true
+          data.items.map(item => expect(item.term).to.equal('permanent'))
+        }
+      )
+    })
+
+    it(`confirms that a valid GET request to the /products/types endpoint with only the app name specified returns an 
+        array of matching types`, function () {
+      let params = { appName: 'serato_sample' }
+
+      return swsClient.license.getProductTypes(params).then(
+        data => {
+          // I.e. some product types were returned
+          expect(data.items).to.not.be.empty
+
+          // Check that the items are not malformed
+          data.items.map(item => expect(item).to.have.all.keys('id', 'term', 'name'))
+
+          // Check that the product types are for the correct product
+          data.items.map(item => expect(item.name.toLowerCase()).to.have.string('sample'))
+        }
+      )
+    })
+
+    it(`confirms that a valid GET request to the /products/types endpoint with only the term specified returns an array 
+        of matching types`, function () {
+      let params = { term: 'trial' }
+
+      return swsClient.license.getProductTypes(params).then(
+        data => {
+          // I.e. some product types were returned
+          expect(data.items).to.not.be.empty
+
+          // Check that the items are not malformed
+          data.items.map(item => expect(item).to.have.all.keys('id', 'term', 'name'))
+
+          // Check that the product types all have the correct term
+          data.items.map(item => expect(item.term).to.equal('trial'))
         }
       )
     })
@@ -294,6 +330,7 @@ describe('License Tests', function () {
   describe('makes valid requests to the /me/products and /users/{user_id}/products endpoints', function () {
     let swsClient
     let userId
+    let expectedKeys = ['user_id', 'id', 'date_created', 'licenses', 'product_type', 'deleted']
 
     before(function () {
       // Initialise the client with parameters for the environment defined in `environment.json`
@@ -322,34 +359,80 @@ describe('License Tests', function () {
       )
     })
 
-    it('confirms that a GET request to /users/{user_id}/products returns product type data', function () {
+    it('confirms that a GET request to /users/{user_id}/products returns product data for that user', function () {
       return swsClient.license.getProducts({ userId: userId }).then(
         data => {
           // I.e. some product types were returned
           expect(data.items).to.not.be.empty
 
           // Check that the items are not malformed
-          let item = data.items.pop()
-          expect(item).to.have.all.keys('user_id', 'id', 'date_created', 'licenses', 'product_type', 'deleted')
+          data.items.map(item => expect(item).to.have.all.keys(...expectedKeys))
+
+          // Check that the products contain licenses
+          let product = data.items.pop()
+          let licenseKeys = ['id', 'activation_limit', 'license_type', 'user_id']
+          product.licenses.map(license => expect(license).to.have.all.keys(licenseKeys))
+
+          // Check that the products correspond to the correct user
+          data.items.map(item => expect(item.user_id).to.equal(userId))
         }
       )
     })
 
-    it('confirms that a GET request to /me/products returns product type data', function () {
+    it('confirms that a GET request to /me/products returns product data for that user', function () {
       return swsClient.license.getProducts().then(
         data => {
           // I.e. some product types were returned
           expect(data.items).to.not.be.empty
 
           // Check that the items are not malformed
-          let item = data.items.pop()
-          expect(item).to.have.all.keys('user_id', 'id', 'date_created', 'licenses', 'product_type', 'deleted')
+          data.items.map(item => expect(item).to.have.all.keys(...expectedKeys))
+
+          // Check that the products contain licenses
+          let product = data.items.pop()
+          let licenseKeys = ['id', 'activation_limit', 'license_type', 'user_id']
+          product.licenses.map(license => expect(license).to.have.all.keys(licenseKeys))
+
+          // Check that the products correspond to the correct user
+          data.items.map(item => expect(item.user_id).to.equal(userId))
+        }
+      )
+    })
+
+    it(`confirms that a GET request to /users/{user_id}/products in which the app name is specified returns product data
+        for that user and app`, function () {
+      return swsClient.license.getProducts({ appName: 'serato_sample', userId: userId }).then(
+        data => {
+          // I.e. some product types were returned
+          expect(data.items).to.not.be.empty
+
+          // Check that the items are not malformed
+          data.items.map(item => expect(item).to.have.all.keys(...expectedKeys))
+
+          // Check that the user's products are for the correct app
+          data.items.map(item => expect(item.product_type.name.toLowerCase()).to.have.string('sample'))
+        }
+      )
+    })
+
+    it(`confirms that a GET request to /users/{user_id}/products in which the term is specified returns only products
+        matching that term`, function () {
+      return swsClient.license.getProducts({ term: 'permanent', userId: userId }).then(
+        data => {
+          // I.e. some product types were returned
+          expect(data.items).to.not.be.empty
+
+          // Check that the items are not malformed
+          data.items.map(item => expect(item).to.have.all.keys(...expectedKeys))
+
+          // Check that the product types all have the correct term
+          data.items.map(item => expect(item.product_type.term).to.equal('permanent'))
         }
       )
     })
   })
 
-  describe('makes invalid requests to the /me/products and /users/{user_id}/products endpoint', function () {
+  describe('makes invalid requests to the /me/products and /users/{user_id}/products endpoints', function () {
     let swsClient
     let userId
 
@@ -379,6 +462,78 @@ describe('License Tests', function () {
         }
       )
     })
+
+    it(`confirms that a GET request to /me/products with an invalid app name results in a 400 response`, function () {
+      return swsClient.license.getProducts({ appName: 'invalid-app-name' }).then(
+        () => Promise.reject(new Error('Expected 400 HTTP response code')),
+        err => {
+          // Expects an invalid host app name exception
+          expect(err.httpStatus).to.equal(400)
+          expect(err.code).to.equal(1000)
+        }
+      )
+    })
+
+    it(`confirms that a GET request to /users/{user_id}/products with an invalid app name results in a 400 response`,
+      function () {
+        return swsClient.license.getProducts({ appName: 'invalid-app-name', userId: userId }).then(
+          () => Promise.reject(new Error('Expected 400 HTTP response code')),
+          err => {
+          // Expects an invalid host app name exception
+            expect(err.httpStatus).to.equal(400)
+            expect(err.code).to.equal(1000)
+          }
+        )
+      })
+
+    it(`confirms that a GET request to /me/products with an invalid app version results in a 400 response`,
+      function () {
+        return swsClient.license.getProducts({ appName: 'serato_dj', appVersion: 'invalid-app-version' }).then(
+          () => Promise.reject(new Error('Expected 400 HTTP response code')),
+          err => {
+            // Expects an invalid host app version exception
+            expect(err.httpStatus).to.equal(400)
+            expect(err.code).to.equal(1007)
+          }
+        )
+      })
+
+    it(`confirms that a GET request to /users/{user_id}/products with an invalid app version results in a 400 response`,
+      function () {
+        let params = { appName: 'serato_dj', appVersion: 'invalid-app-version', userId: userId }
+
+        return swsClient.license.getProducts(params).then(
+          () => Promise.reject(new Error('Expected 400 HTTP response code')),
+          err => {
+            // Expects an invalid host app version exception
+            expect(err.httpStatus).to.equal(400)
+            expect(err.code).to.equal(1007)
+          }
+        )
+      })
+
+    it(`confirms that a GET request to /me/products with an invalid term results in a 400 response`, function () {
+      return swsClient.license.getProducts({ term: 'invalid-term' }).then(
+        () => Promise.reject(new Error('Expected 400 HTTP response code')),
+        err => {
+          // Expects an invalid license term exception
+          expect(err.httpStatus).to.equal(400)
+          expect(err.code).to.equal(1015)
+        }
+      )
+    })
+
+    it(`confirms that a GET request to /users/{user_id}/products with an invalid term results in a 400 response`,
+      function () {
+        return swsClient.license.getProducts({ term: 'invalid-term', userId: userId }).then(
+          () => Promise.reject(new Error('Expected 400 HTTP response code')),
+          err => {
+            // Expects an invalid license term exception
+            expect(err.httpStatus).to.equal(400)
+            expect(err.code).to.equal(1015)
+          }
+        )
+      })
   })
 
   describe('Valid requests to the /me/licenses/authorizations endpoint', function () {
