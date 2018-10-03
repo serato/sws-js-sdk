@@ -32,10 +32,10 @@ export default class License extends Service {
    * @param {Number} param.userId Return licenses belonging to user
    * @return {Promise}
    */
-  getLicenses ({ appName = '', appVersion = '', term = '', userId = '' } = {}) {
+  getLicenses ({ appName = '', appVersion = '', term = '', userId = 0 } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      userId === '' ? '/api/v1/me/licenses' : '/api/v1/users/' + userId + '/licenses',
+      userId === '' ? '/api/v1/me/licenses' : `/api/v1/users/${userId}/licenses`,
       this.toBody({ app_name: appName, app_version: appVersion, term: term })
     )
   }
@@ -66,7 +66,7 @@ export default class License extends Service {
    * @param {String} param.term Only return product types of specified term
    * @return {Promise}
    */
-  getProductTypes ({ appName = '', appVersion = '', term = '' } = {}) {
+  getProductTypes ({ appName = null, appVersion = null, term = null } = {}) {
     let params = { app_name: appName, app_version: appVersion, term: term }
     let query = qs.stringify(params, { addQueryPrefix: true, skipNulls: true })
     return this.fetch(
@@ -83,16 +83,17 @@ export default class License extends Service {
    * Uses the current user from the access token if `userId` is not specified.
    *
    * @param {Object} param Options
-   * @param {String} param.checkoutOrderId Only return products compatible with app
-   * @param {String} param.magentoOrderId Only return products compatible with app version `Major.minor.point`
+   * @param {String} param.appName Only return products compatible with app
+   * @param {String} param.appVersion Only return products compatible with app version `Major.minor.point`
+   * @param {String} param.term Only return product of specified term
    * @param {Number} param.userId Return products belonging to user
    * @return {Promise}
    */
-  getProducts ({ checkoutOrderId = '', magentoOrderId = '', userId = 0 } = {}) {
+  getProducts ({ appName = '', appVersion = '', term = '', userId = 0 } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       userId === 0 ? '/api/v1/me/products' : '/api/v1/users/' + userId + '/products',
-      this.toBody({ checkout_order_id: checkoutOrderId, magento_order_id: magentoOrderId })
+      this.toBody({ app_name: appName, app_version: appVersion, term: term })
     )
   }
 

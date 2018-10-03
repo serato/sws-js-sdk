@@ -34,11 +34,11 @@
     "eslint-plugin-promise": "^4",
     "eslint-plugin-standard": "^4",
     "mocha": "^5",
-    "nock": "^10",
-    "qs": "^6.5.2"
+    "nock": "^10"
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "js-base64": "^2.4.9"
+    "js-base64": "^2.4.9",
+    "qs": "^6.5.2"
   }
 }
