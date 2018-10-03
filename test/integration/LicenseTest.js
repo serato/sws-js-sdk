@@ -373,7 +373,7 @@ describe('License Tests', function () {
         let productTypeId = 108 // Serato DJ Suite Trial
 
         /**
-         * Log in, setting the access and refresh tokens for the client.
+         * Log in, setting the access and refresh tokens for the client and assign a product to the user
          */
         before(function () {
           // Initialise the client with parameters for the environment defined in `environment.json`
