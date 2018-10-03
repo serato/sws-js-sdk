@@ -739,4 +739,37 @@ describe('License Tests', function () {
         })
       })
     })
+
+  describe('Post requests to /me/licenses/authorizations/{authorization_id}' +
+    ' and /users/{user_id}/licenses/authorizations/{authorization_id} endpoints',
+  function () {
+    let authorizationId = 123
+    let userId = 123
+
+    describe('Invalid requests', function () {
+      it(`confirms URI used in 'putLicenseAuthorization()' method with no user ID, by returning a non-404
+      HTTP response`, function () {
+        let sws = new Sws({ appId: 'myClientAppId' })
+        return sws.license.putLicenseAuthorization({ authorizationId }).then(
+          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+          err => {
+            expect(err.httpStatus).not.to.equal(404)
+          }
+        )
+      })
+
+      it(`confirms URI used in 'putLicenseAuthorization()' method with user ID, by returning a non-404
+      HTTP response`, function () {
+        let sws = new Sws({ appId: 'myClientAppId' })
+        return sws.license.putLicenseAuthorization({ authorizationId, userId }).then(
+          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+          err => {
+            console.log(err)
+            console.log(err.httpStatus)
+            expect(err.httpStatus).not.to.equal(404)
+          }
+        )
+      })
+    })
+  })
 })

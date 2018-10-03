@@ -165,4 +165,26 @@ export default class License extends Service {
       'POST'
     )
   }
+
+  /**
+   * Update the status of a license authorization action.
+   *
+   * Requires a valid access token.
+   * Uses the current user from the access token if `userId` is not specified.
+   *
+   * @param {Object} param Options
+   * @param {Number} param.authorizationId
+   * @param {Number} param.statusCode
+   * @param {Number} param.userId
+   * @returns {Promise}
+   */
+  putLicenseAuthorization ({ authorizationId = '', statusCode = '', userId = '' } = {}) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      userId === '' ? '/api/v1/me/licenses/authorizations/' + authorizationId
+        : '/api/v1/users/' + userId + '/licenses/authorizations/' + authorizationId,
+      this.toBody({ status_code: statusCode }),
+      'PUT'
+    )
+  }
 }
