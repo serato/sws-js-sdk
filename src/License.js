@@ -110,7 +110,7 @@ export default class License extends Service {
    * @param {Number} param.userId
    * @returns {Promise}
    */
-  postProducts ({ hostMachineId = '', productTypeId = '', productSerialNumber = '', userId = '' } = {}) {
+  addProduct ({ hostMachineId = '', productTypeId = '', productSerialNumber = '', userId = '' } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       userId === '' ? '/api/v1/me/products' : '/api/v1/users/' + userId + '/products',
@@ -140,7 +140,7 @@ export default class License extends Service {
    * @param {Number} param.userId
    * @returns {Promise}
    */
-  postLicensesAuthorizations ({
+  addLicenseAuthorization ({
     action = '',
     appName = '',
     appVersion = '',
@@ -178,7 +178,7 @@ export default class License extends Service {
    * @param {Number} param.userId
    * @returns {Promise}
    */
-  putLicenseAuthorization ({ authorizationId = '', statusCode = '', userId = '' } = {}) {
+  updateLicenseAuthorization ({ authorizationId = '', statusCode = '', userId = '' } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       userId === '' ? '/api/v1/me/licenses/authorizations/' + authorizationId

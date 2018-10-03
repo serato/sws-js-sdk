@@ -72,6 +72,7 @@ export default class Identity extends Service {
 
   /**
    * Request for creating a new user account
+   * NOTE: This endpoint is mainly created for integration tests
    *
    * @param {Object} param Options
    * @param {String} param.emailAddress
@@ -82,7 +83,7 @@ export default class Identity extends Service {
    * @param {String} param.locale
    * @returns {Promise}
    */
-  postUsers ({ emailAddress = '', password = '', firstName = '', lastName = '', timestamp = '', locale = '' } = {}) {
+  addUser ({ emailAddress = '', password = '', firstName = '', lastName = '', timestamp = '', locale = '' } = {}) {
     return this.fetch(
       this.basicAuthHeader(),
       '/api/v1/users',
