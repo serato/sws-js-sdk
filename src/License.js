@@ -32,10 +32,10 @@ export default class License extends Service {
    * @param {Number} param.userId Return licenses belonging to user
    * @return {Promise}
    */
-  getLicenses ({ appName = '', appVersion = '', term = '', userId = '' } = {}) {
+  getLicenses ({ appName = '', appVersion = '', term = '', userId = 0 } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      userId === '' ? '/api/v1/me/licenses' : '/api/v1/users/' + userId + '/licenses',
+      userId === '' ? '/api/v1/me/licenses' : `/api/v1/users/${userId}/licenses`,
       this.toBody({ app_name: appName, app_version: appVersion, term: term })
     )
   }
@@ -66,7 +66,7 @@ export default class License extends Service {
    * @param {String} param.term Only return product types of specified term
    * @return {Promise}
    */
-  getProductTypes ({ appName = '', appVersion = '', term = '' } = {}) {
+  getProductTypes ({ appName = null, appVersion = null, term = null } = {}) {
     let params = { app_name: appName, app_version: appVersion, term: term }
     let query = qs.stringify(params, { addQueryPrefix: true, skipNulls: true })
     return this.fetch(

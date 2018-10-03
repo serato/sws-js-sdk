@@ -11,9 +11,11 @@ const {
   'service_uri': serviceUri
 } = environment
 
-const timeout = 5000
+const timeout = 50000
 
 describe('Identity', function () {
+  this.timeout(timeout)
+
   describe('Identity URI Validation Tests', function () {
     it(`confirms URI used in 'tokenRefresh()' method, by returning a non-404 HTTP response`, function () {
       let swsClient = new Sws({ appId: appId })
@@ -56,9 +58,6 @@ describe('Identity', function () {
      * Log in, setting the access and refresh tokens for the client.
      */
     before(function () {
-      // The login request can be slow in a dev environment
-      this.timeout(timeout)
-
       // Initialise the client with parameters for the environment defined in `environment.json`
       swsClient = new SwsClient({ appId: appId, secret: appSecret, serviceUri: serviceUri, timeout: timeout })
 
@@ -71,21 +70,21 @@ describe('Identity', function () {
 
       // Set the access and refresh tokens from the response body returned from the login request
       return login.then(
-        response => {
+        data => {
           swsClient.accessTokenUpdatedHandler(
-            response.tokens.access.token,
-            new Date(response.tokens.access.expires_at)
+            data.tokens.access.token,
+            new Date(data.tokens.access.expires_at)
           )
 
-          swsClient.refreshToken = response.tokens.refresh.token
+          swsClient.refreshToken = data.tokens.refresh.token
         }
       )
     })
 
     it("confirms that a valid GET request to the /me endpoint returns the requested user's data", function () {
       return swsClient.id.getUserMe().then(
-        response => {
-          expect(response.email_address).to.equal(userEmail)
+        data => {
+          expect(data.email_address).to.equal(userEmail)
         }
       )
     })
@@ -93,10 +92,6 @@ describe('Identity', function () {
 
   describe('makes invalid requests to the /me endpoint', function () {
     let swsClient
-
-    before(function () {
-      this.timeout(timeout)
-    })
 
     it('confirms that a request to /me without an access token returns a 403 response', function () {
       swsClient = new SwsClient({ appId: appId, secret: appSecret, serviceUri: serviceUri, timeout: timeout })
@@ -122,12 +117,12 @@ describe('Identity', function () {
 
       // Set the access and refresh tokens from the response body returned from the login request
       let getUser = login.then(
-        response => {
+        data => {
           swsClient.accessTokenUpdatedHandler(
-            response.tokens.access.token,
-            new Date(response.tokens.access.expires_at)
+            data.tokens.access.token,
+            new Date(data.tokens.access.expires_at)
           )
-          swsClient.refreshToken = response.tokens.refresh.token
+          swsClient.refreshToken = data.tokens.refresh.token
           return swsClient.id.getUserMe()
         }
       )
@@ -155,12 +150,12 @@ describe('Identity', function () {
 
       // Set the access and refresh tokens from the response body returned from the login request
       let getUser = login.then(
-        response => {
+        data => {
           swsClient.accessTokenUpdatedHandler(
-            response.tokens.access.token,
-            new Date(response.tokens.access.expires_at)
+            data.tokens.access.token,
+            new Date(data.tokens.access.expires_at)
           )
-          swsClient.refreshToken = response.tokens.refresh.token
+          swsClient.refreshToken = data.tokens.refresh.token
           return swsClient.id.getUserMe()
         }
       )
