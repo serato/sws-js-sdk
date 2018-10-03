@@ -40,7 +40,7 @@ export default class Identity extends Service {
    *
    * @return {Promise}
    */
-  getUserMe () {
+  getUser () {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       '/api/v1/me',

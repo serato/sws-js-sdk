@@ -5,7 +5,6 @@ import environment from '../../environment.json'
 
 // Some assumptions here: the user specified owns Serato products, which include Sample (may be a trial) and at least
 // one permanent license.
-// TODO: Add these products / activate these licenses during test setup
 const {
   'app_id': appId,
   'app_secret': appSecret,
@@ -361,7 +360,7 @@ describe('License Tests', function () {
     it('confirms that a GET request to /users/{user_id}/products returns product data for that user', function () {
       return swsClient.license.getProducts({ userId: userId }).then(
         data => {
-          // I.e. some product types were returned
+          // I.e. some products were returned
           expect(data.items).to.not.be.empty
 
           // Check that the items are not malformed
@@ -381,7 +380,7 @@ describe('License Tests', function () {
     it('confirms that a GET request to /me/products returns product data for that user', function () {
       return swsClient.license.getProducts().then(
         data => {
-          // I.e. some product types were returned
+          // I.e. some products were returned
           expect(data.items).to.not.be.empty
 
           // Check that the items are not malformed
@@ -402,7 +401,7 @@ describe('License Tests', function () {
         for that user and app`, function () {
       return swsClient.license.getProducts({ appName: 'serato_sample', userId: userId }).then(
         data => {
-          // I.e. some product types were returned
+          // I.e. some products were returned
           expect(data.items).to.not.be.empty
 
           // Check that the items are not malformed
@@ -418,13 +417,13 @@ describe('License Tests', function () {
         matching that term`, function () {
       return swsClient.license.getProducts({ term: 'permanent', userId: userId }).then(
         data => {
-          // I.e. some product types were returned
+          // I.e. some products were returned
           expect(data.items).to.not.be.empty
 
           // Check that the items are not malformed
           data.items.map(item => expect(item).to.have.all.keys(...expectedKeys))
 
-          // Check that the product types all have the correct term
+          // Check that the products all have the correct term
           data.items.map(item => expect(item.product_type.term).to.equal('permanent'))
         }
       )
@@ -525,6 +524,181 @@ describe('License Tests', function () {
     it(`confirms that a GET request to /users/{user_id}/products with an invalid term results in a 400 response`,
       function () {
         return swsClient.license.getProducts({ term: 'invalid-term', userId: userId }).then(
+          () => Promise.reject(new Error('Expected 400 HTTP response code')),
+          err => {
+            // Expects an invalid license term exception
+            expect(err.httpStatus).to.equal(400)
+            expect(err.code).to.equal(1015)
+          }
+        )
+      })
+  })
+
+  describe('makes valid requests to the /me/licenses and /users/{user_id}/licenses endpoints', function () {
+    let swsClient
+    let userId
+    let expectedKeys = ['id', 'activation_limit', 'license_type', 'user_id', 'activations']
+
+    before(function () {
+      // Initialise the client with parameters for the environment defined in `environment.json`
+      swsClient = new SwsClient({ appId: appId, secret: appSecret, serviceUri: serviceUri, timeout: timeout })
+
+      swsClient.accessTokenUpdatedHandler = (token) => {
+        swsClient.accessToken = token
+      }
+
+      // Login request/promise to the 'old' login endpoint
+      let login = swsClient.id.login({ emailAddress: userEmail, password: userPassword })
+
+      // Set the access and refresh tokens from the response body returned from the login request
+      return login.then(
+        data => {
+          swsClient.accessTokenUpdatedHandler(
+            data.tokens.access.token,
+            new Date(data.tokens.access.expires_at)
+          )
+
+          swsClient.refreshToken = data.tokens.refresh.token
+
+          // Also set the user ID for the logged-in user
+          userId = data.user.id
+        }
+      )
+    })
+
+    it('confirms that a GET request to /users/{user_id}/licenses returns license data for that user', function () {
+      return swsClient.license.getLicenses({ userId: userId }).then(
+        data => {
+          // I.e. some licenses were returned
+          expect(data.items).to.not.be.empty
+
+          for (let item of data.items) {
+            // Check that the items are not malformed ('include' because there is an optional 'valid_to' key)
+            expect(item).to.include.all.keys(...expectedKeys)
+
+            // Check that the licenses correspond to the correct user
+            expect(item.user_id).to.equal(userId)
+
+            // Check that the license types are not malformed
+            expect(item.license_type).to.have.all.keys('id', 'name', 'term', 'rlm_schema')
+          }
+        }
+      )
+    })
+
+    it('confirms that a GET request to /me/licenses returns license data for that user', function () {
+      return swsClient.license.getLicenses().then(
+        data => {
+          // I.e. some licenses were returned
+          expect(data.items).to.not.be.empty
+
+          for (let item of data.items) {
+            // Check that the items are not malformed ('include' because there is an optional 'valid_to' key)
+            expect(item).to.include.all.keys(...expectedKeys)
+
+            // Check that the licenses correspond to the correct user
+            expect(item.user_id).to.equal(userId)
+
+            // Check that the license types are not malformed
+            expect(item.license_type).to.have.all.keys('id', 'name', 'term', 'rlm_schema')
+          }
+        }
+      )
+    })
+  })
+
+  describe('makes invalid requests to the /me/licenses and /users/{user_id}/licenses endpoints', function () {
+    let swsClient
+    let userId
+
+    before(function () {
+      // Initialise the client with parameters for the environment defined in `environment.json`
+      swsClient = new SwsClient({ appId: appId, secret: appSecret, serviceUri: serviceUri, timeout: timeout })
+
+      swsClient.accessTokenUpdatedHandler = (token) => {
+        swsClient.accessToken = token
+      }
+
+      // Login request/promise to the 'old' login endpoint
+      let login = swsClient.id.login({ emailAddress: userEmail, password: userPassword })
+
+      // Set the access and refresh tokens from the response body returned from the login request
+      return login.then(
+        data => {
+          swsClient.accessTokenUpdatedHandler(
+            data.tokens.access.token,
+            new Date(data.tokens.access.expires_at)
+          )
+
+          swsClient.refreshToken = data.tokens.refresh.token
+          userId = data.user.id
+        }
+      )
+    })
+
+    it(`confirms that a GET request to /me/licenses with an invalid app name results in a 400 response`, function () {
+      return swsClient.license.getLicenses({ appName: 'invalid-app-name' }).then(
+        () => Promise.reject(new Error('Expected 400 HTTP response code')),
+        err => {
+          // Expects an invalid host app name exception
+          expect(err.httpStatus).to.equal(400)
+          expect(err.code).to.equal(1000)
+        }
+      )
+    })
+
+    it(`confirms that a GET request to /users/{user_id}/licenses with an invalid app name results in a 400 response`,
+      function () {
+        return swsClient.license.getLicenses({ appName: 'invalid-app-name', userId: userId }).then(
+          () => Promise.reject(new Error('Expected 400 HTTP response code')),
+          err => {
+            // Expects an invalid host app name exception
+            expect(err.httpStatus).to.equal(400)
+            expect(err.code).to.equal(1000)
+          }
+        )
+      })
+
+    it(`confirms that a GET request to /me/licenses with an invalid app version results in a 400 response`,
+      function () {
+        return swsClient.license.getLicenses({ appName: 'serato_dj', appVersion: 'invalid-app-version' }).then(
+          () => Promise.reject(new Error('Expected 400 HTTP response code')),
+          err => {
+            // Expects an invalid host app version exception
+            expect(err.httpStatus).to.equal(400)
+            expect(err.code).to.equal(1007)
+          }
+        )
+      })
+
+    it(`confirms that a GET request to /users/{user_id}/licenses with an invalid app version results in a 400 response`,
+      function () {
+        let params = { appName: 'serato_dj', appVersion: 'invalid-app-version', userId: userId }
+
+        return swsClient.license.getLicenses(params).then(
+          () => Promise.reject(new Error('Expected 400 HTTP response code')),
+          err => {
+            // Expects an invalid host app version exception
+            expect(err.httpStatus).to.equal(400)
+            expect(err.code).to.equal(1007)
+          }
+        )
+      })
+
+    it(`confirms that a GET request to /me/licenses with an invalid term results in a 400 response`, function () {
+      return swsClient.license.getLicenses({ term: 'invalid-term' }).then(
+        () => Promise.reject(new Error('Expected 400 HTTP response code')),
+        err => {
+          // Expects an invalid license term exception
+          expect(err.httpStatus).to.equal(400)
+          expect(err.code).to.equal(1015)
+        }
+      )
+    })
+
+    it(`confirms that a GET request to /users/{user_id}/licenses with an invalid term results in a 400 response`,
+      function () {
+        return swsClient.license.getLicenses({ term: 'invalid-term', userId: userId }).then(
           () => Promise.reject(new Error('Expected 400 HTTP response code')),
           err => {
             // Expects an invalid license term exception

@@ -35,7 +35,7 @@ export default class License extends Service {
   getLicenses ({ appName = '', appVersion = '', term = '', userId = 0 } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      userId === '' ? '/api/v1/me/licenses' : `/api/v1/users/${userId}/licenses`,
+      userId === 0 ? '/api/v1/me/licenses' : `/api/v1/users/${userId}/licenses`,
       this.toBody({ app_name: appName, app_version: appVersion, term: term })
     )
   }
@@ -92,7 +92,7 @@ export default class License extends Service {
   getProducts ({ appName = '', appVersion = '', term = '', userId = 0 } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      userId === 0 ? '/api/v1/me/products' : '/api/v1/users/' + userId + '/products',
+      userId === 0 ? '/api/v1/me/products' : `/api/v1/users/${userId}/products`,
       this.toBody({ app_name: appName, app_version: appVersion, term: term })
     )
   }
