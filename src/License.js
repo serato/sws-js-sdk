@@ -110,7 +110,7 @@ export default class License extends Service {
    * @param {Number} param.userId
    * @returns {Promise}
    */
-  postProducts ({ hostMachineId = '', productTypeId = '', productSerialNumber = '', userId = '' } = {}) {
+  addProduct ({ hostMachineId = '', productTypeId = '', productSerialNumber = '', userId = '' } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       userId === '' ? '/api/v1/me/products' : '/api/v1/users/' + userId + '/products',
@@ -140,7 +140,7 @@ export default class License extends Service {
    * @param {Number} param.userId
    * @returns {Promise}
    */
-  postLicensesAuthorizations ({
+  addLicenseAuthorization ({
     action = '',
     appName = '',
     appVersion = '',
@@ -163,6 +163,28 @@ export default class License extends Service {
         system_time: systemTime
       }),
       'POST'
+    )
+  }
+
+  /**
+   * Update the status of a license authorization action.
+   *
+   * Requires a valid access token.
+   * Uses the current user from the access token if `userId` is not specified.
+   *
+   * @param {Object} param Options
+   * @param {Number} param.authorizationId
+   * @param {Number} param.statusCode
+   * @param {Number} param.userId
+   * @returns {Promise}
+   */
+  updateLicenseAuthorization ({ authorizationId = '', statusCode = '', userId = '' } = {}) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      userId === '' ? '/api/v1/me/licenses/authorizations/' + authorizationId
+        : '/api/v1/users/' + userId + '/licenses/authorizations/' + authorizationId,
+      this.toBody({ status_code: statusCode }),
+      'PUT'
     )
   }
 }

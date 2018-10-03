@@ -541,10 +541,10 @@ describe('License Tests', function () {
     let userId = 123
 
     describe('Invalid requests', function () {
-      it(`confirms URI used in 'postProducts()' method with no user ID, by returning a non-404 HTTP response`,
+      it(`confirms URI used in 'addProduct()' method with no user ID, by returning a non-404 HTTP response`,
         function () {
           let sws = new Sws({ appId: 'myClientAppId' })
-          return sws.license.postProducts({ hostMachineId, productTypeId }).then(
+          return sws.license.addProduct({ hostMachineId, productTypeId }).then(
             () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
             err => {
               expect(err.httpStatus).not.to.equal(404)
@@ -552,10 +552,10 @@ describe('License Tests', function () {
           )
         })
 
-      it(`confirms URI used in 'postProducts()' method with user ID, by returning a non-404 HTTP response`,
+      it(`confirms URI used in 'addProduct()' method with user ID, by returning a non-404 HTTP response`,
         function () {
           let sws = new Sws({ appId: 'myClientAppId' })
-          return sws.license.postProducts({ hostMachineId, productTypeId, userId }).then(
+          return sws.license.addProduct({ hostMachineId, productTypeId, userId }).then(
             () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
             err => {
               expect(err.httpStatus).not.to.equal(404)
@@ -568,7 +568,7 @@ describe('License Tests', function () {
       let swsClient
       let systemTime = new Date()
       let timestamp = systemTime.getTime()
-      let emailAddress = 'testPostProducts' + timestamp + '@serato.com'
+      let emailAddress = 'testAddProduct' + timestamp + '@serato.com'
       let password = 'test123'
 
       /**
@@ -583,7 +583,7 @@ describe('License Tests', function () {
         }
 
         // Create a new user
-        return swsClient.id.postUsers({
+        return swsClient.id.addUser({
           emailAddress,
           password,
           timestamp: systemTime
@@ -607,7 +607,7 @@ describe('License Tests', function () {
       })
       it(`makes a request to /me/products endpoint`, function () {
         // Assign a product to the newly created user
-        return swsClient.license.postProducts({ hostMachineId, productTypeId }).then(
+        return swsClient.license.addProduct({ hostMachineId, productTypeId }).then(
           data => {
             expect(data.product_type.id).to.equal(productTypeId)
             expect(data.user_id).to.equal(userId)
@@ -629,10 +629,10 @@ describe('License Tests', function () {
       let userId = 123
 
       describe('Invalid requests', function () {
-        it(`confirms URI used in 'postLicensesAuthorizations()' method with no user ID, by returning a non-404
+        it(`confirms URI used in 'addLicenseAuthorization()' method with no user ID, by returning a non-404
         HTTP response`, function () {
           let sws = new Sws({ appId: 'myClientAppId' })
-          return sws.license.postLicensesAuthorizations({
+          return sws.license.addLicenseAuthorization({
             action,
             appName,
             appVersion,
@@ -648,10 +648,10 @@ describe('License Tests', function () {
           )
         })
 
-        it(`confirms URI used in 'postLicensesAuthorizations()' method with user ID, by returning a non-404
+        it(`confirms URI used in 'addLicenseAuthorization()' method with user ID, by returning a non-404
         HTTP response`, function () {
           let sws = new Sws({ appId: 'myClientAppId' })
-          return sws.license.postLicensesAuthorizations({
+          return sws.license.addLicenseAuthorization({
             action,
             appName,
             appVersion,
@@ -672,7 +672,7 @@ describe('License Tests', function () {
       describe('Valid requests', function () {
         let swsClient
         let timestamp = systemTime.getTime()
-        let emailAddress = 'testPostLicensesAuthorizations' + timestamp + '@serato.com'
+        let emailAddress = 'testAddLicenseAuthorization' + timestamp + '@serato.com'
         let password = 'test123'
         let productTypeId = 108 // Serato DJ Suite Trial
 
@@ -688,7 +688,7 @@ describe('License Tests', function () {
           }
 
           // Create a new user
-          return swsClient.id.postUsers({
+          return swsClient.id.addUser({
             emailAddress,
             password,
             timestamp: systemTime
@@ -710,7 +710,7 @@ describe('License Tests', function () {
             )
           }).then(() => {
             // Assign a product to the newly created user
-            return swsClient.license.postProducts({ hostMachineId, productTypeId }).then(
+            return swsClient.license.addProduct({ hostMachineId, productTypeId }).then(
               data => {
                 licenseId = data.licenses[0].id
               }
@@ -718,7 +718,7 @@ describe('License Tests', function () {
           })
         })
         it(`makes a request to /me/licenses/authorizations endpoint`, function () {
-          return swsClient.license.postLicensesAuthorizations({
+          return swsClient.license.addLicenseAuthorization({
             action: 'activate', // activate license
             appName,
             appVersion,
@@ -739,4 +739,35 @@ describe('License Tests', function () {
         })
       })
     })
+
+  describe('Post requests to /me/licenses/authorizations/{authorization_id}' +
+    ' and /users/{user_id}/licenses/authorizations/{authorization_id} endpoints',
+  function () {
+    let authorizationId = 123
+    let userId = 123
+
+    describe('Invalid requests', function () {
+      it(`confirms URI used in 'updateLicenseAuthorization()' method with no user ID, by returning a non-404
+      HTTP response`, function () {
+        let sws = new Sws({ appId: 'myClientAppId' })
+        return sws.license.updateLicenseAuthorization({ authorizationId }).then(
+          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+          err => {
+            expect(err.httpStatus).not.to.equal(404)
+          }
+        )
+      })
+
+      it(`confirms URI used in 'updateLicenseAuthorization()' method with user ID, by returning a non-404
+      HTTP response`, function () {
+        let sws = new Sws({ appId: 'myClientAppId' })
+        return sws.license.updateLicenseAuthorization({ authorizationId, userId }).then(
+          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+          err => {
+            expect(err.httpStatus).not.to.equal(404)
+          }
+        )
+      })
+    })
+  })
 })
