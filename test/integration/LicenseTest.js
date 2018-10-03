@@ -85,6 +85,68 @@ describe('License Tests', function () {
     })
   })
 
+  describe('License JWT authorization tests', function () {
+    let swsClient
+
+    // Note that a 400 (rather than a 403) is returned in these tests because the SDK handles the 403 response,
+    // attempting to refresh the (invalid) refresh token.
+
+    before(function () {
+      swsClient = new SwsClient({ appId: appId, secret: appSecret, serviceUri: serviceUri, timeout: timeout })
+      swsClient.accessToken = 'invalid-access-token'
+      swsClient.refreshToken = 'invalid-refresh-token'
+    })
+
+    it(`confirms that a GET request to the /products/types with an invalid access token returns a 400 response`,
+      function () {
+        let params = { appName: 'serato_dj', appVersion: '2.0.0', term: 'permanent' }
+
+        return swsClient.license.getProductTypes(params).then(
+          () => Promise.reject(new Error('Expected 400 HTTP response code')),
+          err => {
+            // Expects an invalid refresh token exception
+            expect(err.httpStatus).to.equal(400)
+            expect(err.code).to.equal(1001)
+          }
+        )
+      })
+
+    it(`confirms that a GET request to /products/types/{product_type_id} with an invalid access token returns a 400 
+        response`, function () {
+      return swsClient.license.getProductType(58).then(
+        () => Promise.reject(new Error('Expected 400 HTTP response code')),
+        err => {
+          // Expects an invalid refresh token exception
+          expect(err.httpStatus).to.equal(400)
+          expect(err.code).to.equal(1001)
+        }
+      )
+    })
+
+    it('confirms that a GET request to /me/products with an invalid access token returns a 400 response',
+      function () {
+        return swsClient.license.getProducts().then(
+          () => Promise.reject(new Error('Expected 400 HTTP response code')),
+          err => {
+          // Expects an invalid refresh token exception
+            expect(err.httpStatus).to.equal(400)
+            expect(err.code).to.equal(1001)
+          }
+        )
+      })
+
+    it('confirms that a GET request to /me/licenses with an invalid access token returns a 400 response', function () {
+      return swsClient.license.getLicenses().then(
+        () => Promise.reject(new Error('Expected 400 HTTP response code')),
+        err => {
+          // Expects an invalid refresh token exception
+          expect(err.httpStatus).to.equal(400)
+          expect(err.code).to.equal(1001)
+        }
+      )
+    })
+  })
+
   describe('makes valid requests to the /products/types endpoint', function () {
     let swsClient
 
