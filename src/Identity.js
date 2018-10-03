@@ -69,4 +69,32 @@ export default class Identity extends Service {
       'POST'
     )
   }
+
+  /**
+   * Request for creating a new user account
+   *
+   * @param {Object} param Options
+   * @param {String} param.emailAddress
+   * @param {String} param.password
+   * @param {String} param.firstName
+   * @param {String} param.lastName
+   * @param {String} param.timestamp
+   * @param {String} param.locale
+   * @returns {Promise}
+   */
+  postUsers ({ emailAddress = '', password = '', firstName = '', lastName = '', timestamp = '', locale = '' } = {}) {
+    return this.fetch(
+      this.basicAuthHeader(),
+      '/api/v1/users',
+      this.toBody({
+        'email_address': emailAddress,
+        'password': password,
+        'first_name': firstName,
+        'last_name': lastName,
+        'timestamp': timestamp,
+        'locale': locale
+      }),
+      'POST'
+    )
+  }
 }

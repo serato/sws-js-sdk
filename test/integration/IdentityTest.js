@@ -8,12 +8,11 @@ const {
   'app_secret': appSecret,
   'user_email': userEmail,
   'user_password': userPassword,
-  'service_uri': serviceUri
+  'service_uri': serviceUri,
+  timeout
 } = environment
 
-const timeout = 50000
-
-describe('Identity', function () {
+describe('Identity Tests', function () {
   this.timeout(timeout)
 
   describe('Identity URI Validation Tests', function () {

@@ -98,22 +98,49 @@ export default class License extends Service {
   }
 
   /**
-   * Create a new license authorization for a host.
+   * Add a product to the authenticated client user.
    *
    * Requires a valid access token.
    * Uses the current user from the access token if `userId` is not specified.
    *
-   * @param action
-   * @param appName
-   * @param appVersion
-   * @param hostMachineId
-   * @param hostMachineName
-   * @param licenseId
-   * @param systemTime
-   * @param userId
+   * @param {Object} param Options
+   * @param {String} param.hostMachineId
+   * @param {Number} param.productTypeId
+   * @param {String} param.productSerialNumber
+   * @param {Number} param.userId
    * @returns {Promise}
    */
-  postLicensesAuthorizations({
+  postProducts ({ hostMachineId = '', productTypeId = '', productSerialNumber = '', userId = '' } = {}) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      userId === '' ? '/api/v1/me/products' : '/api/v1/users/' + userId + '/products',
+      this.toBody({
+        host_machine_id: hostMachineId,
+        product_type_id: productTypeId,
+        product_serial_number: productSerialNumber
+      }),
+      'POST'
+    )
+  }
+
+  /**
+   * Create a new license authorization for a host.
+   *
+   * Requires a valid access token.
+   * Uses the current user from the access token if `userId` is not specified.
+
+   * @param {Object} param Options
+   * @param {String} param.action
+   * @param {String} param.appName
+   * @param {String} param.appVersion
+   * @param {String} param.hostMachineId
+   * @param {String} param.hostMachineName
+   * @param {Number} param.licenseId
+   * @param {String} param.systemTime
+   * @param {Number} param.userId
+   * @returns {Promise}
+   */
+  postLicensesAuthorizations ({
     action = '',
     appName = '',
     appVersion = '',
@@ -121,7 +148,8 @@ export default class License extends Service {
     hostMachineName = '',
     licenseId = '',
     systemTime = '',
-    userId = '' }) {
+    userId = '' }
+  = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       userId === '' ? '/api/v1/me/licenses/authorizations' : '/api/v1/users/' + userId + '/licenses/authorizations',
