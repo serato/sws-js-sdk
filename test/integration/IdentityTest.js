@@ -27,10 +27,10 @@ describe('Identity Tests', function () {
       )
     })
 
-    it(`confirms URI used in 'getMe()' method, by returning a non-404 HTTP response`, function () {
+    it(`confirms URI used in 'getUser()' method, by returning a non-404 HTTP response`, function () {
       let swsClient = new Sws({ appId: appId })
 
-      return swsClient.id.getUserMe().then(
+      return swsClient.id.getUser().then(
         () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
         err => {
           expect(err.httpStatus).not.to.equal(404)
@@ -81,9 +81,10 @@ describe('Identity Tests', function () {
     })
 
     it("confirms that a valid GET request to the /me endpoint returns the requested user's data", function () {
-      return swsClient.id.getUserMe().then(
+      return swsClient.id.getUser().then(
         data => {
           expect(data.email_address).to.equal(userEmail)
+          expect(data).to.have.all.keys('id', 'email_address', 'first_name', 'last_name', 'date_created', 'locale')
         }
       )
     })
@@ -94,7 +95,7 @@ describe('Identity Tests', function () {
 
     it('confirms that a request to /me without an access token returns a 403 response', function () {
       swsClient = new SwsClient({ appId: appId, secret: appSecret, serviceUri: serviceUri, timeout: timeout })
-      swsClient.id.getUserMe().then(
+      swsClient.id.getUser().then(
         () => Promise.reject(new Error('Expected a 403 HTTP response code')),
         err => {
           // Expects a client user grants exception
@@ -122,7 +123,7 @@ describe('Identity Tests', function () {
             new Date(data.tokens.access.expires_at)
           )
           swsClient.refreshToken = data.tokens.refresh.token
-          return swsClient.id.getUserMe()
+          return swsClient.id.getUser()
         }
       )
 
@@ -155,7 +156,7 @@ describe('Identity Tests', function () {
             new Date(data.tokens.access.expires_at)
           )
           swsClient.refreshToken = data.tokens.refresh.token
-          return swsClient.id.getUserMe()
+          return swsClient.id.getUser()
         }
       )
 
@@ -163,7 +164,7 @@ describe('Identity Tests', function () {
       getUser.then(
         () => Promise.reject(new Error('Expected a 400 HTTP response code')),
         err => {
-          // Expects an invalid basic authorization exception
+          // Expects a missing required parameters exception exception
           expect(err.httpStatus).to.equal(400)
           expect(err.code).to.equal(1002)
         }
