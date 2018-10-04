@@ -18,16 +18,17 @@ describe('License Tests', function () {
   this.timeout(timeout)
 
   describe('License URI Validation Tests', function () {
-    it(`confirms URI used in 'getLicenses()' method with no user ID, by returning a non-404 HTTP response`, function () {
-      let swsClient = new Sws({ appId: 'myClientAppId' })
+    it(`confirms URI used in 'getLicenses()' method with no user ID, by returning a non-404 HTTP response`,
+      function () {
+        let swsClient = new Sws({ appId: 'myClientAppId' })
 
-      return swsClient.license.getLicenses().then(
-        () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
-        err => {
-          expect(err.httpStatus).not.to.equal(404)
-        }
-      )
-    })
+        return swsClient.license.getLicenses().then(
+          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+          err => {
+            expect(err.httpStatus).not.to.equal(404)
+          }
+        )
+      })
 
     it(`confirms URI used in 'getLicenses()' method with user ID, by returning a non-404 HTTP response`, function () {
       let swsClient = new Sws({ appId: 'myClientAppId' })
@@ -62,16 +63,17 @@ describe('License Tests', function () {
       )
     })
 
-    it(`confirms URI used in 'getProducts()' method with no user ID, by returning a non-404 HTTP response`, function () {
-      let swsClient = new Sws({ appId: appId })
+    it(`confirms URI used in 'getProducts()' method with no user ID, by returning a non-404 HTTP response`,
+      function () {
+        let swsClient = new Sws({ appId: appId })
 
-      return swsClient.license.getProducts().then(
-        () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
-        err => {
-          expect(err.httpStatus).not.to.equal(404)
-        }
-      )
-    })
+        return swsClient.license.getProducts().then(
+          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+          err => {
+            expect(err.httpStatus).not.to.equal(404)
+          }
+        )
+      })
 
     it(`confirms URI used in 'getProducts()' method with user ID, by returning a non-404 HTTP response`, function () {
       let swsClient = new Sws({ appId: appId })
@@ -155,44 +157,33 @@ describe('License Tests', function () {
      */
     before(function () {
       // Initialise the client with parameters for the environment defined in `environment.json`
-      swsClient = new SwsClient({ appId: appId, secret: appSecret, serviceUri: serviceUri, timeout: timeout })
-
-      swsClient.accessTokenUpdatedHandler = (token) => {
-        swsClient.accessToken = token
-      }
-
+      swsClient = new SwsClient({ appId, secret: appSecret, serviceUri, timeout })
       // Login request/promise to the 'old' login endpoint
-      let login = swsClient.id.login({ emailAddress: userEmail, password: userPassword })
-
-      // Set the access and refresh tokens from the response body returned from the login request
-      return login.then(
+      return swsClient.id.login({ emailAddress: userEmail, password: userPassword }).then(
         data => {
-          swsClient.accessTokenUpdatedHandler(
-            data.tokens.access.token,
-            new Date(data.tokens.access.expires_at)
-          )
-
-          swsClient.refreshToken = data.tokens.refresh.token
+          // Set the access from the response body returned from the login request
+          swsClient.accessToken = data.tokens.access.token
         }
       )
     })
 
-    it('confirms that a valid GET request to the /products/types endpoint returns an array of matching types', function () {
-      let params = { appName: 'serato_dj', appVersion: '2.0.0', term: 'permanent' }
+    it('confirms that a valid GET request to the /products/types endpoint returns an array of matching types',
+      function () {
+        let params = { appName: 'serato_dj', appVersion: '2.0.0', term: 'permanent' }
 
-      return swsClient.license.getProductTypes(params).then(
-        data => {
-          // I.e. some product types were returned
-          expect(data.items).to.not.be.empty
+        return swsClient.license.getProductTypes(params).then(
+          data => {
+            // I.e. some product types were returned
+            expect(data.items).to.not.be.empty
 
-          // Check that the items are not malformed
-          data.items.map(item => expect(item).to.have.all.keys('id', 'term', 'name'))
+            // Check that the items are not malformed
+            data.items.map(item => expect(item).to.have.all.keys('id', 'term', 'name'))
 
-          // Check that only product types with the requested term were returned
-          data.items.map(item => expect(item.term).to.equal('permanent'))
-        }
-      )
-    })
+            // Check that only product types with the requested term were returned
+            data.items.map(item => expect(item.term).to.equal('permanent'))
+          }
+        )
+      })
 
     it(`confirms that a valid GET request to the /products/types endpoint with only the app name specified returns an 
         array of matching types`, function () {
@@ -240,23 +231,11 @@ describe('License Tests', function () {
     before(function () {
       // Initialise the client with parameters for the environment defined in `environment.json`
       swsClient = new SwsClient({ appId: appId, secret: appSecret, serviceUri: serviceUri, timeout: timeout })
-
-      swsClient.accessTokenUpdatedHandler = (token) => {
-        swsClient.accessToken = token
-      }
-
       // Login request/promise to the 'old' login endpoint
-      let login = swsClient.id.login({ emailAddress: userEmail, password: userPassword })
-
-      // Set the access and refresh tokens from the data body returned from the login request
-      return login.then(
+      return swsClient.id.login({ emailAddress: userEmail, password: userPassword }).then(
         data => {
-          swsClient.accessTokenUpdatedHandler(
-            data.tokens.access.token,
-            new Date(data.tokens.access.expires_at)
-          )
-
-          swsClient.refreshToken = data.tokens.refresh.token
+          // Set the access from the response body returned from the login request
+          swsClient.accessToken = data.tokens.access.token
         }
       )
     })
@@ -311,23 +290,11 @@ describe('License Tests', function () {
     before(function () {
       // Initialise the client with parameters for the environment defined in `environment.json`
       swsClient = new SwsClient({ appId: appId, secret: appSecret, serviceUri: serviceUri, timeout: timeout })
-
-      swsClient.accessTokenUpdatedHandler = (token) => {
-        swsClient.accessToken = token
-      }
-
       // Login request/promise to the 'old' login endpoint
-      let login = swsClient.id.login({ emailAddress: userEmail, password: userPassword })
-
-      // Set the access and refresh tokens from the response body returned from the login request
-      return login.then(
+      return swsClient.id.login({ emailAddress: userEmail, password: userPassword }).then(
         data => {
-          swsClient.accessTokenUpdatedHandler(
-            data.tokens.access.token,
-            new Date(data.tokens.access.expires_at)
-          )
-
-          swsClient.refreshToken = data.tokens.refresh.token
+          // Set the access from the response body returned from the login request
+          swsClient.accessToken = data.tokens.access.token
         }
       )
     })
@@ -354,23 +321,11 @@ describe('License Tests', function () {
     before(function () {
       // Initialise the client with parameters for the environment defined in `environment.json`
       swsClient = new SwsClient({ appId: appId, secret: appSecret, serviceUri: serviceUri, timeout: timeout })
-
-      swsClient.accessTokenUpdatedHandler = (token) => {
-        swsClient.accessToken = token
-      }
-
       // Login request/promise to the 'old' login endpoint
-      let login = swsClient.id.login({ emailAddress: userEmail, password: userPassword })
-
-      // Set the access and refresh tokens from the response body returned from the login request
-      return login.then(
+      return swsClient.id.login({ emailAddress: userEmail, password: userPassword }).then(
         data => {
-          swsClient.accessTokenUpdatedHandler(
-            data.tokens.access.token,
-            new Date(data.tokens.access.expires_at)
-          )
-
-          swsClient.refreshToken = data.tokens.refresh.token
+          // Set the access from the response body returned from the login request
+          swsClient.accessToken = data.tokens.access.token
         }
       )
     })
@@ -395,23 +350,11 @@ describe('License Tests', function () {
     before(function () {
       // Initialise the client with parameters for the environment defined in `environment.json`
       swsClient = new SwsClient({ appId: appId, secret: appSecret, serviceUri: serviceUri, timeout: timeout })
-
-      swsClient.accessTokenUpdatedHandler = (token) => {
-        swsClient.accessToken = token
-      }
-
       // Login request/promise to the 'old' login endpoint
-      let login = swsClient.id.login({ emailAddress: userEmail, password: userPassword })
-
-      // Set the access and refresh tokens from the response body returned from the login request
-      return login.then(
+      return swsClient.id.login({ emailAddress: userEmail, password: userPassword }).then(
         data => {
-          swsClient.accessTokenUpdatedHandler(
-            data.tokens.access.token,
-            new Date(data.tokens.access.expires_at)
-          )
-
-          swsClient.refreshToken = data.tokens.refresh.token
+          // Set the access from the response body returned from the login request
+          swsClient.accessToken = data.tokens.access.token
 
           // Also set the user ID for the logged-in user
           userId = data.user.id
@@ -439,7 +382,7 @@ describe('License Tests', function () {
       )
     })
 
-    it('confirms that a GET request to /me/products returns product data for that user', function () {
+    it('confirms that a GET request to /me/products returns product data for that user 123456', function () {
       return swsClient.license.getProducts().then(
         data => {
           // I.e. some products were returned
@@ -499,23 +442,11 @@ describe('License Tests', function () {
     before(function () {
       // Initialise the client with parameters for the environment defined in `environment.json`
       swsClient = new SwsClient({ appId: appId, secret: appSecret, serviceUri: serviceUri, timeout: timeout })
-
-      swsClient.accessTokenUpdatedHandler = (token) => {
-        swsClient.accessToken = token
-      }
-
       // Login request/promise to the 'old' login endpoint
-      let login = swsClient.id.login({ emailAddress: userEmail, password: userPassword })
-
-      // Set the access and refresh tokens from the response body returned from the login request
-      return login.then(
+      return swsClient.id.login({ emailAddress: userEmail, password: userPassword }).then(
         data => {
-          swsClient.accessTokenUpdatedHandler(
-            data.tokens.access.token,
-            new Date(data.tokens.access.expires_at)
-          )
-
-          swsClient.refreshToken = data.tokens.refresh.token
+          // Set the access from the response body returned from the login request
+          swsClient.accessToken = data.tokens.access.token
 
           // Also set the user ID for the logged-in user
           userId = data.user.id
@@ -604,23 +535,11 @@ describe('License Tests', function () {
     before(function () {
       // Initialise the client with parameters for the environment defined in `environment.json`
       swsClient = new SwsClient({ appId: appId, secret: appSecret, serviceUri: serviceUri, timeout: timeout })
-
-      swsClient.accessTokenUpdatedHandler = (token) => {
-        swsClient.accessToken = token
-      }
-
       // Login request/promise to the 'old' login endpoint
-      let login = swsClient.id.login({ emailAddress: userEmail, password: userPassword })
-
-      // Set the access and refresh tokens from the response body returned from the login request
-      return login.then(
+      return swsClient.id.login({ emailAddress: userEmail, password: userPassword }).then(
         data => {
-          swsClient.accessTokenUpdatedHandler(
-            data.tokens.access.token,
-            new Date(data.tokens.access.expires_at)
-          )
-
-          swsClient.refreshToken = data.tokens.refresh.token
+          // Set the access from the response body returned from the login request
+          swsClient.accessToken = data.tokens.access.token
 
           // Also set the user ID for the logged-in user
           userId = data.user.id
@@ -676,23 +595,11 @@ describe('License Tests', function () {
     before(function () {
       // Initialise the client with parameters for the environment defined in `environment.json`
       swsClient = new SwsClient({ appId: appId, secret: appSecret, serviceUri: serviceUri, timeout: timeout })
-
-      swsClient.accessTokenUpdatedHandler = (token) => {
-        swsClient.accessToken = token
-      }
-
       // Login request/promise to the 'old' login endpoint
-      let login = swsClient.id.login({ emailAddress: userEmail, password: userPassword })
-
-      // Set the access and refresh tokens from the response body returned from the login request
-      return login.then(
+      return swsClient.id.login({ emailAddress: userEmail, password: userPassword }).then(
         data => {
-          swsClient.accessTokenUpdatedHandler(
-            data.tokens.access.token,
-            new Date(data.tokens.access.expires_at)
-          )
-
-          swsClient.refreshToken = data.tokens.refresh.token
+          // Set the access from the response body returned from the login request
+          swsClient.accessToken = data.tokens.access.token
           userId = data.user.id
         }
       )
@@ -814,10 +721,6 @@ describe('License Tests', function () {
         // Initialise the client with parameters for the environment defined in `environment.json`
         swsClient = new SwsClient({ appId: appId, secret: appSecret, serviceUri, timeout })
 
-        swsClient.accessTokenUpdatedHandler = (token) => {
-          swsClient.accessToken = token
-        }
-
         // Create a new user
         return swsClient.id.addUser({
           emailAddress,
@@ -831,12 +734,8 @@ describe('License Tests', function () {
           // Login request/promise to the newly created account
           return swsClient.id.login({ emailAddress, password }).then(
             data => {
-              swsClient.accessTokenUpdatedHandler(
-                data.tokens.access.token,
-                new Date(data.tokens.access.expires_at)
-              )
-              // Set the access and refresh tokens from the response body returned from the login request
-              swsClient.refreshToken = data.tokens.refresh.token
+              // Set the access from the response body returned from the login request
+              swsClient.accessToken = data.tokens.access.token
             }
           )
         })
@@ -918,11 +817,6 @@ describe('License Tests', function () {
         before(function () {
           // Initialise the client with parameters for the environment defined in `environment.json`
           swsClient = new SwsClient({ appId: appId, secret: appSecret, serviceUri, timeout })
-
-          swsClient.accessTokenUpdatedHandler = (token) => {
-            swsClient.accessToken = token
-          }
-
           // Create a new user
           return swsClient.id.addUser({
             emailAddress,
@@ -936,12 +830,8 @@ describe('License Tests', function () {
             // Login request/promise to the newly created account
             return swsClient.id.login({ emailAddress, password }).then(
               data => {
-                swsClient.accessTokenUpdatedHandler(
-                  data.tokens.access.token,
-                  new Date(data.tokens.access.expires_at)
-                )
-                // Set the access and refresh tokens from the response body returned from the login request
-                swsClient.refreshToken = data.tokens.refresh.token
+                // Set the access from the response body returned from the login request
+                swsClient.accessToken = data.tokens.access.token
               }
             )
           }).then(() => {
@@ -1003,6 +893,74 @@ describe('License Tests', function () {
             expect(err.httpStatus).not.to.equal(404)
           }
         )
+      })
+    })
+
+    describe('Valid requests', function () {
+      let swsClient
+      let systemTime = new Date()
+      let timestamp = systemTime.getTime()
+      let emailAddress = 'testAddLicenseAuthorization' + timestamp + '@serato.com'
+      let password = 'test123'
+      let productTypeId = 108 // Serato DJ Suite Trial
+      let hostMachineId = 'SID=' + Math.random().toString(36).substring(2, 15)
+      let hostMachineName = 'test-machine' + hostMachineId
+      let licenseId = Math.random().toString(36).substring(2, 10)
+      let appVersion = '2.0.0'
+      let appName = 'serato_dj'
+      let action = 'activate'
+
+      /**
+       * Log in, setting the access and refresh tokens for the client and assign a product to the user
+       */
+      before(function () {
+        // Initialise the client with parameters for the environment defined in `environment.json`
+        swsClient = new SwsClient({ appId: appId, secret: appSecret, serviceUri, timeout })
+        // Create a new user
+        return swsClient.id.addUser({
+          emailAddress,
+          password,
+          timestamp: systemTime
+        }).then(
+          data => {
+            userId = data.id
+          }
+        ).then(() => {
+          // Login request/promise to the newly created account
+          return swsClient.id.login({ emailAddress, password }).then(
+            data => {
+              // Set the access from the response body returned from the login request
+              swsClient.accessToken = data.tokens.access.token
+            }
+          )
+        }).then(() => {
+          // Assign a product to the newly created user
+          return swsClient.license.addProduct({ hostMachineId, productTypeId }).then(
+            data => {
+              licenseId = data.licenses[0].id
+            }
+          )
+        }).then(() => {
+          return swsClient.license.addLicenseAuthorization({
+            action, // activate license
+            appName,
+            appVersion,
+            hostMachineId,
+            hostMachineName,
+            licenseId,
+            systemTime
+          }).then(
+            data => {
+              authorizationId = data.authorization_id
+            }
+          )
+        })
+      })
+      it(`makes a request to /me/licenses/authorizations/{authorization_id} endpoint`, function () {
+        let statusCode = 0 // A statusCode of 0 always indicates success. Non-zero values are application specific.
+        return swsClient.license.updateLicenseAuthorization({ authorizationId, statusCode }).then(data => {
+          expect(data.result).to.equal('success')
+        })
       })
     })
   })

@@ -58,23 +58,12 @@ describe('Identity Tests', function () {
      */
     before(function () {
       // Initialise the client with parameters for the environment defined in `environment.json`
-      swsClient = new SwsClient({ appId: appId, secret: appSecret, serviceUri: serviceUri, timeout: timeout })
-
-      swsClient.accessTokenUpdatedHandler = (token) => {
-        swsClient.accessToken = token
-      }
-
+      swsClient = new SwsClient({ appId, secret: appSecret, serviceUri, timeout })
       // Login request/promise to the 'old' login endpoint
-      let login = swsClient.id.login({ emailAddress: userEmail, password: userPassword })
-
-      // Set the access and refresh tokens from the response body returned from the login request
-      return login.then(
+      return swsClient.id.login({ emailAddress: userEmail, password: userPassword }).then(
         data => {
-          swsClient.accessTokenUpdatedHandler(
-            data.tokens.access.token,
-            new Date(data.tokens.access.expires_at)
-          )
-
+          // Set the access and refresh token from the response body returned from the login request
+          swsClient.accessToken = data.tokens.access.token
           swsClient.refreshToken = data.tokens.refresh.token
         }
       )
@@ -94,7 +83,7 @@ describe('Identity Tests', function () {
     let swsClient
 
     it('confirms that a request to /me without an access token returns a 403 response', function () {
-      swsClient = new SwsClient({ appId: appId, secret: appSecret, serviceUri: serviceUri, timeout: timeout })
+      swsClient = new SwsClient({ appId, secret: appSecret, serviceUri, timeout })
       swsClient.id.getUser().then(
         () => Promise.reject(new Error('Expected a 403 HTTP response code')),
         err => {
@@ -106,23 +95,17 @@ describe('Identity Tests', function () {
     })
 
     it('confirms that a request to /me with an invalid app ID returns a 401 response', function () {
-      swsClient = new SwsClient({ appId: 'invalid-id', secret: appSecret, serviceUri: serviceUri, timeout: timeout })
+      swsClient = new SwsClient({ appId: 'invalid-id', secret: appSecret, serviceUri, timeout })
 
       swsClient.accessTokenUpdatedHandler = (token) => {
         swsClient.accessToken = token
       }
 
       // Login request/promise to the 'old' login endpoint
-      let login = swsClient.id.login({ emailAddress: userEmail, password: userPassword })
-
-      // Set the access and refresh tokens from the response body returned from the login request
-      let getUser = login.then(
+      let getUser = swsClient.id.login({ emailAddress: userEmail, password: userPassword }).then(
         data => {
-          swsClient.accessTokenUpdatedHandler(
-            data.tokens.access.token,
-            new Date(data.tokens.access.expires_at)
-          )
-          swsClient.refreshToken = data.tokens.refresh.token
+          // Set the access from the response body returned from the login request
+          swsClient.accessToken = data.tokens.access.token
           return swsClient.id.getUser()
         }
       )
@@ -139,23 +122,17 @@ describe('Identity Tests', function () {
     })
 
     it('confirms that a request to /me with missing body params returns a 400 response', function () {
-      swsClient = new SwsClient({ appId: appId, secret: appSecret, serviceUri: serviceUri, timeout: timeout })
+      swsClient = new SwsClient({ appId, secret: appSecret, serviceUri, timeout })
 
       swsClient.accessTokenUpdatedHandler = (token) => {
         swsClient.accessToken = token
       }
 
       // Login request/promise to the 'old' login endpoint
-      let login = swsClient.id.login({ emailAddress: '', password: '' })
-
-      // Set the access and refresh tokens from the response body returned from the login request
-      let getUser = login.then(
+      let getUser = swsClient.id.login({ emailAddress: '', password: '' }).then(
         data => {
-          swsClient.accessTokenUpdatedHandler(
-            data.tokens.access.token,
-            new Date(data.tokens.access.expires_at)
-          )
-          swsClient.refreshToken = data.tokens.refresh.token
+          // Set the access from the response body returned from the login request
+          swsClient.accessToken = data.tokens.access.token
           return swsClient.id.getUser()
         }
       )

@@ -1,7 +1,6 @@
 'use strict'
 
 import Service from './Service'
-import qs from 'qs'
 
 /**
  * License Service class
@@ -66,13 +65,11 @@ export default class License extends Service {
    * @param {String} param.term Only return product types of specified term
    * @return {Promise}
    */
-  getProductTypes ({ appName = null, appVersion = null, term = null } = {}) {
-    let params = { app_name: appName, app_version: appVersion, term: term }
-    let query = qs.stringify(params, { addQueryPrefix: true, skipNulls: true })
+  getProductTypes ({ appName = '', appVersion = '', term = '' } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      '/api/v1/products/types' + query,
-      null,
+      '/api/v1/products/types',
+      this.toBody({ app_name: appName, app_version: appVersion, term: term }),
       'GET'
     )
   }
@@ -110,10 +107,10 @@ export default class License extends Service {
    * @param {Number} param.userId
    * @returns {Promise}
    */
-  addProduct ({ hostMachineId = '', productTypeId = '', productSerialNumber = '', userId = '' } = {}) {
+  addProduct ({ hostMachineId = '', productTypeId = '', productSerialNumber = '', userId = 0 } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      userId === '' ? '/api/v1/me/products' : '/api/v1/users/' + userId + '/products',
+      userId === 0 ? '/api/v1/me/products' : `/api/v1/users/${userId}/products`,
       this.toBody({
         host_machine_id: hostMachineId,
         product_type_id: productTypeId,
@@ -148,11 +145,11 @@ export default class License extends Service {
     hostMachineName = '',
     licenseId = '',
     systemTime = '',
-    userId = '' }
+    userId = 0 }
   = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      userId === '' ? '/api/v1/me/licenses/authorizations' : '/api/v1/users/' + userId + '/licenses/authorizations',
+      userId === 0 ? '/api/v1/me/licenses/authorizations' : `/api/v1/users/${userId}/licenses/authorizations`,
       this.toBody({
         action: action,
         app_name: appName,
@@ -178,11 +175,11 @@ export default class License extends Service {
    * @param {Number} param.userId
    * @returns {Promise}
    */
-  updateLicenseAuthorization ({ authorizationId = '', statusCode = '', userId = '' } = {}) {
+  updateLicenseAuthorization ({ authorizationId = '', statusCode = '', userId = 0 } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      userId === '' ? '/api/v1/me/licenses/authorizations/' + authorizationId
-        : '/api/v1/users/' + userId + '/licenses/authorizations/' + authorizationId,
+      userId === 0 ? '/api/v1/me/licenses/authorizations/' + authorizationId
+        : `/api/v1/users/${userId}/licenses/authorizations/` + authorizationId,
       this.toBody({ status_code: statusCode }),
       'PUT'
     )

@@ -21,13 +21,13 @@
   },
   "homepage": "https://github.com/serato/sws-js-sdk#readme",
   "devDependencies": {
-    "@babel/core": "^7",
+    "@babel/core": "^7.1.2",
     "@babel/preset-env": "^7",
     "@babel/register": "^7",
-    "chai": "^4",
+    "chai": "^4.2.0",
     "esdoc": "^1",
     "esdoc-standard-plugin": "^1",
-    "eslint": "^5",
+    "eslint": "^5.6.1",
     "eslint-config-standard": "^12",
     "eslint-plugin-import": "^2",
     "eslint-plugin-node": "^7",
@@ -38,7 +38,6 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "js-base64": "^2.4.9",
-    "qs": "^6.5.2"
+    "js-base64": "^2.4.9"
   }
 }
