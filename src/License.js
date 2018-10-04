@@ -31,10 +31,10 @@ export default class License extends Service {
    * @param {Number} param.userId Return licenses belonging to user
    * @return {Promise}
    */
-  getLicenses ({ appName = '', appVersion = '', term = '', userId = 0 } = {}) {
+  getLicenses ({ appName, appVersion, term, userId = 0 } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      userId === 0 ? '/api/v1/me/licenses' : `/api/v1/users/${userId}/licenses`,
+      userId === 0 ? '/api/v1/me/licenses' : '/api/v1/users/' + userId + '/licenses',
       this.toBody({ app_name: appName, app_version: appVersion, term: term })
     )
   }
@@ -49,7 +49,7 @@ export default class License extends Service {
   getProductType (productTypeId) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      `/api/v1/products/types/${productTypeId}`,
+      '/api/v1/products/types/' + productTypeId,
       null,
       'GET'
     )
@@ -65,7 +65,7 @@ export default class License extends Service {
    * @param {String} param.term Only return product types of specified term
    * @return {Promise}
    */
-  getProductTypes ({ appName = '', appVersion = '', term = '' } = {}) {
+  getProductTypes ({ appName, appVersion, term } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       '/api/v1/products/types',
@@ -86,10 +86,10 @@ export default class License extends Service {
    * @param {Number} param.userId Return products belonging to user
    * @return {Promise}
    */
-  getProducts ({ appName = '', appVersion = '', term = '', userId = 0 } = {}) {
+  getProducts ({ appName, appVersion, term, userId = 0 } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      userId === 0 ? '/api/v1/me/products' : `/api/v1/users/${userId}/products`,
+      userId === 0 ? '/api/v1/me/products' : '/api/v1/users/' + userId + '/products',
       this.toBody({ app_name: appName, app_version: appVersion, term: term })
     )
   }
@@ -107,10 +107,10 @@ export default class License extends Service {
    * @param {Number} param.userId
    * @returns {Promise}
    */
-  addProduct ({ hostMachineId = '', productTypeId = '', productSerialNumber = '', userId = 0 } = {}) {
+  addProduct ({ hostMachineId, productTypeId, productSerialNumber, userId = 0 } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      userId === 0 ? '/api/v1/me/products' : `/api/v1/users/${userId}/products`,
+      userId === 0 ? '/api/v1/me/products' : '/api/v1/users/' + userId + '/products',
       this.toBody({
         host_machine_id: hostMachineId,
         product_type_id: productTypeId,
@@ -138,18 +138,18 @@ export default class License extends Service {
    * @returns {Promise}
    */
   addLicenseAuthorization ({
-    action = '',
-    appName = '',
-    appVersion = '',
-    hostMachineId = '',
-    hostMachineName = '',
-    licenseId = '',
-    systemTime = '',
+    action,
+    appName,
+    appVersion,
+    hostMachineId,
+    hostMachineName,
+    licenseId,
+    systemTime,
     userId = 0 }
   = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      userId === 0 ? '/api/v1/me/licenses/authorizations' : `/api/v1/users/${userId}/licenses/authorizations`,
+      userId === 0 ? '/api/v1/me/licenses/authorizations' : '/api/v1/users/' + userId + '/licenses/authorizations',
       this.toBody({
         action: action,
         app_name: appName,
@@ -175,11 +175,11 @@ export default class License extends Service {
    * @param {Number} param.userId
    * @returns {Promise}
    */
-  updateLicenseAuthorization ({ authorizationId = '', statusCode = '', userId = 0 } = {}) {
+  updateLicenseAuthorization ({ authorizationId, statusCode, userId = 0 } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       userId === 0 ? '/api/v1/me/licenses/authorizations/' + authorizationId
-        : `/api/v1/users/${userId}/licenses/authorizations/` + authorizationId,
+        : '/api/v1/users/' + userId + '/licenses/authorizations/' + authorizationId,
       this.toBody({ status_code: statusCode }),
       'PUT'
     )

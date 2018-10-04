@@ -7,7 +7,7 @@
     "lint": "./node_modules/.bin/eslint ./src/*",
     "test": "mocha --require @babel/register --recursive test/spec/*.js",
     "test-integration": "mocha --require @babel/register --recursive test/integration/*.js",
-    "test-slow": "mocha --require @babel/register --recursive test/slow/*.js",
+    "test-slow-integration": "mocha --require @babel/register --recursive test/slow/integration/*.js",
     "docs": "./node_modules/.bin/esdoc"
   },
   "repository": {
