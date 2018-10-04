@@ -6,8 +6,6 @@ import environment from '../../../environment.json'
 const {
   'app_id': appId,
   'app_secret': appSecret,
-  'user_email': userEmail,
-  'user_password': userPassword,
   'service_uri': serviceUri,
   timeout
 } = environment

@@ -59,7 +59,7 @@ export default class Identity extends Service {
    * @param {String} param.deviceName Name of the user's device
    * @return {Promise}
    */
-  login ({ emailAddress = '', password = '', deviceId = '', deviceName = '' } = {}) {
+  login ({ emailAddress, password, deviceId, deviceName } = {}) {
     return this.fetch(
       this.basicAuthHeader(),
       '/api/v1/login',
@@ -83,7 +83,7 @@ export default class Identity extends Service {
    * @param {String} param.locale
    * @returns {Promise}
    */
-  addUser ({ emailAddress = '', password = '', firstName = '', lastName = '', timestamp = '', locale = '' } = {}) {
+  addUser ({ emailAddress, password, firstName, lastName, timestamp, locale } = {}) {
     return this.fetch(
       this.basicAuthHeader(),
       '/api/v1/users',
