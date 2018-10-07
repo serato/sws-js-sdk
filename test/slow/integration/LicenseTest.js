@@ -68,8 +68,7 @@ describe('Slow Licenses Tests', function () {
               expect(data.items[0].id).to.be.equal(productTypeId)
               expect(data.items[0].term).to.be.equal('trial')
               // Check that the items are not malformed
-              data.items.map(item => expect(item).to.have.all.keys('id', 'term', 'name', 'trial_resets'))
-
+              data.items.map(item => expect(item).to.include.all.keys('id', 'name'))
             }
           )
         })
@@ -101,12 +100,12 @@ describe('Slow Licenses Tests', function () {
             expect(data.items).to.not.be.empty
 
             // Check that the items are not malformed
-            data.items.map(item => expect(item).to.have.all.keys(...expectedKeys))
+            data.items.map(item => expect(item).to.include.all.keys(...expectedKeys))
 
             // Check that the products contain licenses
             let product = data.items.pop()
-            let licenseKeys = ['id', 'activation_limit', 'license_type', 'user_id', 'valid_to']
-            product.licenses.map(license => expect(license).to.have.all.keys(licenseKeys))
+            let licenseKeys = ['id', 'activation_limit', 'license_type']
+            product.licenses.map(license => expect(license).to.include.all.keys(licenseKeys))
 
             // Check that the products correspond to the correct user
             data.items.map(item => expect(item.user_id).to.equal(userId))
@@ -117,7 +116,7 @@ describe('Slow Licenses Tests', function () {
   })
 
   describe('makes valid requests to the /me/licenses and /users/{user_id}/licenses endpoints', function () {
-    let expectedKeys = ['id', 'activation_limit', 'license_type', 'user_id', 'activations']
+    let expectedKeys = ['id', 'activation_limit', 'license_type']
     it('confirms that a GET request to /me/licenses returns license data for that user', function () {
       return swsClient.license.addProduct({ hostMachineId, productTypeId }).then(() => {
         return swsClient.license.getLicenses().then(
@@ -133,7 +132,7 @@ describe('Slow Licenses Tests', function () {
               expect(item.user_id).to.equal(userId)
 
               // Check that the license types are not malformed
-              expect(item.license_type).to.have.all.keys('id', 'name', 'term', 'rlm_schema')
+              expect(item.license_type).to.include.all.keys('id', 'name', 'term')
             }
           }
         )
