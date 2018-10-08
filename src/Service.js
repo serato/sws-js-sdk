@@ -69,7 +69,7 @@ export default class Service {
     let requestData = {}
     for (let p in data) {
       let val = data[p]
-      if (data.hasOwnProperty(p) && val && (val === true || val === false || val !== '')) {
+      if (data.hasOwnProperty(p) && typeof val !== 'undefined' && val !== null) {
         requestData[p] = val
       }
     }
