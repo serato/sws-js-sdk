@@ -13,7 +13,7 @@ install:
 - npm install
 script:
 - npm run lint
-- npm test
+- npm run test
 - npm run test-integration
 after_success:
 - npm run docs
