@@ -47,16 +47,16 @@ export class SwsClient extends Sws {
             // If so, call `Promise.resolve` with `data` so that the
             // outer Promise (ie. the one that failed before refreshing tokens)
             // has the expected result.
-            if (!data.tokens) {
+            if (!data.access) {
               return Promise.resolve(data)
             }
 
             // Update the access token property
-            this.accessToken = data.tokens.access.token
+            this.accessToken = data.access.token
             // Call the callback
             this.accessTokenUpdatedHandler(
               this.accessToken,
-              new Date(data.tokens.access.expires_at)
+              new Date(data.access.expires_at)
             )
             // Set a new Authorization header for the request
             request.headers.Authorization = client.bearerTokenAuthHeader()

@@ -26,18 +26,16 @@ describe('SwsClient', function () {
     invalidAccessTokenErrors.forEach(({ httpStatus, code, errorText }) => {
       it(`'${errorText}' error then successfully fetches a new access token and successfully retries original request`, function () {
         let successBody = { 'some': 'body content', 'more': ['body', 'content'] }
-        let accessTokenExpiresAt = new Date(Date.now() + 3600)
+        let accessTokenExpiresAt = new Date(Date.now() + 3600000)
 
         let scope = nock(/serato/)
           .get(getLicensesUri, '')
           .reply(httpStatus, { 'code': code, 'error': errorText })
           .post('/api/v1/tokens/refresh')
           .reply(200, {
-            'tokens': {
-              'access': {
-                'token': newAccessTokenValue,
-                'expires_at': accessTokenExpiresAt.toISOString()
-              }
+            'access': {
+              'token': newAccessTokenValue,
+              'expires_at': accessTokenExpiresAt.valueOf()
             }
           })
           .get(getLicensesUri, '')
@@ -59,18 +57,16 @@ describe('SwsClient', function () {
         let secondErrorHttpStatus = 400
         let secondErrorCode = 1
         let secondErrorText = 'Some kind of error'
-        let accessTokenExpiresAt = new Date(Date.now() + 3600)
+        let accessTokenExpiresAt = new Date(Date.now() + 3600000)
 
         let scope = nock(/serato/)
           .get(getLicensesUri, '')
           .reply(httpStatus, { 'code': code, 'error': errorText })
           .post('/api/v1/tokens/refresh')
           .reply(200, {
-            'tokens': {
-              'access': {
-                'token': newAccessTokenValue,
-                'expires_at': accessTokenExpiresAt.toISOString()
-              }
+            'access': {
+              'token': newAccessTokenValue,
+              'expires_at': accessTokenExpiresAt.valueOf()
             }
           })
           .get(getLicensesUri, '')
@@ -93,18 +89,16 @@ describe('SwsClient', function () {
       })
 
       it(`'${errorText}' error then successfully fetches a new access token but receives HTTP 500 error when retrying original request`, function () {
-        let accessTokenExpiresAt = new Date(Date.now() + 3600)
+        let accessTokenExpiresAt = new Date(Date.now() + 3600000)
 
         let scope = nock(/serato/)
           .get(getLicensesUri, '')
           .reply(httpStatus, { 'code': code, 'error': errorText })
           .post('/api/v1/tokens/refresh')
           .reply(200, {
-            'tokens': {
-              'access': {
-                'token': newAccessTokenValue,
-                'expires_at': accessTokenExpiresAt.toISOString()
-              }
+            'access': {
+              'token': newAccessTokenValue,
+              'expires_at': accessTokenExpiresAt.valueOf()
             }
           })
           .get(getLicensesUri, '')
@@ -126,7 +120,7 @@ describe('SwsClient', function () {
       })
 
       it(`'${errorText}' error then successfully fetches a new access token but receives HTTP 500 error when retrying original request and uses custom 'serviceErrorHandler' handler`, function () {
-        let accessTokenExpiresAt = new Date(Date.now() + 3600)
+        let accessTokenExpiresAt = new Date(Date.now() + 3600000)
         let customHandlerResponse = 'This value is returned by our custom handler'
         let customErrorHandler = (err) => {
           return `${customHandlerResponse} ${err.response.status}`
@@ -137,11 +131,9 @@ describe('SwsClient', function () {
           .reply(httpStatus, { 'code': code, 'error': errorText })
           .post('/api/v1/tokens/refresh')
           .reply(200, {
-            'tokens': {
-              'access': {
-                'token': newAccessTokenValue,
-                'expires_at': accessTokenExpiresAt.toISOString()
-              }
+            'access': {
+              'token': newAccessTokenValue,
+              'expires_at': accessTokenExpiresAt.valueOf()
             }
           })
           .get(getLicensesUri, '')
@@ -282,18 +274,16 @@ describe('SwsClient', function () {
 
   describe('successfully updates expired access token', function () {
     it(`calls 'accessTokenUpdatedHandler' handler after successfully updating access token`, function () {
-      let accessTokenExpiresAt = new Date(Date.now() + 3600)
+      let accessTokenExpiresAt = new Date(Date.now() + 3600000)
 
       let scope = nock(/serato/)
         .get(getLicensesUri, '')
         .reply(403, { 'code': 2001, 'error': 'Invalid Access token' })
         .post('/api/v1/tokens/refresh')
         .reply(200, {
-          'tokens': {
-            'access': {
-              'token': newAccessTokenValue,
-              'expires_at': accessTokenExpiresAt.toISOString()
-            }
+          'access': {
+            'token': newAccessTokenValue,
+            'expires_at': accessTokenExpiresAt.valueOf()
           }
         })
         .get(getLicensesUri, '')
