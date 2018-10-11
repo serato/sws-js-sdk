@@ -273,8 +273,11 @@ describe('SwsClient', function () {
   })
 
   describe('successfully updates expired access token', function () {
-    it(`calls 'accessTokenUpdatedHandler' handler after successfully updating access token`, function () {
-      let accessTokenExpiresAt = new Date(Date.now() + 3600000)
+    it(`Calls 'accessTokenUpdatedHandler' handler after successfully updating access token`, function () {
+      // FYI, JS timestamps use milliseconds but our web service returns timestamps in seconds
+      // the SwsClient under test has code that coverts a server timestamp into a JavaScript date.
+      // So this test includes some maths that takes that into account
+      let accessTokenExpiresAt = new Date(Date.now() + 3600000) // Add 1 hour (in milliseconds)
 
       let scope = nock(/serato/)
         .get(getLicensesUri, '')
@@ -283,7 +286,7 @@ describe('SwsClient', function () {
         .reply(200, {
           'access': {
             'token': newAccessTokenValue,
-            'expires_at': accessTokenExpiresAt.valueOf()
+            'expires_at': (accessTokenExpiresAt.valueOf() / 1000) // Conver to second-based unix timestamp
           }
         })
         .get(getLicensesUri, '')
