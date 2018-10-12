@@ -48,6 +48,15 @@ export default class Service {
   }
 
   /**
+   * Get the user ID
+   *
+   * @return {Number} User ID
+   */
+  get userId () {
+    return this._sws.userId
+  }
+
+  /**
    * Get the service URI endpoint
    *
    * @return {string} Service URI

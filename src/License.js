@@ -28,13 +28,12 @@ export default class License extends Service {
    * @param {String} param.appName Only return licenses compatible with app
    * @param {String} param.appVersion Only return licenses compatible with app version `Major.minor.point`
    * @param {String} param.term Only return licenses of specified term
-   * @param {Number} param.userId Return licenses belonging to user
    * @return {Promise}
    */
-  getLicenses ({ appName, appVersion, term, userId = 0 } = {}) {
+  getLicenses ({ appName, appVersion, term } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      userId === 0 ? '/api/v1/me/licenses' : '/api/v1/users/' + userId + '/licenses',
+      this.userId === 0 ? '/api/v1/me/licenses' : '/api/v1/users/' + this.userId + '/licenses',
       this.toBody({ app_name: appName, app_version: appVersion, term: term })
     )
   }
@@ -83,13 +82,12 @@ export default class License extends Service {
    * @param {String} param.appName Only return products compatible with app
    * @param {String} param.appVersion Only return products compatible with app version `Major.minor.point`
    * @param {String} param.term Only return product of specified term
-   * @param {Number} param.userId Return products belonging to user
    * @return {Promise}
    */
-  getProducts ({ appName, appVersion, term, userId = 0 } = {}) {
+  getProducts ({ appName, appVersion, term } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      userId === 0 ? '/api/v1/me/products' : '/api/v1/users/' + userId + '/products',
+      this.userId === 0 ? '/api/v1/me/products' : '/api/v1/users/' + this.userId + '/products',
       this.toBody({ app_name: appName, app_version: appVersion, term: term })
     )
   }
@@ -104,13 +102,12 @@ export default class License extends Service {
    * @param {String} param.hostMachineId
    * @param {Number} param.productTypeId
    * @param {String} param.productSerialNumber
-   * @param {Number} param.userId
    * @returns {Promise}
    */
-  addProduct ({ hostMachineId, productTypeId, productSerialNumber, userId = 0 } = {}) {
+  addProduct ({ hostMachineId, productTypeId, productSerialNumber } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      userId === 0 ? '/api/v1/me/products' : '/api/v1/users/' + userId + '/products',
+      this.userId === 0 ? '/api/v1/me/products' : '/api/v1/users/' + this.userId + '/products',
       this.toBody({
         host_machine_id: hostMachineId,
         product_type_id: productTypeId,
@@ -134,7 +131,6 @@ export default class License extends Service {
    * @param {String} param.hostMachineName
    * @param {Number} param.licenseId
    * @param {String} param.systemTime
-   * @param {Number} param.userId
    * @returns {Promise}
    */
   addLicenseAuthorization ({
@@ -144,12 +140,11 @@ export default class License extends Service {
     hostMachineId,
     hostMachineName,
     licenseId,
-    systemTime,
-    userId = 0 }
+    systemTime }
   = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      userId === 0 ? '/api/v1/me/licenses/authorizations' : '/api/v1/users/' + userId + '/licenses/authorizations',
+      this.userId === 0 ? '/api/v1/me/licenses/authorizations' : '/api/v1/users/' + this.userId + '/licenses/authorizations',
       this.toBody({
         action: action,
         app_name: appName,
@@ -172,14 +167,13 @@ export default class License extends Service {
    * @param {Object} param Options
    * @param {Number} param.authorizationId
    * @param {Number} param.statusCode
-   * @param {Number} param.userId
    * @returns {Promise}
    */
-  updateLicenseAuthorization ({ authorizationId, statusCode, userId = 0 } = {}) {
+  updateLicenseAuthorization ({ authorizationId, statusCode } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      userId === 0 ? '/api/v1/me/licenses/authorizations/' + authorizationId
-        : '/api/v1/users/' + userId + '/licenses/authorizations/' + authorizationId,
+      this.userId === 0 ? '/api/v1/me/licenses/authorizations/' + authorizationId
+        : '/api/v1/users/' + this.userId + '/licenses/authorizations/' + authorizationId,
       this.toBody({ status_code: statusCode }),
       'PUT'
     )
