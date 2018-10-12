@@ -17,7 +17,7 @@ describe('Identity Tests', function () {
       )
     })
 
-    it(`confirms URI used in 'getUser()' method, by returning a non-404 HTTP response`, function () {
+    it(`confirms URI used in 'getUser()' method with no user ID, by returning a non-404 HTTP response`, function () {
       return swsClient.id.getUser().then(
         () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
         err => {
@@ -25,6 +25,17 @@ describe('Identity Tests', function () {
         }
       )
     })
+
+    // Enable this test once `GET /api/v1/users/{user_id}` is in production
+    // it(`confirms URI used in 'getUser()' method with user ID, by returning a non-404 HTTP response`, function () {
+    //   swsClient.userId = 8
+    //   return swsClient.id.getUser().then(
+    //     () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+    //     err => {
+    //       expect(err.httpStatus).not.to.equal(404)
+    //     }
+    //   )
+    // })
 
     it(`confirms URI used in 'login()' method, by returning a non-404 HTTP response`, function () {
       return swsClient.id.login().then(
