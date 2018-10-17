@@ -19,6 +19,12 @@ export default class Ecom extends Service {
     this._serviceUri = Sws.serviceUri.ecom
   }
 
+  /**
+   * Return subscriptions owned by a user.
+   * Requires a valid access token.
+   *
+   * @returns {Promise}
+   */
   getSubscriptions () {
     return this.fetch(
       this.bearerTokenAuthHeader(),
