@@ -2,8 +2,9 @@
 
 import License from './License'
 import Identity from './Identity'
+import Ecom from './Ecom'
 
-const serviceUriDefault = { id: 'id.serato.io', license: 'license.serato.io' }
+const serviceUriDefault = { id: 'id.serato.com', license: 'license.serato.com', ecom: 'ecom.serato.com' }
 
 /**
  * Sws class.
@@ -34,12 +35,14 @@ export default class Sws {
     // Set custom service URIs if provided
     this._serviceUri = {
       id: serviceUri.id ? serviceUri.id : serviceUriDefault.id,
-      license: serviceUri.license ? serviceUri.license : serviceUriDefault.license
+      license: serviceUri.license ? serviceUri.license : serviceUriDefault.license,
+      ecom: serviceUri.ecom ? serviceUri.ecom : serviceUriDefault.ecom
     }
     // Create service clients
     this._service = {
       license: new License(this),
-      id: new Identity(this)
+      id: new Identity(this),
+      ecom: new Ecom(this)
       // Define more clients here,
       // and add a getter method
     }
@@ -236,6 +239,15 @@ export default class Sws {
    */
   get id () {
     return this._service.id
+  }
+
+  /**
+   * Get the ecom service client instance
+   *
+   * @return {Ecom} Ecom service client
+   */
+  get ecom () {
+    return this._service.ecom
   }
 }
 
