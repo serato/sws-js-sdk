@@ -24,6 +24,7 @@
     "@babel/core": "^7.1.2",
     "@babel/preset-env": "^7",
     "@babel/register": "^7",
+    "aws-sdk": "^2.338.0",
     "chai": "^4.2.0",
     "esdoc": "^1",
     "esdoc-standard-plugin": "^1",
