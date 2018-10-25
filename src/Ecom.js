@@ -32,4 +32,18 @@ export default class Ecom extends Service {
       null
     )
   }
+
+  /**
+  * Return payment methods added by a logged-in user.
+  * Requires a valid access token.
+  *
+  * @returns {Promise}
+  */
+  getMePaymentMethods () {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      '/api/v1/me/paymentmethods',
+      null
+    )
+  }
 }

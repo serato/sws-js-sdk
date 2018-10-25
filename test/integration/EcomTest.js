@@ -38,7 +38,31 @@ describe('Ecom Tests', function () {
             expect(err.httpStatus).not.to.equal(404)
           }
         )
+      })
+
+    it(`confirms URI used in 'getMePaymentMethods()' method with no user ID, by returning a non-404 HTTP response`,
+      function () {
+        swsClient.userId = 0
+        return swsClient.ecom.getMePaymentMethods().then(
+          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+          err => {
+            expect(err.httpStatus).not.to.equal(404)
+          }
+        )
       }
     )
+
+    it(`confirms URI used in 'getMePaymentMethods()' method with user ID, by returning a non-404 HTTP response`,
+      function () {
+        swsClient.userId = 123
+        return swsClient.ecom.getMePaymentMethods().then(
+          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+          err => {
+            expect(err.httpStatus).not.to.equal(404)
+          }
+        )
+      }
+    )
+
   })
 })
