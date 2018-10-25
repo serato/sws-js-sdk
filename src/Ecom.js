@@ -39,10 +39,10 @@ export default class Ecom extends Service {
   *
   * @returns {Promise}
   */
-  getMePaymentMethods () {
+  getPaymentMethods () {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      '/api/v1/me/paymentmethods',
+      this.userId === 0 ? '/api/v1/me/paymentmethods': '/api/v1/users/' + this.userId + '/paymentmethods',
       null
     )
   }
