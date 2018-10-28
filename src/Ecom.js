@@ -42,7 +42,7 @@ export default class Ecom extends Service {
   getPaymentMethods () {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      this.userId === 0 ? '/api/v1/me/paymentmethods': '/api/v1/users/' + this.userId + '/paymentmethods',
+      this.userId === 0 ? '/api/v1/me/paymentmethods' : '/api/v1/users/' + this.userId + '/paymentmethods',
       null
     )
   }
