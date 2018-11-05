@@ -34,6 +34,22 @@ export default class Ecom extends Service {
   }
 
   /**
+   * Add a payment method identified by a given nonce.
+   * Requires a valid access token.
+   *
+   * @param nonce A one-time-use reference to payment information.
+   * @return {Promise}
+   */
+  addPaymentMethod (paymentNonce) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      this.userId === 0 ? '/api/v1/me/paymentmethods' : '/api/v1/users/' + this.userId + '/paymentmethods',
+      null,
+      'POST'
+    )
+  }
+
+  /**
   * Return payment methods added by a logged-in user.
   * Requires a valid access token.
   *
