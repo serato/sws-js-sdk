@@ -56,6 +56,21 @@ export default class Ecom extends Service {
   }
 
   /**
+   * Create a client resource for payment gateway integration
+   * Requires a valid access token.
+   *
+   * @return {Promise}
+   */
+  paymentGatewayClient () {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      '/api/v1/paymentgateway/client',
+      (this.userId !== 0 ? this.toBody({ user_id: this.userId }) : null),
+      'POST'
+    )
+  }
+
+  /**
   * Return payment methods added by a logged-in user.
   * Requires a valid access token.
   *
