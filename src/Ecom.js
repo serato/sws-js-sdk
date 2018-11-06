@@ -38,13 +38,19 @@ export default class Ecom extends Service {
    * Requires a valid access token.
    *
    * @param nonce A one-time-use reference to payment information.
+   * @param deviceData User device information.
+   * @param billingAddressId The two-letter value for an address.
    * @return {Promise}
    */
-  addPaymentMethod (paymentNonce) {
+  addPaymentMethod ({nonce, deviceData, billingAddressId} = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       this.userId === 0 ? '/api/v1/me/paymentmethods' : '/api/v1/users/' + this.userId + '/paymentmethods',
-      null,
+      this.toBody({
+        nonce: nonce,
+        device_data: deviceData,
+        billing_address_id: billingAddressId
+      }),
       'POST'
     )
   }
