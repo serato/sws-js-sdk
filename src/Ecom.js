@@ -42,7 +42,7 @@ export default class Ecom extends Service {
    * @param billingAddressId The two-letter value for an address.
    * @return {Promise}
    */
-  addPaymentMethod ({nonce, deviceData, billingAddressId} = {}) {
+  addPaymentMethod ({ nonce, deviceData, billingAddressId } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       this.userId === 0 ? '/api/v1/me/paymentmethods' : '/api/v1/users/' + this.userId + '/paymentmethods',
@@ -56,15 +56,15 @@ export default class Ecom extends Service {
   }
 
   /**
-   * Create a client resource for payment gateway integration
+   * Create a token resource for payment gateway integration
    * Requires a valid access token.
    *
    * @return {Promise}
    */
-  paymentGatewayClient () {
+  paymentGatewayToken () {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      '/api/v1/paymentgateway/client',
+      '/api/v1/paymentgateway/token',
       (this.userId !== 0 ? this.toBody({ user_id: this.userId }) : null),
       'POST'
     )
