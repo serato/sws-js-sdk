@@ -63,5 +63,37 @@ describe('Ecom Tests', function () {
         )
       }
     )
+
+    it(`confirms URI used in 'updateSubscription()' method with no user ID, by returning a non-404 HTTP response`,
+      function () {
+        swsClient.userId = 0
+        return swsClient.ecom.updateSubscription({
+          subscriptionId: 'test-id',
+          paymentToken: 'abc',
+          numberOfBillingCycle: 2
+        }).then(
+          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+          err => {
+            expect(err.httpStatus).not.to.equal(404)
+          }
+        )
+      }
+    )
+
+    it(`confirms URI used in 'updateSubscription()' method with a user ID, by returning a non-404 HTTP response`,
+      function () {
+        swsClient.userId = 123
+        return swsClient.ecom.updateSubscription({
+          subscriptionId: 'test-id',
+          paymentToken: 'abc',
+          numberOfBillingCycle: 2
+        }).then(
+          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+          err => {
+            expect(err.httpStatus).not.to.equal(404)
+          }
+        )
+      }
+    )
   })
 })
