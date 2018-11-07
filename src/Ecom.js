@@ -65,7 +65,7 @@ export default class Ecom extends Service {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       '/api/v1/paymentgateway/token',
-      (this.userId !== 0 ? this.toBody({ user_id: this.userId }) : null),
+      null,
       'POST'
     )
   }
@@ -81,6 +81,24 @@ export default class Ecom extends Service {
       this.bearerTokenAuthHeader(),
       this.userId === 0 ? '/api/v1/me/paymentmethods' : '/api/v1/users/' + this.userId + '/paymentmethods',
       null
+    )
+  }
+
+  /**
+   * Delete a payment method identified by a given payment token.
+   * The payment method's customerId must match the user's ID.
+   * Requires a valid access token.
+   *
+   * @param paymentToken Token identifying the payment method on Braintree
+   * @return {Promise}
+   */
+  deletePaymentMethod (paymentToken) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      this.userId === 0 ? '/api/v1/me/paymentmethods/' + paymentToken : '/api/v1/users/' + this.userId +
+      '/paymentmethods/' + paymentToken,
+      null,
+      'DELETE'
     )
   }
 }
