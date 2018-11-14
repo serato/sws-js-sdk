@@ -122,4 +122,30 @@ export default class Ecom extends Service {
       'DELETE'
     )
   }
+
+  /**
+   * Update a payment method identified by a given payment token.
+   * The payment method's customerId must match the user's ID.
+   * Requires a valid access token.
+   *
+   * @param {Object} param Options
+   * @param {String} param.paymentToken Token identifying the payment method on Braintree
+   * @param {String} param.nonce One-time-use reference to payment information provided by the user
+   * @param {String} param.deviceData User device information (recommended inclusion by Braintree)
+   * @param {String} param.billingAddressId The two-letter value for one of the user's addresses
+   * @return {Promise}
+   */
+  updatePaymentMethod ({ paymentToken, nonce, deviceData, billingAddressId }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      this.userId === 0 ? '/api/v1/me/paymentmethods/' + paymentToken : '/api/v1/users/' + this.userId +
+        '/paymentmethods/' + paymentToken,
+      this.toBody({
+        nonce: nonce,
+        device_data: deviceData,
+        billing_address_id: billingAddressId
+      }),
+      'PUT'
+    )
+  }
 }
