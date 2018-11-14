@@ -85,6 +85,27 @@ export default class Ecom extends Service {
   }
 
   /**
+   * Update the payment method and number of billing cycles of a subscription identified by a given subscription ID.
+   * Requires a valid access token.
+   *
+   * @param {Object} param Options
+   * @param {String} param.subscriptionId ID of the subscription to update
+   * @param {String} param.paymentToken
+   * @param {Number} param.numberOfBillingCycle
+   * @return {Promise}
+   */
+  updateSubscription ({ subscriptionId, paymentToken, numberOfBillingCycle }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      this.userId === 0 ? '/api/v1/me/subscriptions/' + subscriptionId : '/api/v1/users/' + this.userId + '/subscriptions/' + subscriptionId,
+      this.toBody({
+        'number_of_billing_cycle': numberOfBillingCycle, 'payment_method_token': paymentToken
+      }),
+      'PUT'
+    )
+  }
+
+  /**
    * Delete a payment method identified by a given payment token.
    * The payment method's customerId must match the user's ID.
    * Requires a valid access token.
