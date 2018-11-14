@@ -33,6 +33,23 @@ export default class Ecom extends Service {
     )
   }
 
+    /**
+     * Return orders owned by a user.
+     * Requires a valid access token.
+     *
+     * @returns {Promise}
+     */
+    getOrders ({order_status}) {
+        return this.fetch(
+            this.bearerTokenAuthHeader(),
+            this.userId === 0 ? '/api/v1/me/orders' : '/api/v1/users/' + this.userId + '/orders',
+            this.toBody({
+                'order_status': order_status
+            }),
+            'GET'
+        )
+    }
+
   /**
    * Add a payment method identified by a given nonce.
    * Requires a valid access token.
