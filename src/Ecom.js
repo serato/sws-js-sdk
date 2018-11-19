@@ -37,6 +37,7 @@ export default class Ecom extends Service {
      * Return orders owned by a user.
      * Requires a valid access token.
      *
+     * @param orderStatus
      * @returns {Promise}
      */
     getOrders ({order_status}) {
