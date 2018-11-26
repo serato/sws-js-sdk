@@ -34,12 +34,12 @@ export default class Ecom extends Service {
   }
 
   /**
-  * Return orders owned by a user.
-  * Requires a valid access token.
-  *
-  * @param orderStatus
-  * @returns {Promise}
-  */
+   * Return orders owned by a user.
+   * Requires a valid access token.
+   *
+   * @param orderStatus
+   * @returns {Promise}
+   */
   getOrders ({ orderStatus } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
@@ -88,11 +88,11 @@ export default class Ecom extends Service {
   }
 
   /**
-  * Return payment methods added by a logged-in user.
-  * Requires a valid access token.
-  *
-  * @returns {Promise}
-  */
+   * Return payment methods added by a logged-in user.
+   * Requires a valid access token.
+   *
+   * @returns {Promise}
+   */
   getPaymentMethods () {
     return this.fetch(
       this.bearerTokenAuthHeader(),
@@ -134,7 +134,7 @@ export default class Ecom extends Service {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       this.userId === 0 ? '/api/v1/me/paymentmethods/' + paymentToken : '/api/v1/users/' + this.userId +
-      '/paymentmethods/' + paymentToken,
+        '/paymentmethods/' + paymentToken,
       null,
       'DELETE'
     )
@@ -163,6 +163,23 @@ export default class Ecom extends Service {
         billing_address_id: billingAddressId
       }),
       'PUT'
+    )
+  }
+
+  /**
+   * Retrieve an invoice PDF for the given order.
+   * The logged-in user must be the order's owner.
+   * Requires a valid access token.
+   *
+   * @param orderId ID of the order for which an invoice will be returned.
+   * @return {Promise}
+   */
+  getInvoicePdf (orderId) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      this.userId === 0 ? '/api/v1/me/orders/pdf/' + orderId : '/api/v1/users/' + this.userId + '/orders/pdf/' +
+        orderId,
+      null
     )
   }
 }
