@@ -94,16 +94,20 @@ export default class Service {
    * @param  {String} endpoint API endpoint
    * @param  {Object} body Object to send in the body
    * @param  {String} method HTTP Method GET, POST, PUT or DELETE (defaults to GET)
-   * @param  {Number} timeout Request timout (ms)
+   * @param  {Number} timeout Request timeout (ms)
+   * @param  {String} responseType Response type for the request (e.g. json)
+   * @param  {Object} headers headers Custom headers (defaults to Accept/Content-Type json)
    * @return {Promise}
    */
-  fetch (auth, endpoint, body, method = 'GET', timeout = null) {
+  fetch (auth, endpoint, body, method = 'GET', timeout = null, responseType = 'json', headers = null) {
     this._lastRequest = buildRequest(
       auth,
       (this.serviceUri.indexOf('://') === -1 ? 'https://' : '') + this.serviceUri + endpoint,
       body,
       method,
-      timeout === null ? this._sws.timeout : timeout
+      timeout === null ? this._sws.timeout : timeout,
+      responseType,
+      headers
     )
     return this.fetchRequest(this._lastRequest)
   }
@@ -296,15 +300,17 @@ function handleFetchError (err) {
  * @param  {Object} body Object to send in the body
  * @param  {String} method HTTP Method GET, POST, PUT or DELETE (defaults to GET)
  * @param  {Number} timeout Request timout (ms)
+ * @param  {String} responseType Response type for the request (e.g. json)
+ * @param  {Object} headers Custom headers (defaults to Accept/Content-Type json)
  * @return {Object}
  */
-function buildRequest (auth, endpoint, body, method, timeout) {
+function buildRequest (auth, endpoint, body, method, timeout, responseType, headers = null) {
   let request = {
     timeout: timeout,
     url: endpoint,
     method: method,
-    responseType: 'json',
-    headers: {
+    responseType: responseType,
+    headers: headers || {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     }

@@ -179,7 +179,14 @@ export default class Ecom extends Service {
       this.bearerTokenAuthHeader(),
       this.userId === 0 ? '/api/v1/me/orders/' + orderId + '/invoice' : '/api/v1/users/' + this.userId + '/orders/' +
         orderId + '/invoice',
-      null
+      null,
+      'GET',
+      null,
+      'blob',
+      {
+        'Accept': 'application/pdf',
+        'Content-Type': 'json'
+      }
     )
   }
 }
