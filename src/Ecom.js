@@ -177,8 +177,8 @@ export default class Ecom extends Service {
   getInvoicePdf (orderId) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      this.userId === 0 ? '/api/v1/me/orders/pdf/' + orderId : '/api/v1/users/' + this.userId + '/orders/pdf/' +
-        orderId,
+      this.userId === 0 ? '/api/v1/me/orders/' + orderId + '/invoice' : '/api/v1/users/' + this.userId + '/orders/' +
+        orderId + '/invoice',
       null
     )
   }
