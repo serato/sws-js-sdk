@@ -177,8 +177,8 @@ export default class Ecom extends Service {
   retrySubscriptionCharge ({ subscriptionId }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      this.userId === 0 ? '/api/v1/me/subscriptions/' + subscriptionId + '/retrycharge'
-        : '/api/v1/users/' + this.userId + '/subscriptions/' + subscriptionId + '/retrycharge',
+      this.userId === 0 ? '/api/v1/me/subscriptions/' + subscriptionId + '/retrycharge' : '/api/v1/users/' +
+        this.userId + '/subscriptions/' + subscriptionId + '/retrycharge',
       null,
       'POST'
     )
