@@ -226,7 +226,7 @@ describe('Ecom Tests', function () {
       }
     )
 
-    it(`confirms URI used in 'getInvoicePdf()' method without a user ID by returning a non-404 HTTP response`,
+    it(`confirms URI used in 'getInvoice()' method without a user ID by returning a non-404 HTTP response`,
       function () {
         swsClient.userId = 0
         return swsClient.ecom.getInvoice(123).then(
@@ -238,7 +238,7 @@ describe('Ecom Tests', function () {
       }
     )
 
-    it(`confirms URI used in 'getInvoicePdf()' method with a user ID by returning a non-404 HTTP response`,
+    it(`confirms URI used in 'getInvoice()' method with a user ID by returning a non-404 HTTP response`,
       function () {
         swsClient.userId = 123
         return swsClient.ecom.getInvoice(123).then(
