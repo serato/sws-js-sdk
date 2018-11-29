@@ -99,7 +99,18 @@ export default class Service {
    * @param  {Object} headers headers Custom headers (defaults to Accept/Content-Type json)
    * @return {Promise}
    */
-  fetch (auth, endpoint, body, method = 'GET', timeout = null, responseType = 'json', headers = null) {
+  fetch (
+    auth,
+    endpoint,
+    body,
+    method = 'GET',
+    timeout = null,
+    responseType = 'json',
+    headers = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }
+  ) {
     this._lastRequest = buildRequest(
       auth,
       (this.serviceUri.indexOf('://') === -1 ? 'https://' : '') + this.serviceUri + endpoint,
@@ -304,16 +315,13 @@ function handleFetchError (err) {
  * @param  {Object} headers Custom headers (defaults to Accept/Content-Type json)
  * @return {Object}
  */
-function buildRequest (auth, endpoint, body, method, timeout, responseType, headers = null) {
+function buildRequest (auth, endpoint, body, method, timeout, responseType, headers) {
   let request = {
     timeout: timeout,
     url: endpoint,
     method: method,
     responseType: responseType,
-    headers: headers || {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    }
+    headers: headers
   }
 
   if (auth !== null) {

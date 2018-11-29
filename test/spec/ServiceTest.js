@@ -51,6 +51,7 @@ describe('Service', function () {
           const request = sws.ecom.lastRequest
           expect(request.responseType).to.equal('blob')
           expect(request.headers['Accept']).to.equal('application/pdf')
+          expect(request.headers['Content-Type']).to.equal('application/json')
         }
       )
     }
@@ -72,6 +73,7 @@ describe('Service', function () {
           const request = sws.license.lastRequest
           expect(request.responseType).to.equal('json')
           expect(request.headers['Accept']).to.equal('application/json')
+          expect(request.headers['Content-Type']).to.equal('application/json')
         }
       )
     }

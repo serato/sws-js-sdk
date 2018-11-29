@@ -185,7 +185,7 @@ export default class Ecom extends Service {
       'blob',
       {
         'Accept': 'application/pdf',
-        'Content-Type': 'json'
+        'Content-Type': 'application/json'
       }
     )
   }
