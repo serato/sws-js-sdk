@@ -14,6 +14,7 @@ import { expect } from 'chai'
 
 const appId = 'myClientAppId'
 const getLicensesUri = '/api/v1/me/licenses'
+const getInvoiceUri = '/api/v1/me/orders/123/invoice'
 const customHandlerResponse = 'This value is returned by our custom handler'
 
 describe('Service', function () {
@@ -39,6 +40,43 @@ describe('Service', function () {
     )
   })
 
+  it('tests that the response type and Accept header are blob/pdf for the getInvoice() method',
+    function () {
+      nock(/serato/).get(getInvoiceUri, '').reply(200, 'fake-binary-data')
+
+      let sws = new Sws({ appId: appId })
+
+      return sws.ecom.getInvoice(123).then(
+        () => {
+          const request = sws.ecom.lastRequest
+          expect(request.responseType).to.equal('blob')
+          expect(request.headers['Accept']).to.equal('application/pdf')
+        }
+      )
+    }
+  )
+
+  it('tests that the response type and Accept header are defaulted to json for other endpoints',
+    function () {
+      let body = {
+        'some': 'body content',
+        'more': ['body', 'content']
+      }
+
+      nock(/serato/).get(getLicensesUri, '').reply(200, body)
+
+      let sws = new Sws({ appId: appId })
+
+      return sws.license.getLicenses().then(
+        () => {
+          const request = sws.license.lastRequest
+          expect(request.responseType).to.equal('json')
+          expect(request.headers['Accept']).to.equal('application/json')
+        }
+      )
+    }
+  )
+
   /**
    * Test the custom error handlers for errors that include a specific error code.
    * (FWIW, these are all HTTP 4xx status errors that are explicity thrown by the web applications)
@@ -52,11 +90,11 @@ describe('Service', function () {
    * One the sets a custom error handler and asserts that it is used.
    */
 
-  // Define the custom error handler. The err handler receives the error object returned
-  // from the HTTP request.
+    // Define the custom error handler. The err handler receives the error object returned
+    // from the HTTP request.
   let customErrorCodeHandler = (err) => {
-    return `${customHandlerResponse} ${err.response.status} - ${err.response.data.code}`
-  }
+      return `${customHandlerResponse} ${err.response.status} - ${err.response.data.code}`
+    }
 
   const errorsWithCodesTests = [
     // Access token is invalid (eg. bad signature)
@@ -166,11 +204,11 @@ describe('Service', function () {
    * One the sets a custom error handler and asserts that it is used.
    */
 
-  // Define the custom error handler. The err handler receives the error object returned
-  // from the HTTP request.
+    // Define the custom error handler. The err handler receives the error object returned
+    // from the HTTP request.
   const customErrorHandler = (err) => {
-    return `${customHandlerResponse} ${err.response.status}`
-  }
+      return `${customHandlerResponse} ${err.response.status}`
+    }
 
   const errorsWithoutCodesTests = [
     // Unhandled application error

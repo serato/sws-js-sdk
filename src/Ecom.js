@@ -174,7 +174,7 @@ export default class Ecom extends Service {
    * @param orderId ID of the order for which an invoice will be returned.
    * @return {Promise}
    */
-  getInvoicePdf (orderId) {
+  getInvoice (orderId) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       this.userId === 0 ? '/api/v1/me/orders/' + orderId + '/invoice' : '/api/v1/users/' + this.userId + '/orders/' +
