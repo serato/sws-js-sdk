@@ -165,4 +165,22 @@ export default class Ecom extends Service {
       'PUT'
     )
   }
+
+  /**
+   * Retries charge on a subscription.
+   * The subscription ID must belong to the user's ID.
+   * Requires a valid access token.
+   *
+   * @param subscriptionId
+   * @returns {Promise}
+   */
+  retrySubscriptionCharge ({ subscriptionId }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      this.userId === 0 ? '/api/v1/me/subscriptions/' + subscriptionId + '/retrycharge' : '/api/v1/users/' +
+        this.userId + '/subscriptions/' + subscriptionId + '/retrycharge',
+      null,
+      'POST'
+    )
+  }
 }
