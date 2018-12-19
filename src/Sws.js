@@ -3,8 +3,14 @@
 import License from './License'
 import Identity from './Identity'
 import Ecom from './Ecom'
+import Profile from './Profile'
 
-const serviceUriDefault = { id: 'id.serato.com', license: 'license.serato.com', ecom: 'ecom.serato.com' }
+const serviceUriDefault = {
+  id: 'id.serato.com',
+  license: 'license.serato.com',
+  ecom: 'ecom.serato.com',
+  profile: 'profile.serato.com'
+}
 
 /**
  * Sws class.
@@ -36,13 +42,15 @@ export default class Sws {
     this._serviceUri = {
       id: serviceUri.id ? serviceUri.id : serviceUriDefault.id,
       license: serviceUri.license ? serviceUri.license : serviceUriDefault.license,
-      ecom: serviceUri.ecom ? serviceUri.ecom : serviceUriDefault.ecom
+      ecom: serviceUri.ecom ? serviceUri.ecom : serviceUriDefault.ecom,
+      profile: serviceUri.profile ? serviceUri.profile : serviceUriDefault.profile
     }
     // Create service clients
     this._service = {
       license: new License(this),
       id: new Identity(this),
-      ecom: new Ecom(this)
+      ecom: new Ecom(this),
+      profile: new Profile(this)
       // Define more clients here,
       // and add a getter method
     }
@@ -248,6 +256,14 @@ export default class Sws {
    */
   get ecom () {
     return this._service.ecom
+  }
+  /**
+   * Get the profile service client instance
+   *
+   * @return {Profile} Profile service client
+   */
+  get profile () {
+    return this._service.profile
   }
 }
 
