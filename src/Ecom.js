@@ -51,6 +51,20 @@ export default class Ecom extends Service {
   }
 
   /**
+   * Fetches products in the software product catalog.
+   * Requires a valid access token.
+   *
+   * @returns {Promise}
+   */
+  getCatalogProducts () {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      '/api/v1/catalog/products',
+      null
+    )
+  }
+
+  /**
    * Add a payment method identified by a given nonce.
    * Requires a valid access token.
    *
