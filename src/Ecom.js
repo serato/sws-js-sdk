@@ -58,7 +58,7 @@ export default class Ecom extends Service {
    */
   getCatalogProducts () {
     return this.fetch(
-      this.bearerTokenAuthHeader(),
+      null,
       '/api/v1/catalog/products',
       null
     )
