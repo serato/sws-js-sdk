@@ -34,12 +34,10 @@ export default class Profile extends Service {
   /**
    * Update a user's profile.
    * Requires a valid access token
-   * @param   {Object} param
+   * @param   {Object} param Options
    * @param   {Number} param.globalContactStatus
-   * @param   {String} param.emailAddress
    * @param   {String} param.firstName
    * @param   {String} param.lastName
-   * @param   {String} param.djName
    * @param   {String} param.locale
    * @param   {String} param.address1
    * @param   {String} param.address2
@@ -51,10 +49,8 @@ export default class Profile extends Service {
    */
   updateProfile ({
     globalContactStatus,
-    emailAddress,
     firstName,
     lastName,
-    djName,
     locale,
     address1,
     address2,
@@ -68,16 +64,14 @@ export default class Profile extends Service {
       this.userId === 0 ? '/api/v1/me' : '/api/v1/users/' + this.userId,
       this.toBody({
         global_contact_status: globalContactStatus,
-        email_address: emailAddress,
         first_name: firstName,
         last_name: lastName,
-        dj_name: djName,
         locale: locale,
         address_1: address1,
         address_2: address2,
         city: city,
         region: region,
-        post_code: postCode,
+        postcode: postCode,
         country: country
       }),
       'PUT'
