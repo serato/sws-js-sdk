@@ -49,7 +49,9 @@ export default class Profile extends Service {
    * @param   {Boolean} param.notifyTracked
    * @param   {Boolean} param.notifyPrivate
    * @param   {Boolean} param.autoRead
-   * @param   {Boolean} param.autoSubscribe
+   * @param   {Boolean} param.autoSubscribe,
+   * @param   {Number} param.threadsPerPage
+   * @param   {String} param.language
    * @returns {Promise}
    */
   updateProfile ({
@@ -67,7 +69,9 @@ export default class Profile extends Service {
     notifyTracked,
     notifyPrivate,
     autoRead,
-    autoSubscribe
+    autoSubscribe,
+    threadsPerPage,
+    language
   }
   = {}
   ) {
@@ -89,7 +93,9 @@ export default class Profile extends Service {
         notify_tracked: notifyTracked,
         notify_private: notifyPrivate,
         auto_read: autoRead,
-        auto_subscribe: autoSubscribe
+        auto_subscribe: autoSubscribe,
+        threads_per_page: threadsPerPage,
+        language: language
       }),
       'PUT'
     )
