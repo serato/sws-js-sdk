@@ -45,5 +45,13 @@ describe('Identity Tests', function () {
         }
       )
     })
+    it(`confirms URI used in 'logout()' method, by returning a non-404 HTTP response`, function () {
+      return swsClient.id.logout().then(
+        () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+        err => {
+          expect(err.httpStatus).not.to.equal(404)
+        }
+      )
+    })
   })
 })
