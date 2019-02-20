@@ -165,4 +165,40 @@ export default class Ecom extends Service {
       'PUT'
     )
   }
+
+  /**
+   * Sends a subscription plan change request by providing a catalog product Id to change to.
+   * @param {Object} param Options
+   * @param {string} subscriptionId
+   * @param {integer} catalogProductId
+   * @returns {Promise}
+   */
+  addSubscriptionPlanChangeRequest ({ subscriptionId, catalogProductId }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      this.userId === 0 ? '/api/v1/me/subscriptions/' + subscriptionId + '/planchanges' : '/api/v1/users/' + this.userId +
+        '/subscriptions/' + subscriptionId + '/planchanges',
+      this.toBody({
+        catalog_product_id: catalogProductId
+      }),
+      'POST'
+    )
+  }
+
+  /**
+   * Sends a PUT request to confirm the subscription plan change request.
+   * @param {Object} param Options
+   * @param {string} subscriptionId
+   * @param {integer} planChangeRequestId
+   * @returns {Promise}
+   */
+  confirmSubscriptionPlanChangeRequest ({ subscriptionId, planChangeRequestId }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      this.userId === 0 ? '/api/v1/me/subscriptions/' + subscriptionId + '/planchanges/' + planChangeRequestId : '/api/v1/users/' + this.userId +
+        '/subscriptions/' + subscriptionId + '/planchanges/' + planChangeRequestId,
+      null,
+      'PUT'
+    )
+  }
 }
