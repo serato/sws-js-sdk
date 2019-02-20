@@ -34,12 +34,12 @@ export default class Ecom extends Service {
   }
 
   /**
-  * Return orders owned by a user.
-  * Requires a valid access token.
-  *
-  * @param orderStatus
-  * @returns {Promise}
-  */
+   * Return orders owned by a user.
+   * Requires a valid access token.
+   *
+   * @param orderStatus
+   * @returns {Promise}
+   */
   getOrders ({ orderStatus } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
@@ -47,6 +47,20 @@ export default class Ecom extends Service {
       this.toBody({
         order_status: orderStatus
       })
+    )
+  }
+
+  /**
+   * Fetches products in the software product catalog.
+   * Requires a valid access token.
+   *
+   * @returns {Promise}
+   */
+  getCatalogProducts () {
+    return this.fetch(
+      null,
+      '/api/v1/catalog/products',
+      null
     )
   }
 
@@ -88,11 +102,11 @@ export default class Ecom extends Service {
   }
 
   /**
-  * Return payment methods added by a logged-in user.
-  * Requires a valid access token.
-  *
-  * @returns {Promise}
-  */
+   * Return payment methods added by a logged-in user.
+   * Requires a valid access token.
+   *
+   * @returns {Promise}
+   */
   getPaymentMethods () {
     return this.fetch(
       this.bearerTokenAuthHeader(),
@@ -134,7 +148,7 @@ export default class Ecom extends Service {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       this.userId === 0 ? '/api/v1/me/paymentmethods/' + paymentToken : '/api/v1/users/' + this.userId +
-      '/paymentmethods/' + paymentToken,
+        '/paymentmethods/' + paymentToken,
       null,
       'DELETE'
     )
@@ -182,6 +196,31 @@ export default class Ecom extends Service {
         catalog_product_id: catalogProductId
       }),
       'POST'
+
+    )
+  }
+
+  /**
+   * Retrieve an invoice PDF for the given order.
+   * The logged-in user must be the order's owner.
+   * Requires a valid access token.
+   *
+   * @param orderId ID of the order for which an invoice will be returned.
+   * @return {Promise}
+   */
+  getInvoice (orderId) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      this.userId === 0 ? '/api/v1/me/orders/' + orderId + '/invoice' : '/api/v1/users/' + this.userId + '/orders/' +
+        orderId + '/invoice',
+      null,
+      'GET',
+      null,
+      'blob',
+      {
+        'Accept': 'application/pdf',
+        'Content-Type': 'application/json'
+      }
     )
   }
 
@@ -199,6 +238,23 @@ export default class Ecom extends Service {
         '/subscriptions/' + subscriptionId + '/planchanges/' + planChangeRequestId,
       null,
       'PUT'
+    )
+  }
+
+  /** Retries charge on a subscription.
+   * The subscription ID must belong to the user's ID.
+   * Requires a valid access token.
+   *
+   * @param subscriptionId
+   * @returns {Promise}
+   */
+  retrySubscriptionCharge ({ subscriptionId }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      this.userId === 0 ? '/api/v1/me/subscriptions/' + subscriptionId + '/retrycharge' : '/api/v1/users/' +
+        this.userId + '/subscriptions/' + subscriptionId + '/retrycharge',
+      null,
+      'POST'
     )
   }
 }
