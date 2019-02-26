@@ -115,6 +115,34 @@ describe('Slow Licenses Tests', function () {
     })
   })
 
+  describe('makes valid requests to the /me/products and /users/{user_id}/products endpoints with' +
+    ' showLicenceActivations set to `true`', function () {
+    let expectedKeys = ['user_id', 'id', 'date_created', 'licenses', 'product_type', 'deleted']
+    let showLicenceActivations = 'true'
+    it('confirms that a GET request to /me/products with showLicenceActivations set to `true` returns product data' +
+      ' with license activations', function () {
+      return swsClient.license.addProduct({ hostMachineId, productTypeId }).then(() => {
+        return swsClient.license.getProducts({ showLicenceActivations }).then(
+          data => {
+            // I.e. some products were returned
+            expect(data.items).to.not.be.empty
+
+            // Check that the items are not malformed
+            data.items.map(item => expect(item).to.include.all.keys(...expectedKeys))
+
+            // Check that the products contain licenses
+            let product = data.items.pop()
+            let licenseKeys = ['id', 'activation_limit', 'license_type', 'activations']
+            product.licenses.map(license => expect(license).to.include.all.keys(licenseKeys))
+
+            // Check that the products correspond to the correct user
+            data.items.map(item => expect(item.user_id).to.equal(userId))
+          }
+        )
+      })
+    })
+  })
+
   describe('makes valid requests to the /me/licenses and /users/{user_id}/licenses endpoints', function () {
     let expectedKeys = ['id', 'activation_limit', 'license_type']
     it('confirms that a GET request to /me/licenses returns license data for that user', function () {

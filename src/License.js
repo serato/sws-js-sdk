@@ -84,11 +84,11 @@ export default class License extends Service {
    * @param {String} param.term Only return product of specified term
    * @return {Promise}
    */
-  getProducts ({ appName, appVersion, term } = {}) {
+  getProducts ({ appName, appVersion, term, showLicenceActivations } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       this.userId === 0 ? '/api/v1/me/products' : '/api/v1/users/' + this.userId + '/products',
-      this.toBody({ app_name: appName, app_version: appVersion, term: term })
+      this.toBody({ app_name: appName, app_version: appVersion, term: term, show_license_activations: showLicenceActivations })
     )
   }
 

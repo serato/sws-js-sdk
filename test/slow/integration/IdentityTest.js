@@ -30,7 +30,6 @@ describe('Slow Identity Tests', function () {
     systemTime = new Date()
     timestamp = systemTime.getTime()
     emailAddress = 'testAddLicenseAuthorization' + timestamp + '@serato.com'
-
     return swsClient.id.addUser({ emailAddress, password, timestamp: systemTime }).then(() => {
       // Login request/promise to the newly created account
       return swsClient.id.login({ emailAddress, password }).then(
