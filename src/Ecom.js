@@ -181,6 +181,26 @@ export default class Ecom extends Service {
   }
 
   /**
+   * Sends a subscription plan change request by providing a catalog product Id to change to.
+   * @param {Object} param Options
+   * @param {String} param.subscriptionId
+   * @param {Number} param.catalogProductId
+   * @returns {Promise}
+   */
+  addSubscriptionPlanChangeRequest ({ subscriptionId, catalogProductId }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      this.userId === 0 ? '/api/v1/me/subscriptions/' + subscriptionId + '/planchanges' : '/api/v1/users/' + this.userId +
+        '/subscriptions/' + subscriptionId + '/planchanges',
+      this.toBody({
+        catalog_product_id: catalogProductId
+      }),
+      'POST'
+
+    )
+  }
+
+  /**
    * Retrieve an invoice PDF for the given order.
    * The logged-in user must be the order's owner.
    * Requires a valid access token.
@@ -205,7 +225,23 @@ export default class Ecom extends Service {
   }
 
   /**
-   * Retries charge on a subscription.
+   * Sends a PUT request to confirm the subscription plan change request.
+   * @param {Object} param Options
+   * @param {String} param.subscriptionId
+   * @param {Number} param.planChangeRequestId
+   * @returns {Promise}
+   */
+  confirmSubscriptionPlanChangeRequest ({ subscriptionId, planChangeRequestId }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      this.userId === 0 ? '/api/v1/me/subscriptions/' + subscriptionId + '/planchanges/' + planChangeRequestId : '/api/v1/users/' + this.userId +
+        '/subscriptions/' + subscriptionId + '/planchanges/' + planChangeRequestId,
+      null,
+      'PUT'
+    )
+  }
+
+  /** Retries charge on a subscription.
    * The subscription ID must belong to the user's ID.
    * Requires a valid access token.
    *
