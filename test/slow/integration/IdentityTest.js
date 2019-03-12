@@ -1,5 +1,5 @@
 import SwsClient from '../../../src/index'
-import { describe, it, before } from 'mocha'
+import { describe, it, before, beforeEach } from 'mocha'
 import { expect } from 'chai'
 import environment from '../../../environment.json'
 
@@ -26,7 +26,7 @@ describe('Slow Identity Tests', function () {
   /**
    * Add a new user, log in, setting the access and refresh tokens for the client.
    */
-  beforeEach(function () {
+  beforeEach('log the user in', function () {
     systemTime = new Date()
     timestamp = systemTime.getTime()
     emailAddress = 'testAddLicenseAuthorization' + timestamp + '@serato.com'
@@ -50,6 +50,26 @@ describe('Slow Identity Tests', function () {
           expect(data).to.have.all.keys('id', 'email_address', 'first_name', 'last_name', 'date_created', 'locale')
         }
       )
+    })
+  })
+  describe('make valid request to me/logout', function () {
+    it('logout should return a 204 and refresh token should then be invalidated', () => {
+      swsClient.id.logout({ refreshToken: swsClient.refreshToken, allAppInstances: true })
+        .then((data) => {
+          expect(data === null)
+          swsClient.id.tokenRefresh(swsClient.refreshToken)
+            .then(data => {
+              expect.fail()
+            })
+            .catch(err => {
+              expect(err)
+              expect(err.httpStatus).to.be(400)
+              expect(err.data.code).to.be(1001)
+            })
+        })
+        .catch(err => {
+          console.error(err)
+        })
     })
   })
 })

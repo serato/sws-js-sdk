@@ -1,5 +1,5 @@
 import SwsClient from '../../../src/index'
-import { describe, it, before } from 'mocha'
+import { describe, it, before, beforeEach } from 'mocha'
 import { expect } from 'chai'
 import environment from '../../../environment.json'
 
@@ -64,7 +64,7 @@ describe('Slow Licenses Tests', function () {
           return swsClient.license.getProductTypes(params).then(
             data => {
               // I.e. some product types were returned
-              expect(data.items).to.not.be.empty
+              expect(data.items).to.not.be.empty()
               expect(data.items[0].id).to.be.equal(productTypeId)
               expect(data.items[0].term).to.be.equal('trial')
               // Check that the items are not malformed
@@ -97,7 +97,7 @@ describe('Slow Licenses Tests', function () {
         return swsClient.license.getProducts().then(
           data => {
             // I.e. some products were returned
-            expect(data.items).to.not.be.empty
+            expect(data.items).to.not.be.empty()
 
             // Check that the items are not malformed
             data.items.map(item => expect(item).to.include.all.keys(...expectedKeys))
@@ -150,7 +150,7 @@ describe('Slow Licenses Tests', function () {
         return swsClient.license.getLicenses().then(
           data => {
             // I.e. some licenses were returned
-            expect(data.items).to.not.be.empty
+            expect(data.items).to.not.be.empty()
 
             for (let item of data.items) {
               // Check that the items are not malformed ('include' because there is an optional 'valid_to' key)

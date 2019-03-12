@@ -71,6 +71,25 @@ export default class Identity extends Service {
   }
 
   /**
+   * Logout user from all SSO authenticated apps
+   *
+   * @param {Object} param Options
+   * @param {String} param.refreshToken Users Refresh token to invalidate
+   * @param {Boolean} param.allAppInstances
+   * @return {Promise}
+   */
+  logout ({ refreshToken, allAppInstances = true } = {}) {
+    return this.fetch(
+      null,
+      '/api/v1/me/logout',
+      this.toBody({
+        'refresh_token': refreshToken, 'all_app_instances': allAppInstances
+      }),
+      'POST'
+    )
+  }
+
+  /**
    * Request for creating a new user account
    * NOTE: This endpoint is mainly created for integration tests
    *
