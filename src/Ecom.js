@@ -188,9 +188,6 @@ export default class Ecom extends Service {
    * @returns {Promise}
    */
   addSubscriptionPlanChangeRequest ({ subscriptionId, catalogProductId }) {
-    // For debugging
-    console.log(subscriptionId)
-    console.log(catalogProductId)
     return this.fetch(
       this.bearerTokenAuthHeader(),
       this.userId === 0 ? '/api/v1/me/subscriptions/' + subscriptionId + '/planchanges' : '/api/v1/users/' + this.userId +
@@ -235,9 +232,6 @@ export default class Ecom extends Service {
    * @returns {Promise}
    */
   confirmSubscriptionPlanChangeRequest ({ subscriptionId, planChangeRequestId }) {
-    // For debugging
-    console.log(subscriptionId)
-    console.log(planChangeRequestId)
     return this.fetch(
       this.bearerTokenAuthHeader(),
       this.userId === 0 ? '/api/v1/me/subscriptions/' + subscriptionId + '/planchanges/' + planChangeRequestId : '/api/v1/users/' + this.userId +
