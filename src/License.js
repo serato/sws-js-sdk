@@ -131,8 +131,8 @@ export default class License extends Service {
   updateProduct ({ productId, ilokUserId } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      this.userId === 0 ? '/api/v1/me/products' + productId
-        : '/api/v1/users/' + this.userId + '/products' + productId,
+      this.userId === 0 ? '/api/v1/me/products/{product_id}' + productId
+        : '/api/v1/users/' + this.userId + '/products/{product_id}' + productId,
       this.toBody({
         ilok_user_id: ilokUserId
       }),
