@@ -80,7 +80,7 @@ describe('License Tests', function () {
 
     it(`confirms URI used in 'updateProduct()' method with no user ID, by returning a non-404 HTTP response`, function () {
       swsClient.userId = 0
-      return swsClient.license.updateProduct({ ilokUserId: 'ilok-user-1', productId: '123' }).then(
+      return swsClient.license.updateProduct({ productId: '123', ilokUserId: 'ilok-user-1' }).then(
         () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
         err => {
           expect(err.httpStatus).not.to.equal(404)
@@ -90,7 +90,7 @@ describe('License Tests', function () {
 
     it(`confirms URI used in 'updateProduct()' method with user ID, by returning a non-404 HTTP response`, function () {
       swsClient.userId = 123
-      return swsClient.license.updateProduct({ ilokUserId: 'ilok-user-1', productId: '123' }).then(
+      return swsClient.license.updateProduct({ productId: '123', ilokUserId: 'ilok-user-1' }).then(
         () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
         err => {
           expect(err.httpStatus).not.to.equal(404)
