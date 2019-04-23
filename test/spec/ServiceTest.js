@@ -276,4 +276,13 @@ describe('Service', function () {
       )
     })
   })
+
+  it('tests that setting a custom request adapter results in that adapter handling axios requests', function () {
+    let sws = new Sws({ appId: appId })
+    const expected = 'A value'
+    sws.license.requestAdapter = () => Promise.resolve({ data: expected })
+    return sws.license.getLicenses().then(response => {
+      expect(response).to.equal(expected)
+    }, () => Promise.reject(new Error('Expected promise to resolve successfully')))
+  })
 })
