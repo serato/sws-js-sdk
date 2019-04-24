@@ -78,4 +78,11 @@ describe('Sws', function () {
     sws.setTimesoutExceededHandler(customErrorHandler)
     expect(customErrorHandler).to.equal(sws.license.timeoutExceededHandler)
   })
+
+  it('tests that `setRequestAdapter` sets the correct axios request adapter for a service client', function () {
+    let customRequestAdapter = () => { return 'A value' }
+    let sws = new Sws({ appId: appId })
+    sws.setRequestAdapter(customRequestAdapter)
+    expect(customRequestAdapter).to.equal(sws.license.requestAdapter)
+  })
 })

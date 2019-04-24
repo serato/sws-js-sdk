@@ -129,6 +129,18 @@ export default class Sws {
   }
 
   /**
+   * Sets the axios request adapter for all clients
+   *
+   * @param {Function} f Callback function
+   * @return {Void}
+   */
+  setRequestAdapter (f) {
+    for (let service in this._service) {
+      this._service[service].requestAdapter = f
+    }
+  }
+
+  /**
    * Get the client application ID
    *
    * @return {String} Application ID

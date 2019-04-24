@@ -14,6 +14,7 @@ export default class Service {
     this._sws = Sws
     this._serviceUri = ''
     this._lastRequest = null
+    this._requestAdapter = null
 
     this._invalidAccessTokenHandler = handleFetchError
     this._invalidRefreshTokenHandler = handleFetchError
@@ -120,6 +121,12 @@ export default class Service {
       responseType,
       headers
     )
+
+    if (this.requestAdapter) {
+      // Custom request handler: should return a promise and supply a valid response
+      this._lastRequest.adapter = this.requestAdapter
+    }
+
     return this.fetchRequest(this._lastRequest)
   }
 
@@ -134,7 +141,6 @@ export default class Service {
       .then((response) => { return response.data })
       .catch((err) => {
         err.client = this
-
         if (err.code === 'ECONNABORTED') {
           // Timeout
           return Promise.resolve(this.timeoutExceededHandler(err))
@@ -269,6 +275,23 @@ export default class Service {
    */
   get serviceUnavailableHandler () {
     return this._serviceUnavailableHandler
+  }
+
+  /**
+   * Set the axios request adapter
+   * @param {function} f Callback
+   * @return {void}
+   */
+  set requestAdapter (f) {
+    this._requestAdapter = f
+  }
+
+  /**
+   * Get the axios request adapter
+   * @return {function}
+   */
+  get requestAdapter () {
+    return this._requestAdapter
   }
 
   /**
