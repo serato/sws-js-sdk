@@ -117,4 +117,18 @@ export default class Identity extends Service {
       'POST'
     )
   }
+
+  /**
+   * Deactivate a user account through DELETE request on /me &  /users/{user_id} endpoints.
+   *
+   * @returns {Promise}
+   * **/
+  deactivateUser () {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      this.userId === 0 ? '/api/v1/me' : '/api/v1/users/' + this.userId,
+      null,
+      'DELETE'
+    )
+  }
 }

@@ -257,4 +257,20 @@ export default class Ecom extends Service {
       'POST'
     )
   }
+
+  /**
+   * Sends a DELETE request to cancel a subscription.
+   * @param {Object} param Options
+   * @param {String} param.subscriptionId
+   * @returns {Promise}
+   */
+  cancelSubscription ({ subscriptionId }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      this.userId === 0 ? '/api/v1/me/subscriptions/' + subscriptionId : '/api/v1/users/' +
+        this.userId + '/subscriptions/' + subscriptionId,
+      null,
+      'DELETE'
+    )
+  }
 }
