@@ -25,7 +25,7 @@ export default class Profile extends Service {
    * @param   {Boolean} param.useMe
    * @returns {Promise}
    */
-  getProfile ({ useMe }) {
+  getProfile ({ useMe = false }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       this.userId === 0 || useMe ? '/api/v1/me' : '/api/v1/users/' + this.userId,
