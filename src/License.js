@@ -118,6 +118,29 @@ export default class License extends Service {
   }
 
   /**
+   * Update a product of the authenticated client user.
+   *
+   * Requires a valid access token.
+   * Uses the current user from the access token if `userId` is not specified.
+   *
+   * @param {Object} param Options
+   * @param {String} param.productId
+   * @param {String} param.ilokUserId
+   * @returns {Promise}
+   */
+  updateProduct ({ productId, ilokUserId } = {}) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      this.userId === 0 ? '/api/v1/me/products/' + productId
+        : '/api/v1/users/' + this.userId + '/products/' + productId,
+      this.toBody({
+        ilok_user_id: ilokUserId
+      }),
+      'PUT'
+    )
+  }
+
+  /**
    * Create a new license authorization for a host.
    *
    * Requires a valid access token.
