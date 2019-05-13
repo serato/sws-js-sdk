@@ -21,12 +21,14 @@ export default class Profile extends Service {
    * Return a user's profile.
    * Requires a valid access token.
    *
+   * @param   {Object} param
+   * @param   {Boolean} param.useMe
    * @returns {Promise}
    */
-  getProfile () {
+  getProfile ({ useMe = false } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      this.userId === 0 ? '/api/v1/me' : '/api/v1/users/' + this.userId,
+      this.userId === 0 || useMe ? '/api/v1/me' : '/api/v1/users/' + this.userId,
       null,
       'GET'
     )
