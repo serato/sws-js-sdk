@@ -143,7 +143,7 @@ export default class Identity extends Service {
   changeEmailAddress ({ emailAddress, redirectUri } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      this.userId === 0 ? '/api/v1/me/sendverifyemailaddress' : '/api/v1/users/' + this.userId + '/sendverifyemailaddress' ,
+      this.userId === 0 ? '/api/v1/me/sendverifyemailaddress' : '/api/v1/users/' + this.userId + '/sendverifyemailaddress',
       this.toBody({ email_address: emailAddress, redirect_uri: redirectUri }),
       'POST'
     )
