@@ -53,8 +53,8 @@ export default class Profile extends Service {
    * @param   {Boolean} param.autoRead
    * @param   {Boolean} param.autoSubscribe,
    * @param   {Number} param.threadsPerPage
-   * @param   {String} param.displayName
    * @param   {String} param.language
+   * @param   {String} param.displayName
    * @returns {Promise}
    */
   updateProfile ({
