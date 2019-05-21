@@ -17,6 +17,7 @@ export default class Profile extends Service {
     super(Sws)
     this._serviceUri = Sws.serviceUri.profile
   }
+
   /**
    * Return a user's profile.
    * Requires a valid access token.
@@ -33,6 +34,7 @@ export default class Profile extends Service {
       'GET'
     )
   }
+
   /**
    * Update a user's profile.
    * Requires a valid access token
@@ -100,6 +102,28 @@ export default class Profile extends Service {
         language: language
       }),
       'PUT'
+    )
+  }
+
+  /**
+   * Return a user's profile.
+   * Requires a valid access token.
+   *
+   * @param   {Object} param
+   * @param   {String} param.uploadType
+   * @param   {String} param.contentType
+   * @param   {Boolean} param.useMe
+   * @returns {Promise}
+   */
+  createUploadUrl ({ uploadType, contentType, useMe = false } = {}) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      this.userId === 0 || useMe ? '/api/v1/me/fileuploadurl' : '/api/v1/users/' + this.userId + '/fileuploadurl',
+      this.toBody({
+        upload_type: uploadType,
+        content_type: contentType
+      }),
+      'POST'
     )
   }
 }

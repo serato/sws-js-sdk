@@ -13,8 +13,8 @@ describe('Profile Tests', function () {
   })
 
   let swsClient
-  before(function() {
-    swsClient = new Sws({ appId: "myClientAppId" })
+  before(function () {
+    swsClient = new Sws({ appId: 'myClientAppId' })
   })
 
   describe('Profile URI Validation Tests', function () {
@@ -27,9 +27,10 @@ describe('Profile Tests', function () {
             expect(err.httpStatus).not.to.equal(404)
           }
         )
-    })
-    it(`confirms URI used in 'getProfile()' method with user ID, by returning a non-404 HTTP response`,
-      function () {
+      }
+    )
+
+    it(`confirms URI used in 'getProfile()' method with user ID, by returning a non-404 HTTP response`, function () {
       swsClient.userId = 123
       return swsClient.profile.getProfile().then(
         () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
@@ -37,9 +38,9 @@ describe('Profile Tests', function () {
           expect(err.httpStatus).not.to.equal(404)
         }
       )
-    }),
-    it(`confirms URI in 'updateProfile()' method without user ID, by returning a non-404 response`,
-    function () {
+    })
+
+    it(`confirms URI in 'updateProfile()' method without user ID, by returning a non-404 response`, function () {
       swsClient.userId = 0
       return swsClient.profile.updateProfile({
         globalContactStatus: 0,
@@ -58,8 +59,8 @@ describe('Profile Tests', function () {
         }
       )
     })
-    it(`confirms URI in 'updateProfile()' method with a user ID, by returning a non-404 response`,
-    function () {
+
+    it(`confirms URI in 'updateProfile()' method with a user ID, by returning a non-404 response`, function () {
       swsClient.userId = 123
       return swsClient.profile.updateProfile({
         globalContactStatus: 0,
@@ -71,6 +72,32 @@ describe('Profile Tests', function () {
         region: 'Swumbo',
         postCode: 1234,
         country: 'Austria'
+      }).then(
+        () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+        err => {
+          expect(err.httpStatus).not.to.equal(404)
+        }
+      )
+    })
+
+    it(`confirms URI in 'createUploadUrl()' method without user ID, by returning a non-404 response`, function () {
+      swsClient.userId = 0
+      return swsClient.profile.createUploadUrl({
+        uploadType: 'avatar',
+        contentType: 'image/jpeg'
+      }).then(
+        () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+        err => {
+          expect(err.httpStatus).not.to.equal(404)
+        }
+      )
+    })
+
+    it(`confirms URI in 'createUploadUrl()' method with a user ID, by returning a non-404 response`, function () {
+      swsClient.userId = 123
+      return swsClient.profile.createUploadUrl({
+        uploadType: 'avatar',
+        contentType: 'image/jpeg'
       }).then(
         () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
         err => {

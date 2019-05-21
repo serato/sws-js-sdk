@@ -92,11 +92,11 @@ describe('Service', function () {
    * One the sets a custom error handler and asserts that it is used.
    */
 
-    // Define the custom error handler. The err handler receives the error object returned
-    // from the HTTP request.
+  // Define the custom error handler. The err handler receives the error object returned
+  // from the HTTP request.
   let customErrorCodeHandler = (err) => {
-      return `${customHandlerResponse} ${err.response.status} - ${err.response.data.code}`
-    }
+    return `${customHandlerResponse} ${err.response.status} - ${err.response.data.code}`
+  }
 
   const errorsWithCodesTests = [
     // Access token is invalid (eg. bad signature)
@@ -206,11 +206,11 @@ describe('Service', function () {
    * One the sets a custom error handler and asserts that it is used.
    */
 
-    // Define the custom error handler. The err handler receives the error object returned
-    // from the HTTP request.
+  // Define the custom error handler. The err handler receives the error object returned
+  // from the HTTP request.
   const customErrorHandler = (err) => {
-      return `${customHandlerResponse} ${err.response.status}`
-    }
+    return `${customHandlerResponse} ${err.response.status}`
+  }
 
   const errorsWithoutCodesTests = [
     // Unhandled application error
