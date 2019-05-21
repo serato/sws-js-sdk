@@ -53,6 +53,7 @@ export default class Profile extends Service {
    * @param   {Boolean} param.autoRead
    * @param   {Boolean} param.autoSubscribe,
    * @param   {Number} param.threadsPerPage
+   * @param   {String} param.displayName
    * @param   {String} param.language
    * @returns {Promise}
    */
@@ -73,7 +74,8 @@ export default class Profile extends Service {
     autoRead,
     autoSubscribe,
     threadsPerPage,
-    language
+    language,
+    displayName
   }
   = {}
   ) {
@@ -97,7 +99,8 @@ export default class Profile extends Service {
         auto_read: autoRead,
         auto_subscribe: autoSubscribe,
         threads_per_page: threadsPerPage,
-        language: language
+        language: language,
+        display_name: displayName
       }),
       'PUT'
     )
