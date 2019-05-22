@@ -76,17 +76,6 @@ describe('Ecom Tests', function () {
       }
     )
 
-    it(`confirms URI used in 'getCatalogProducts()' by returning a non-404 HTTP response`,
-      function () {
-        return swsClient.ecom.getCatalogProducts().then(
-          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
-          err => {
-            expect(err.httpStatus).not.to.equal(404)
-          }
-        )
-      }
-    )
-
     it(`confirms URI used in 'addPaymentMethod()' method with user ID, by returning a non-404 HTTP response`,
       function () {
         swsClient.userId = 123
@@ -139,38 +128,6 @@ describe('Ecom Tests', function () {
       function () {
         swsClient.userId = 123
         return swsClient.ecom.getPaymentMethods().then(
-          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
-          err => {
-            expect(err.httpStatus).not.to.equal(404)
-          }
-        )
-      }
-    )
-
-    it(`confirms URI used in 'updateSubscription()' method with no user ID, by returning a non-404 HTTP response`,
-      function () {
-        swsClient.userId = 0
-        return swsClient.ecom.updateSubscription({
-          subscriptionId: 'test-id',
-          paymentToken: 'abc',
-          numberOfBillingCycle: 2
-        }).then(
-          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
-          err => {
-            expect(err.httpStatus).not.to.equal(404)
-          }
-        )
-      }
-    )
-
-    it(`confirms URI used in 'updateSubscription()' method with a user ID, by returning a non-404 HTTP response`,
-      function () {
-        swsClient.userId = 123
-        return swsClient.ecom.updateSubscription({
-          subscriptionId: 'test-id',
-          paymentToken: 'abc',
-          numberOfBillingCycle: 2
-        }).then(
           () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
           err => {
             expect(err.httpStatus).not.to.equal(404)
@@ -320,62 +277,5 @@ describe('Ecom Tests', function () {
         )
       }
     )
-
-    it(`confirms URI used in 'retrySubscriptionCharge()' method with no user ID, by returning a non-404 HTTP response`,
-      function () {
-        swsClient.userId = 0
-        return swsClient.ecom.retrySubscriptionCharge({
-          subscriptionId: 'valid-subscription-id'
-        }).then(
-          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
-          err => {
-            expect(err.httpStatus).not.to.equal(404)
-          }
-        )
-      }
-    )
-
-    it(`confirms URI used in 'retrySubscriptionCharge()' method with a user ID, by returning a non-404 HTTP response`,
-      function () {
-        swsClient.userId = 123
-        return swsClient.ecom.retrySubscriptionCharge({
-          subscriptionId: 'valid-subscription-id'
-        }).then(
-          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
-          err => {
-            expect(err.httpStatus).not.to.equal(404)
-          }
-        )
-      }
-    )
-
-    it(`confirms URI used in 'cancelSubscription()' method with no user ID, by returning a non-404 HTTP response`,
-      function () {
-        swsClient.userId = 0
-        return swsClient.ecom.cancelSubscription({
-          subscriptionId: 'valid-subscription-id'
-        }).then(
-          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
-          err => {
-            expect(err.httpStatus).not.to.equal(404)
-          }
-        )
-      }
-    )
-
-    it(`confirms URI used in 'cancelSubscription()' method with a user ID, by returning a non-404 HTTP response`,
-      function () {
-        swsClient.userId = 123
-        return swsClient.ecom.cancelSubscription({
-          subscriptionId: 'valid-subscription-id'
-        }).then(
-          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
-          err => {
-            expect(err.httpStatus).not.to.equal(404)
-          }
-        )
-      }
-    )
-
   })
 })

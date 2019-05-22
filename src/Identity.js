@@ -131,4 +131,21 @@ export default class Identity extends Service {
       'DELETE'
     )
   }
+
+  /**
+   * Change email address through POST request on /me/sendverifyemailaddress &  /users/{user_id}/sendverifyemailaddress endpoints.
+   *
+   *@param {Object} param Options
+   * @param {String} param.emailAddress Email address to change to
+   * @param {String} param.redirectUri URI to redirect to after an email is sent.
+   * @returns {Promise}
+   * **/
+  changeEmailAddress ({ emailAddress, redirectUri } = {}) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      this.userId === 0 ? '/api/v1/me/sendverifyemailaddress' : '/api/v1/users/' + this.userId + '/sendverifyemailaddress',
+      this.toBody({ 'email_address': emailAddress, 'redirect_uri': redirectUri }),
+      'POST'
+    )
+  }
 }
