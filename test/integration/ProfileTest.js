@@ -106,4 +106,56 @@ describe('Profile Tests', function () {
       )
     })
   })
+
+  it(`confirms URI in 'updateAvatar()' method without user ID, by returning a non-404 response`, function () {
+    swsClient.userId = 0
+    return swsClient.profile.updateAvatar({
+      uploadType: 'avatar',
+      contentType: 'image/jpeg'
+    }).then(
+      () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+      err => {
+        expect(err.httpStatus).not.to.equal(404)
+      }
+    )
+  })
+
+  it(`confirms URI in 'updateAvatar()' method with a user ID, by returning a non-404 response`, function () {
+    swsClient.userId = 123
+    return swsClient.profile.updateAvatar({
+      uploadType: 'avatar',
+      contentType: 'image/jpeg'
+    }).then(
+      () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+      err => {
+        expect(err.httpStatus).not.to.equal(404)
+      }
+    )
+  })
+
+  it(`confirms URI in 'deleteAvatar()' method without user ID, by returning a non-404 response`, function () {
+    swsClient.userId = 0
+    return swsClient.profile.deleteAvatar({
+      uploadType: 'avatar',
+      contentType: 'image/jpeg'
+    }).then(
+      () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+      err => {
+        expect(err.httpStatus).not.to.equal(404)
+      }
+    )
+  })
+
+  it(`confirms URI in 'deleteAvatar()' method with a user ID, by returning a non-404 response`, function () {
+    swsClient.userId = 123
+    return swsClient.profile.deleteAvatar({
+      uploadType: 'avatar',
+      contentType: 'image/jpeg'
+    }).then(
+      () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+      err => {
+        expect(err.httpStatus).not.to.equal(404)
+      }
+    )
+  })
 })
