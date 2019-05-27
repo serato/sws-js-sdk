@@ -115,18 +115,45 @@ export default class Profile extends Service {
    * @param   {Object} param
    * @param   {String} param.uploadType
    * @param   {String} param.contentType
-   * @param   {Boolean} param.useMe
    * @returns {Promise}
    */
-  createUploadUrl ({ uploadType, contentType, useMe = false } = {}) {
+  createUploadUrl ({ uploadType, contentType } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      this.userId === 0 || useMe ? '/api/v1/me/fileuploadurl' : '/api/v1/users/' + this.userId + '/fileuploadurl',
+      this.userId === 0 ? '/api/v1/me/fileuploadurl' : '/api/v1/users/' + this.userId + '/fileuploadurl',
       this.toBody({
         upload_type: uploadType,
         content_type: contentType
       }),
       'POST'
+    )
+  }
+
+  /**
+   * Sets a user's avatar to an file that exists in a known location.
+   *
+   * @returns {Promise}
+   */
+  updateAvatar () {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      this.userId === 0 ? '/api/v1/me/avatar' : '/api/v1/users/' + this.userId + '/avatar',
+      null,
+      'PUT'
+    )
+  }
+
+  /**
+   * Deletes a user's avatar
+   *
+   * @returns {Promise}
+   */
+  deleteAvatar () {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      this.userId === 0 ? '/api/v1/me/avatar' : '/api/v1/users/' + this.userId + '/avatar',
+      null,
+      'DELETE'
     )
   }
 }
