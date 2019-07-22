@@ -156,4 +156,22 @@ export default class Profile extends Service {
       'DELETE'
     )
   }
+
+
+  /**
+   * Deletes a user's betaprogram
+   *  
+   * @param   {Object} param
+   * @param   {Boolean} param.betaProgramId
+   * @returns {Promise}
+   */
+  deleteBetaProgram ( { betaProgramId } = {} ) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      this.userId === 0 ? '/api/v1/me/betaprograms/' + betaProgramId : '/api/v1/users/' + this.userId + '/betaprograms/' + betaProgramId,
+      null,
+      'DELETE'
+    )
+  }
+
 }
