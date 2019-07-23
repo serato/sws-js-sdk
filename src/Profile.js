@@ -158,7 +158,8 @@ export default class Profile extends Service {
   }
 
   /**
-   * Return a user's betaPrograms object.
+   * Adding a betaPrograms to a specified user
+   * Then return a user's betaPrograms object with all the betaPrograms of this user.
    * Requires a valid access token.
    *
    * @param   {Object} param
