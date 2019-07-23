@@ -157,15 +157,33 @@ export default class Profile extends Service {
     )
   }
 
+  /**
+   * Return a user's betaPrograms object.
+   * Requires a valid access token.
+   *
+   * @param   {Object} param
+   * @param   {String} param.betaProgramId
+   * @returns {Promise}
+   */
+  addBetaProgram ({ betaProgramId } = {}) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      this.userId === 0 ? '/api/v1/me/betaprograms' : '/api/v1/users/' + this.userId + '/betaprograms',
+      this.toBody({
+        beta_program_id: betaProgramId
+      }),
+      'POST'
+    )
+  }
 
   /**
    * Deletes a user's betaprogram
-   *  
+   *
    * @param   {Object} param
    * @param   {Boolean} param.betaProgramId
    * @returns {Promise}
    */
-  deleteBetaProgram ( { betaProgramId } = {} ) {
+  deleteBetaProgram ({ betaProgramId } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       this.userId === 0 ? '/api/v1/me/betaprograms/' + betaProgramId : '/api/v1/users/' + this.userId + '/betaprograms/' + betaProgramId,
@@ -173,5 +191,4 @@ export default class Profile extends Service {
       'DELETE'
     )
   }
-
 }
