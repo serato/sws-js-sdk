@@ -107,14 +107,16 @@ describe('Profile Tests', function () {
     })
   })
 
-  it(`confirms URI in 'updateAvatar()' method without user ID, by returning a non-404 response`, function () {
-    swsClient.userId = 0
-    return swsClient.profile.updateAvatar().then(
-      () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
-      err => {
-        expect(err.httpStatus).not.to.equal(404)
-      }
-    )
+  describe('Profile URI Avatars Tests', function () {
+    it(`confirms URI in 'updateAvatar()' method without user ID, by returning a non-404 response`, function () {
+      swsClient.userId = 0
+      return swsClient.profile.updateAvatar().then(
+        () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+        err => {
+          expect(err.httpStatus).not.to.equal(404)
+        }
+      )
+    })
   })
 
   it(`confirms URI in 'updateAvatar()' method with a user ID, by returning a non-404 response`, function () {
@@ -146,4 +148,55 @@ describe('Profile Tests', function () {
       }
     )
   })
+
+  describe('Profile URI betaPrograms Tests', function () {
+    it(`confirms URI in 'addBetaProgram()' method without user ID, by returning a non-404 response`, function () {
+      swsClient.userId = 0
+      return swsClient.profile.addBetaProgram({
+        betaProgramId: 'serato_studio_public_beta'
+      }).then(
+        () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+        err => {
+          expect(err.httpStatus).not.to.equal(404)
+        }
+      )
+    })
+
+    it(`confirms URI in 'addBetaProgram()' method with a user ID, by returning a non-404 response`, function () {
+      swsClient.userId = 123
+      return swsClient.profile.addBetaProgram({
+        betaProgramId: 'serato_studio_public_beta'
+      }).then(
+        () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+        err => {
+          expect(err.httpStatus).not.to.equal(404)
+        }
+      )
+    })
+
+    it(`confirms URI in 'deleteBetaProgram()' method without user ID, by returning a non-404 response`, function () {
+      swsClient.userId = 0
+      return swsClient.profile.deleteBetaProgram({
+        betaProgramId: 'serato_studio_public_beta'
+      }).then(
+        () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+        err => {
+          expect(err.httpStatus).not.to.equal(404)
+        }
+      )
+    })
+
+    it(`confirms URI in 'deleteBetaProgram()' method with a user ID, by returning a non-404 response`, function () {
+      swsClient.userId = 123
+      return swsClient.profile.deleteBetaProgram({
+        betaProgramId: 'serato_studio_public_beta'
+      }).then(
+        () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+        err => {
+          expect(err.httpStatus).not.to.equal(404)
+        }
+      )
+    })
+  })
+
 })
