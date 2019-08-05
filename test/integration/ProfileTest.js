@@ -150,7 +150,7 @@ describe('Profile Tests', function () {
   })
 
   describe('Profile URI betaPrograms Tests', function () {
-    it(`confirms URI used in 'getProfile()' method with no user ID, by returning a non-404 HTTP response`,
+    it(`confirms URI used in 'getBetaPrograms()' method with no user ID, by returning a non-404 HTTP response`,
     function () {
       swsClient.userId = 0
       return swsClient.profile.getBetaPrograms().then(
@@ -163,7 +163,7 @@ describe('Profile Tests', function () {
 
     it(`confirms URI used in 'getBetaPrograms()' method with user ID, by returning a non-404 HTTP response`, function () {
       swsClient.userId = 123
-      return swsClient.profile.getProfile().then(
+      return swsClient.profile.getBetaPrograms().then(
         () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
         err => {
           expect(err.httpStatus).not.to.equal(404)
