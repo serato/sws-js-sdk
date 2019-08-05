@@ -157,8 +157,6 @@ export default class Profile extends Service {
     )
   }
 
-
-
   /**
    * Return Serato Beta Program memberships to a specified user.
    * Requires a valid access token.
