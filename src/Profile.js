@@ -158,6 +158,21 @@ export default class Profile extends Service {
   }
 
   /**
+   * Return Serato Beta Program memberships to a specified user.
+   * Requires a valid access token.
+   *
+   * @returns {Promise}
+   */
+  getBetaPrograms () {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      this.userId === 0 ? '/api/v1/me/betaprograms' : '/api/v1/users/' + this.userId + '/betaprograms',
+      null,
+      'GET'
+    )
+  }
+
+  /**
    * Adding a betaPrograms to a specified user
    * Then return a user's betaPrograms object with all the betaPrograms of this user.
    * Requires a valid access token.
