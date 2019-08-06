@@ -75,18 +75,32 @@ export default class Identity extends Service {
    *
    * @param {Object} param Options
    * @param {String} param.refreshToken Users Refresh token to invalidate
-   * @param {Boolean} param.allAppInstances
+   * @param {String} param.refreshTokenIds Comma delimited string containing multiple refresh tokens
+   * @param {Boolean} param.disableLogin When provided, the user will be prevented from logging into the SSO service
    * @return {Promise}
    */
-  logout ({ refreshToken, allAppInstances = true } = {}) {
-    return this.fetch(
-      null,
-      '/api/v1/me/logout',
-      this.toBody({
-        'refresh_token': refreshToken, 'all_app_instances': allAppInstances
-      }),
-      'POST'
-    )
+  logout ({ refreshToken, refreshTokenIds, disableLogin = false } = {}) {
+    if (refreshToken !== null || refreshToken !== '') {
+      return this.fetch(
+        null,
+        '/api/v1/me/logout',
+        this.toBody({
+          'refresh_token': refreshToken,
+          'disable_login': disableLogin
+        }),
+        'POST'
+      )
+    } else if (refreshTokenIds !== null || refreshToken !== '') {
+      return this.fetch(
+        null,
+        '/api/v1/me/logout',
+        this.toBody({
+          'refresh_token_ids': refreshTokenIds,
+          'disable_login': disableLogin
+        }),
+        'POST'
+      )
+    }
   }
 
   /**
