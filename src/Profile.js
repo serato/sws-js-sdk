@@ -158,6 +158,21 @@ export default class Profile extends Service {
   }
 
   /**
+   * Return All Serato Beta Program.
+   * Requires a valid access token.
+   *
+   * @returns {Promise}
+   */
+  getAllBetaPrograms () {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      '/api/v1/betaprograms',
+      null,
+      'GET'
+    )
+  }
+
+  /**
    * Return Serato Beta Program memberships to a specified user.
    * Requires a valid access token.
    *
