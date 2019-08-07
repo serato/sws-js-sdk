@@ -79,8 +79,8 @@ export default class Identity extends Service {
    * @param {Boolean} param.disableLogin When provided, the user will be prevented from logging into the SSO service
    * @return {Promise}
    */
-  logout ({ refreshToken, refreshTokenIds, disableLogin = false } = {}) {
-    if (refreshToken !== null || refreshToken !== '') {
+  logout ({ refreshToken, refreshTokenIds, disableLogin } = {}) {
+    if (refreshToken) {
       return this.fetch(
         null,
         '/api/v1/me/logout',
@@ -90,7 +90,7 @@ export default class Identity extends Service {
         }),
         'POST'
       )
-    } else if (refreshTokenIds !== null || refreshToken !== '') {
+    } else if (refreshTokenIds) {
       return this.fetch(
         null,
         '/api/v1/me/logout',
