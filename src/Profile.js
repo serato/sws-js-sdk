@@ -222,4 +222,20 @@ export default class Profile extends Service {
       'DELETE'
     )
   }
+
+  /**
+   * Re-validate all Serato Beta Program memberships for the authenticated client user.
+   * Then return a user's betaPrograms object with all the betaPrograms of this user.
+   * Requires a valid access token.
+   *
+   * @returns {Promise}
+   */
+  validateAllBetaProgram () {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      this.userId === 0 ? '/api/v1/me/betaprograms/validateall' : '/api/v1/users/' + this.userId + '/betaprograms/validateall',
+      null,
+      'POST'
+    )
+  }
 }
