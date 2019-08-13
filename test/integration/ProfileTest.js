@@ -229,9 +229,9 @@ describe('Profile Tests', function () {
       )
     })
 
-    it(`confirms URI in 'validateAllBetaProgram()' method without user ID, by returning a non-404 response`, function () {
+    it(`confirms URI in 'validateAllBetaPrograms()' method without user ID, by returning a non-404 response`, function () {
       swsClient.userId = 0
-      return swsClient.profile.validateAllBetaProgram().then(
+      return swsClient.profile.validateAllBetaPrograms().then(
         () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
         err => {
           expect(err.httpStatus).not.to.equal(404)
@@ -239,9 +239,9 @@ describe('Profile Tests', function () {
       )
     })
 
-    it(`confirms URI in 'validateAllBetaProgram()' method with a user ID, by returning a non-404 response`, function () {
+    it(`confirms URI in 'validateAllBetaPrograms()' method with a user ID, by returning a non-404 response`, function () {
       swsClient.userId = 123
-      return swsClient.profile.validateAllBetaProgram().then(
+      return swsClient.profile.validateAllBetaPrograms().then(
         () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
         err => {
           expect(err.httpStatus).not.to.equal(404)

@@ -230,7 +230,7 @@ export default class Profile extends Service {
    *
    * @returns {Promise}
    */
-  validateAllBetaProgram () {
+  validateAllBetaPrograms () {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       this.userId === 0 ? '/api/v1/me/betaprograms/validateall' : '/api/v1/users/' + this.userId + '/betaprograms/validateall',
