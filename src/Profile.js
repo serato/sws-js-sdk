@@ -156,4 +156,86 @@ export default class Profile extends Service {
       'DELETE'
     )
   }
+
+  /**
+   * Return All Serato Beta Program.
+   * Requires a valid access token.
+   *
+   * @returns {Promise}
+   */
+  getAllBetaPrograms () {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      '/api/v1/betaprograms',
+      null,
+      'GET'
+    )
+  }
+
+  /**
+   * Return Serato Beta Program memberships to a specified user.
+   * Requires a valid access token.
+   *
+   * @returns {Promise}
+   */
+  getBetaPrograms () {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      this.userId === 0 ? '/api/v1/me/betaprograms' : '/api/v1/users/' + this.userId + '/betaprograms',
+      null,
+      'GET'
+    )
+  }
+
+  /**
+   * Adding a betaPrograms to a specified user
+   * Then return a user's betaPrograms object with all the betaPrograms of this user.
+   * Requires a valid access token.
+   *
+   * @param   {Object} param
+   * @param   {String} param.betaProgramId
+   * @returns {Promise}
+   */
+  addBetaProgram ({ betaProgramId } = {}) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      this.userId === 0 ? '/api/v1/me/betaprograms' : '/api/v1/users/' + this.userId + '/betaprograms',
+      this.toBody({
+        beta_program_id: betaProgramId
+      }),
+      'POST'
+    )
+  }
+
+  /**
+   * Deletes a user's betaprogram
+   *
+   * @param   {Object} param
+   * @param   {Boolean} param.betaProgramId
+   * @returns {Promise}
+   */
+  deleteBetaProgram ({ betaProgramId } = {}) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      this.userId === 0 ? '/api/v1/me/betaprograms/' + betaProgramId : '/api/v1/users/' + this.userId + '/betaprograms/' + betaProgramId,
+      null,
+      'DELETE'
+    )
+  }
+
+  /**
+   * Re-validate all Serato Beta Program memberships for the authenticated client user.
+   * Then return a user's betaPrograms object with all the betaPrograms of this user.
+   * Requires a valid access token.
+   *
+   * @returns {Promise}
+   */
+  validateAllBetaPrograms () {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      this.userId === 0 ? '/api/v1/me/betaprograms/validateall' : '/api/v1/users/' + this.userId + '/betaprograms/validateall',
+      null,
+      'POST'
+    )
+  }
 }
