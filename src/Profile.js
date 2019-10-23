@@ -240,20 +240,19 @@ export default class Profile extends Service {
   }
 
   /**
-   * Adding a Survey Data to a specified user
-   * Then return a user's Survey's Data object with all the Surveys of this user.
+   * Sends a survey to be written into cloudwatch logs.
    * Requires a valid access token.
    *
    * @param   {Object} param
-   * @param   {Object} param.surveyData
+   * @param   {Object} param.survey
    * @returns {Promise}
    */
-  addSurvey ({ surveyData } = {}) {
+  addSurvey ({ survey } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       this.userId === 0 ? '/api/v1/me/survey' : '/api/v1/users/' + this.userId + '/survey',
       this.toBody({
-        surveyData: surveyData
+        survey: survey
       }),
       'POST'
     )
