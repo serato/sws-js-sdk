@@ -238,4 +238,23 @@ export default class Profile extends Service {
       'POST'
     )
   }
+
+  /**
+   * Sends a survey to be written into cloudwatch logs.
+   * Requires a valid access token.
+   *
+   * @param   {Object} param
+   * @param   {Object} param.survey
+   * @returns {Promise}
+   */
+  addSurvey ({ survey } = {}) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      this.userId === 0 ? '/api/v1/me/survey' : '/api/v1/users/' + this.userId + '/survey',
+      this.toBody({
+        survey: survey
+      }),
+      'POST'
+    )
+  }
 }
