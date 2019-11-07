@@ -273,4 +273,52 @@ export default class Ecom extends Service {
       'DELETE'
     )
   }
+
+  /**
+   * Return subscriptions owned by a user.
+   * Requires a valid access token.
+   *
+   * @returns {Promise}
+   */
+  getVouchers () {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      this.userId === 0 ? '/api/v1/me/vouchers' : '/api/v1/users/' + this.userId + '/vouchers',
+      null
+    )
+  }
+
+  /**
+   * Add vouchers by a given voucher id.
+   * Requires a valid access token.
+   *
+   * @param {String} param voucherId
+   * @return {Promise}
+   */
+  addVoucher ({ voucherId }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      this.userId === 0 ? '/api/v1/me/vouchers' : '/api/v1/users/' + this.userId + '/vouchers',
+      this.toBody({
+        'voucher_id': voucherId
+      }),
+      'POST'
+    )
+  }
+
+  /**
+   * update vouchers by a given voucher id.
+   * Requires a valid access token.
+   *
+   * @param {String} param voucherId
+   * @return {Promise}
+   */
+  updateVoucher ({ voucherId }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      this.userId === 0 ? '/api/v1/me/vouchers/' + voucherId : '/api/v1/users/' + this.userId + '/vouchers/' + voucherId,
+      null,
+      'PUT'
+    )
+  }
 }
