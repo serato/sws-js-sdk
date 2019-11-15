@@ -295,7 +295,7 @@ export default class Ecom extends Service {
    * @param {String} param voucherId
    * @return {Promise}
    */
-  addVoucher ({ voucherId }) {
+  assignVoucher ({ voucherId }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       this.userId === 0 ? '/api/v1/me/vouchers' : '/api/v1/users/' + this.userId + '/vouchers',
@@ -313,7 +313,7 @@ export default class Ecom extends Service {
    * @param {String} param voucherId
    * @return {Promise}
    */
-  updateVoucher ({ voucherId }) {
+  redeemVoucher ({ voucherId }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       this.userId === 0 ? '/api/v1/me/vouchers/' + voucherId : '/api/v1/users/' + this.userId + '/vouchers/' + voucherId,
