@@ -277,5 +277,57 @@ describe('Ecom Tests', function () {
         )
       }
     )
+
+    it(`confirms URI used in 'getVouchers()' method with no user ID, by returning a non-404 HTTP response`,
+      function () {
+        swsClient.userId = 0
+        return swsClient.ecom.getVouchers().then(
+          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+          err => {
+            expect(err.httpStatus).not.to.equal(404)
+          }
+        )
+      }
+    )
+
+    it(`confirms URI used in 'getVouchers()' method with user ID, by returning a non-404 HTTP response`,
+      function () {
+        swsClient.userId = 123
+        return swsClient.ecom.getVouchers().then(
+          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+          err => {
+            expect(err.httpStatus).not.to.equal(404)
+          }
+        )
+      }
+    )
+
+    it(`confirms URI used in 'assignVoucher()' method with no user ID, by returning a non-404 HTTP response`,
+      function () {
+        swsClient.userId = 0
+        return swsClient.ecom.assignVoucher({
+          voucherId: 'AB'
+        }).then(
+          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+          err => {
+            expect(err.httpStatus).not.to.equal(404)
+          }
+        )
+      }
+    )
+
+    it(`confirms URI used in 'assignVoucher()' method with user ID, by returning a non-404 HTTP response`,
+      function () {
+        swsClient.userId = 123
+        return swsClient.ecom.assignVoucher({
+          voucherId: 'AB'
+        }).then(
+          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+          err => {
+            expect(err.httpStatus).not.to.equal(404)
+          }
+        )
+      }
+    )
   })
 })
