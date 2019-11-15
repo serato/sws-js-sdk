@@ -302,10 +302,10 @@ describe('Ecom Tests', function () {
       }
     )
 
-    it(`confirms URI used in 'addVoucher()' method with no user ID, by returning a non-404 HTTP response`,
+    it(`confirms URI used in 'assignVoucher()' method with no user ID, by returning a non-404 HTTP response`,
       function () {
         swsClient.userId = 0
-        return swsClient.ecom.addVoucher({
+        return swsClient.ecom.assignVoucher({
           voucherId: 'AB'
         }).then(
           () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
@@ -316,10 +316,10 @@ describe('Ecom Tests', function () {
       }
     )
 
-    it(`confirms URI used in 'addVoucher()' method with user ID, by returning a non-404 HTTP response`,
+    it(`confirms URI used in 'assignVoucher()' method with user ID, by returning a non-404 HTTP response`,
       function () {
         swsClient.userId = 123
-        return swsClient.ecom.addVoucher({
+        return swsClient.ecom.assignVoucher({
           voucherId: 'AB'
         }).then(
           () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
