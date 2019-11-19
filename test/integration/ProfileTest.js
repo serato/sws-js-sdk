@@ -17,6 +17,22 @@ describe('Profile Tests', function () {
     swsClient = new Sws({ appId: 'myClientAppId' })
   })
 
+  // Use this for smoke testing against dev environments when
+  // implementing new endpoints
+  // before(function () {
+  //   swsClient = new Sws({
+  //     appId: 'myAppId',
+  //     secret: 'myAppSecret',
+  //     timeout: 3000,
+  //     serviceUri: {
+  //       id: 'http://192.168.4.7',
+  //       license: 'http://192.168.4.6',
+  //       ecom: 'http://192.168.4.8',
+  //       profile: 'http://192.168.4.9'
+  //     }
+  //   })
+  // })
+
   describe('Profile URI Validation Tests', function () {
     it(`confirms URI used in 'getProfile()' method with no user ID, by returning a non-404 HTTP response`,
       function () {
@@ -150,8 +166,7 @@ describe('Profile Tests', function () {
   })
 
   describe('Profile URI betaPrograms Tests', function () {
-    it(`confirms URI used in 'getAllBetaPrograms()' method, by returning a non-404 HTTP response`,
-    function () {
+    it(`confirms URI used in 'getAllBetaPrograms()' method, by returning a non-404 HTTP response`, function () {
       return swsClient.profile.getAllBetaPrograms().then(
         () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
         err => {
@@ -160,8 +175,7 @@ describe('Profile Tests', function () {
       )
     })
 
-    it(`confirms URI used in 'getBetaPrograms()' method with no user ID, by returning a non-404 HTTP response`,
-    function () {
+    it(`confirms URI used in 'getBetaPrograms()' method with no user ID, by returning a non-404 HTTP response`, function () {
       swsClient.userId = 0
       return swsClient.profile.getBetaPrograms().then(
         () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
@@ -267,6 +281,47 @@ describe('Profile Tests', function () {
       function () {
         swsClient.userId = 0
         return swsClient.profile.addSurvey().then(
+          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+          err => {
+            expect(err.httpStatus).not.to.equal(404)
+          }
+        )
+      }
+    )
+  })
+
+  describe('Profile URI Partner Promotions validation Tests', function () {
+    it(`confirms URI used in 'getPartnerPromotions()' method with no user ID, by returning a non-404 HTTP response`,
+      function () {
+        swsClient.userId = 123
+        return swsClient.profile.getPartnerPromotions().then(
+          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+          err => {
+            expect(err.httpStatus).not.to.equal(404)
+          }
+        )
+      }
+    )
+
+    it(`confirms URI used in 'getPartnerPromotions()' method with user ID, by returning a non-404 HTTP response`,
+      function () {
+        swsClient.userId = 0
+        return swsClient.profile.getPartnerPromotions().then(
+          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+          err => {
+            expect(err.httpStatus).not.to.equal(404)
+          }
+        )
+      }
+    )
+
+    it(`confirms URI used in 'partnerPromotionAddUser()' method with user ID, by returning a non-404 HTTP response`,
+      function () {
+        swsClient.userId = 0
+        return swsClient.profile.partnerPromotionAddUser({
+          userId: 123,
+          promotionName: 'test-promo'
+        }).then(
           () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
           err => {
             expect(err.httpStatus).not.to.equal(404)

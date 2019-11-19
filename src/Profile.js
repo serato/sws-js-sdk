@@ -257,4 +257,39 @@ export default class Profile extends Service {
       'POST'
     )
   }
+
+  /**
+   * Gets a list of a user's partner promotions.
+   * Requires a valid access token.
+   *
+   * @returns {Promise}
+   */
+  getPartnerPromotions () {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      this.userId === 0 ? '/api/v1/me/partnerpromotions' : '/api/v1/users/' + this.userId + '/partnerpromotions',
+      null,
+      'GET'
+    )
+  }
+
+  /**
+   * Adds a user to a partner promotion.
+   *
+   * @param   {Object} param
+   * @param   {String} param.userId
+   * @param   {String} param.promotionName
+   * @returns {Promise}
+   */
+  partnerPromotionAddUser ({ userId, promotionName } = {}) {
+    return this.fetch(
+      this.basicAuthHeader(),
+      '/api/v1/partnerpromotions/code',
+      this.toBody({
+        user_id: userId,
+        promotion_name: promotionName
+      }),
+      'POST'
+    )
+  }
 }
