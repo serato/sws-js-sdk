@@ -9,6 +9,7 @@ const serviceUriDefault = {
   id: 'id.serato.com',
   license: 'license.serato.com',
   ecom: 'ecom.serato.com',
+  notifications: 'notifications.serato.com',
   profile: 'profile.serato.com'
 }
 
@@ -43,6 +44,7 @@ export default class Sws {
       id: serviceUri.id ? serviceUri.id : serviceUriDefault.id,
       license: serviceUri.license ? serviceUri.license : serviceUriDefault.license,
       ecom: serviceUri.ecom ? serviceUri.ecom : serviceUriDefault.ecom,
+      notifications: serviceUri.notifications ? serviceUri.notifications : serviceUriDefault.notifications,
       profile: serviceUri.profile ? serviceUri.profile : serviceUriDefault.profile
     }
     // Create service clients
@@ -50,6 +52,7 @@ export default class Sws {
       license: new License(this),
       id: new Identity(this),
       ecom: new Ecom(this),
+      notifications: new Notifications(this),
       profile: new Profile(this)
       // Define more clients here,
       // and add a getter method
@@ -264,6 +267,14 @@ export default class Sws {
    */
   get profile () {
     return this._service.profile
+  }
+  /**
+   * Get the notifications service client instance
+   *
+   * @return {Notifications} Notifications service client
+   */
+  get notifications () {
+    return this._service.notifications
   }
 }
 
