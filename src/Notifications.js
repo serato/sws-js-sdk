@@ -37,12 +37,7 @@ export default class Notifications extends Service {
                 'host_app_os': hostAppOs,
                 'locale': locale
             }),
-            'GET',
-            30000,
-            {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
+            'GET'
         )
     }
 }

@@ -4,6 +4,7 @@ import License from './License'
 import Identity from './Identity'
 import Ecom from './Ecom'
 import Profile from './Profile'
+import Notifications from './Notifications'
 
 const serviceUriDefault = {
   id: 'id.serato.com',
