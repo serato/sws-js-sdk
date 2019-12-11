@@ -5,13 +5,15 @@ import Identity from './Identity'
 import Ecom from './Ecom'
 import Profile from './Profile'
 import Notifications from './Notifications'
+import DigitalAssets from './DigitalAssets'
 
 const serviceUriDefault = {
   id: 'id.serato.com',
   license: 'license.serato.com',
   ecom: 'ecom.serato.com',
   notifications: 'notifications.serato.com',
-  profile: 'profile.serato.com'
+  profile: 'profile.serato.com',
+  da: 'da.serato.com'
 }
 
 /**
@@ -46,7 +48,8 @@ export default class Sws {
       license: serviceUri.license ? serviceUri.license : serviceUriDefault.license,
       ecom: serviceUri.ecom ? serviceUri.ecom : serviceUriDefault.ecom,
       notifications: serviceUri.notifications ? serviceUri.notifications : serviceUriDefault.notifications,
-      profile: serviceUri.profile ? serviceUri.profile : serviceUriDefault.profile
+      profile: serviceUri.profile ? serviceUri.profile : serviceUriDefault.profile,
+      da: serviceUri.da ? serviceUri.da : serviceUriDefault.da
     }
     // Create service clients
     this._service = {
@@ -54,7 +57,8 @@ export default class Sws {
       id: new Identity(this),
       ecom: new Ecom(this),
       notifications: new Notifications(this),
-      profile: new Profile(this)
+      profile: new Profile(this),
+      da: new DigitalAssets(this)
       // Define more clients here,
       // and add a getter method
     }
@@ -276,6 +280,14 @@ export default class Sws {
    */
   get notifications () {
     return this._service.notifications
+  }
+  /**
+   * Get the DigitalAssets service client instance
+   *
+   * @return {DigitalAssets} DigitalAssets service client
+   */
+  get digitalAssets () {
+    return this._service.da
   }
 }
 
