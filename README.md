@@ -48,6 +48,10 @@ let sws = new Sws({
   serviceUri: { // Base URIs for SWS services (defaults to production endpoints)
     id: 'my.id-service.uri',
     license: 'my.license-service.uri',
+    ecom: 'my.ecom-service.uri',
+    profile: 'my.profile-service.uri',
+    da: 'my.da-service.uri',
+    notifications: 'my.notifications-service.uri'
   }
 })
 ```
