@@ -33,6 +33,10 @@ export default class Sws {
    * @param {Object} config.serviceUri Base URIs for SWS services
    * @param {String} config.serviceUri.id Base URI for SWS ID Service
    * @param {String} config.serviceUri.license Base URI for SWS License Service
+   * @param {String} config.serviceUri.ecom Base URI for SWS Ecommerce Service
+   * @param {String} config.serviceUri.notifications Base URI for SWS Notifications Service
+   * @param {String} config.serviceUri.profile Base URI for SWS Profile Service
+   * @param {String} config.serviceUri.da Base URI for SWS Digital Assets Service
    * @return {void}
    */
   constructor ({ appId, secret = '', userId = 0, timeout = 3000, serviceUri = {} }) {
@@ -286,7 +290,7 @@ export default class Sws {
    *
    * @return {DigitalAssets} DigitalAssets service client
    */
-  get digitalAssets () {
+  get da () {
     return this._service.da
   }
 }

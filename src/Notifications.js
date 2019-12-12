@@ -30,7 +30,7 @@ export default class Notifications extends Service {
   getNotifications ({ hostAppName, hostAppVersion, hostAppOs, locale } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      '/api/v1/notifcations',
+      '/api/v1/notifications',
       this.toBody({
         'host_app_name': hostAppName,
         'host_app_version': hostAppVersion,

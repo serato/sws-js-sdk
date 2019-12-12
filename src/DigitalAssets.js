@@ -29,7 +29,7 @@ export default class DigitalAssets extends Service {
    * @param  {Number} latestOnly
    * @return {Promise}
    */
-  getDigitalAssets ({ hostAppName, hostAppVersion, type, releaseType, releaseDate, latestOnly } = {}) {
+  get ({ hostAppName, hostAppVersion, type, releaseType, releaseDate, latestOnly } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       '/api/v1/assets',
@@ -47,14 +47,14 @@ export default class DigitalAssets extends Service {
 
   /**
    * Create a download URL for a resource
-   * @param  {String} assetIid
+   * @param  {String} assetId
    * @param  {String} resourceId
    * @return {Promise}
    */
-  postDigitalAssets ({ assetIid, resourceId } = {}) {
+  getDownloadUrl ({ assetId, resourceId } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      '/api/v1/assets/' + assetIid + '/resources/' + resourceId + '/download',
+      '/api/v1/assets/' + assetId + '/resources/' + resourceId + '/download',
       null,
       'POST'
     )
