@@ -27,7 +27,7 @@ export default class Notifications extends Service {
    * @param  {String} locale
    * @return {Promise}
    */
-  getNotifications ({ hostAppName = null , hostAppVersion = null, hostAppOs = null, locale = null }) {
+  getNotifications ({ hostAppName = null, hostAppVersion = null, hostAppOs = null, locale = null }) {
     return this.fetch(
       this.bearerTokenAuthHeader() === null ? null : this.bearerTokenAuthHeader(),
       '/api/v1/notifications',
