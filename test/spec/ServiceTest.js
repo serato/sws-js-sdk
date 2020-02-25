@@ -14,7 +14,7 @@ import { expect } from 'chai'
 
 const appId = 'myClientAppId'
 const getLicensesUri = '/api/v1/me/licenses'
-const getInvoiceUri = '/api/v1/me/orders/123/invoice'
+const getInvoiceUri = '/api/v1/me/orders/123/invoices/456'
 const customHandlerResponse = 'This value is returned by our custom handler'
 
 describe('Service', function () {
@@ -46,7 +46,7 @@ describe('Service', function () {
 
       let sws = new Sws({ appId: appId })
 
-      return sws.ecom.getInvoice(123).then(
+      return sws.ecom.getInvoice(123, 456).then(
         () => {
           const request = sws.ecom.lastRequest
           expect(request.responseType).to.equal('blob')
