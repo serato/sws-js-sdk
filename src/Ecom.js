@@ -206,13 +206,15 @@ export default class Ecom extends Service {
    * Requires a valid access token.
    *
    * @param orderId ID of the order for which an invoice will be returned.
+   * @param invoiceId ID of the invoice for the order that will be returned.
    * @return {Promise}
    */
-  getInvoice (orderId) {
+  getInvoice (orderId, invoiceId) {
+    const endpointPrefix = (this.userId === 0) ? '/api/v1/me' : `/api/v1/users/${this.userId}`
+    const endpoint = `${endpointPrefix}/orders/${orderId}/invoices/${invoiceId}`
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      this.userId === 0 ? '/api/v1/me/orders/' + orderId + '/invoice' : '/api/v1/users/' + this.userId + '/orders/' +
-        orderId + '/invoice',
+      endpoint,
       null,
       'GET',
       null,
