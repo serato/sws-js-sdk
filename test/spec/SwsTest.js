@@ -51,6 +51,13 @@ describe('Sws', function () {
     expect(customErrorHandler).to.equal(sws.license.invalidRefreshTokenHandler)
   })
 
+  it('tests that `setPasswordReEntryRequiredHandler` sets the correct callback to a service client', function () {
+    let customErrorHandler = () => { return 'A value' }
+    let sws = new Sws({ appId: appId })
+    sws.setPasswordReEntryRequiredHandler(customErrorHandler)
+    expect(customErrorHandler).to.equal(sws.license.passwordReEntryRequiredHandler)
+  })
+
   it('tests that `setAccessDeniedHandler` sets the correct callback to a service client', function () {
     let customErrorHandler = () => { return 'A value' }
     let sws = new Sws({ appId: appId })

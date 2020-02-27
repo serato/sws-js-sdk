@@ -17,6 +17,7 @@ export default class Service {
 
     this._invalidAccessTokenHandler = handleFetchError
     this._invalidRefreshTokenHandler = handleFetchError
+    this._passwordReEntryRequiredHandler = handleFetchError
     this._accessDeniedHandler = handleFetchError
     this._timeoutExceededHandler = handleFetchError
     this._serviceErrorHandler = handleFetchError
@@ -161,6 +162,10 @@ export default class Service {
           // Permissions error
           // 403 2000 - Access token has insufficient scopes
           return Promise.resolve(this.accessDeniedHandler(err))
+        } else if (status === 401 && code === 2011) {
+          // Authorization error
+          // 401 2011 - User is required to re-enter their password
+          return Promise.resolve(this.passwordReEntryRequiredHandler(err))
         } else {
           // TODO (maybe): a generic way of injecting custom handlers
           // for any combination of HTTP response + error code.
@@ -201,6 +206,23 @@ export default class Service {
    */
   get invalidRefreshTokenHandler () {
     return this._invalidRefreshTokenHandler
+  }
+
+  /**
+   * Set the password re-entry required callback
+   * @param {function} f Callback
+   * @return {void}
+   */
+  set passwordReEntryRequiredHandler (f) {
+    this._passwordReEntryRequiredHandler = f
+  }
+
+  /**
+   * Get the password re-entry required callback
+   * @return {function}
+   */
+  get passwordReEntryRequiredHandler () {
+    return this._passwordReEntryRequiredHandler
   }
 
   /**

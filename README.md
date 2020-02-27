@@ -75,6 +75,10 @@ This callback is called when an SWS service indicates that an Access token has e
 
 This callback is called when the SWS Identity service indicates that a Refresh token has either expired or is otherwise invalid.
 
+#### Password Re-entry Required callback
+
+This callback is called when the SWS Identity service indicates that a client application must direct the user back to Identity service to re-enter their password.
+
 #### Access Denied callback
 
 This callback is called when an SWS service indicates that a user has insufficient permissions to access the requested resource.
@@ -101,6 +105,9 @@ let invalidAccessTokenCallback = (err) => {
 let invalidRefreshTokenCallback = (err) => {
   return 'Refresh token is invalid'
 }
+let reEnterPasswordCallback = (err) => {
+  return 'Password must be re-entered'
+}
 let accessDeniedCallback = (err) => {
   return 'Access is denied'
 }
@@ -114,6 +121,7 @@ let serviceUnavailableCallback = (err) => {
 // Attach the callback to all service clients
 sws.setInvalidAccessTokenHandler(invalidAccessTokenCallback)
 sws.setInvalidRefreshTokenHandler(invalidRefreshTokenCallback)
+sws.setPasswordReEntryRequiredHandler(reEnterPasswordCallback)
 sws.setAccessDeniedHandler(accessDeniedCallback)
 sws.setServiceErrorHandler(serviceErrorCallback)
 sws.setServiceUnavailableHandler(serviceUnavailableCallback)

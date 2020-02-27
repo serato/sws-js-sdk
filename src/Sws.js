@@ -93,6 +93,18 @@ export default class Sws {
   }
 
   /**
+   * Sets the password re-entry required callback for all clients
+   *
+   * @param {Function} f Callback function
+   * @return {Void}
+   */
+  setPasswordReEntryRequiredHandler (f) {
+    for (let service in this._service) {
+      this._service[service].passwordReEntryRequiredHandler = f
+    }
+  }
+
+  /**
    * Sets the access denied callback for all clients
    *
    * @param {Function} f Callback function
