@@ -143,6 +143,15 @@ describe('Service', function () {
       error: 'Expired Refresh token.',
       handlerName: 'invalidRefreshTokenHandler',
       attachHandler: (client) => { client.invalidRefreshTokenHandler = customErrorCodeHandler }
+    },
+    // Password re-entry required
+    {
+      httpStatus: 401,
+      statusText: 'Unauthorized',
+      code: 2011,
+      error: 'Password re-entry required.',
+      handlerName: 'passwordReEntryRequiredHandler',
+      attachHandler: (client) => { client.passwordReEntryRequiredHandler = customErrorCodeHandler }
     }
   ]
 
