@@ -26,15 +26,13 @@
     "@babel/register": "^7.7.0",
     "aws-sdk": "^2.572.0",
     "chai": "^4.2.0",
-    "esdoc": "^1",
-    "esdoc-standard-plugin": "^1",
     "eslint": "^5.16.0",
     "eslint-config-standard": "^12",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-node": "^7",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
-    "mocha": "^5",
+    "mocha": "^6",
     "nock": "^10"
   },
   "dependencies": {
