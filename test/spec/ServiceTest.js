@@ -69,7 +69,7 @@ describe('Service', function () {
       let sws = new Sws({ appId: appId })
 
       return sws.license.getLicenses().then(
-        () => {
+        (data) => {
           const request = sws.license.lastRequest
           expect(request.responseType).to.equal('json')
           expect(request.headers['Accept']).to.equal('application/json')
@@ -94,7 +94,7 @@ describe('Service', function () {
 
   // Define the custom error handler. The err handler receives the error object returned
   // from the HTTP request.
-  let customErrorCodeHandler = (err) => {
+  let customErrorCodeHandler = (request, err) => {
     return `${customHandlerResponse} ${err.response.status} - ${err.response.data.code}`
   }
 
@@ -217,7 +217,7 @@ describe('Service', function () {
 
   // Define the custom error handler. The err handler receives the error object returned
   // from the HTTP request.
-  const customErrorHandler = (err) => {
+  const customErrorHandler = (request, err) => {
     return `${customHandlerResponse} ${err.response.status}`
   }
 

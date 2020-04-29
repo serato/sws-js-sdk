@@ -91,6 +91,10 @@ This callback is called when an SWS service returns a HTTP 500 Application Error
 
 This callback is called when an SWS service returns a HTTP 503 Service Unavailable response.
 
+#### Request Timeout Exceeded callback
+
+This callback is called when an SWS service does not respond within the specified timeout period.
+
 ### Setting callbacks
 
 Callbacks can be attached to all service clients via methods of the `Sws` instance, or to individual service clients:
@@ -98,24 +102,28 @@ Callbacks can be attached to all service clients via methods of the `Sws` instan
 ```javascript
 let sws = new Sws({ appId: 'myAppId' })
 
-let invalidAccessTokenCallback = (err) => {
+let invalidAccessTokenCallback = (request, err) => {
+  // `request` is the request object that returned the error
   // `err` is the error response that was returned from the API call
   return 'Access token is invalid'
 }
-let invalidRefreshTokenCallback = (err) => {
+let invalidRefreshTokenCallback = (request, err) => {
   return 'Refresh token is invalid'
 }
-let reEnterPasswordCallback = (err) => {
+let reEnterPasswordCallback = (request, err) => {
   return 'Password must be re-entered'
 }
-let accessDeniedCallback = (err) => {
+let accessDeniedCallback = (request, err) => {
   return 'Access is denied'
 }
-let serviceErrorCallback = (err) => {
-  return 'Access is denied'
+let serviceErrorCallback = (request, err) => {
+  return 'Service error'
 }
-let serviceUnavailableCallback = (err) => {
-  return 'Access is denied'
+let serviceUnavailableCallback = (request, err) => {
+  return 'Service is unavailable'
+}
+let requestTimeoutExceededCallback = (request, err) => {
+  return 'Request timeout exceeded'
 }
 
 // Attach the callback to all service clients
@@ -125,13 +133,16 @@ sws.setPasswordReEntryRequiredHandler(reEnterPasswordCallback)
 sws.setAccessDeniedHandler(accessDeniedCallback)
 sws.setServiceErrorHandler(serviceErrorCallback)
 sws.setServiceUnavailableHandler(serviceUnavailableCallback)
+sws.setTimesoutExceededHandler(requestTimeoutExceededCallback)
 
 // Attach the callback to an individual service client
 sws.license.invalidAccessTokenHandler = invalidAccessTokenCallback
 sws.license.invalidRefreshTokenHandler = invalidRefreshTokenCallback
+sws.license.passwordReEntryRequiredHandler = reEnterPasswordCallback
 sws.license.accessDeniedHandler = accessDeniedCallback
 sws.license.serviceErrorHandler = serviceErrorCallback
 sws.license.serviceUnavailableHandler = serviceUnavailableCallback
+sws.license.timeoutExceededHandler = requestTimeoutExceededCallback
 ```
 
 # SwsClient class

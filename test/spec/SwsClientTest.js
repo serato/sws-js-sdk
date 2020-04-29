@@ -122,7 +122,7 @@ describe('SwsClient', function () {
       it(`'${errorText}' error then successfully fetches a new access token but receives HTTP 500 error when retrying original request and uses custom 'serviceErrorHandler' handler`, function () {
         let accessTokenExpiresAt = new Date(Date.now() + 3600000)
         let customHandlerResponse = 'This value is returned by our custom handler'
-        let customErrorHandler = (err) => {
+        let customErrorHandler = (request, err) => {
           return `${customHandlerResponse} ${err.response.status}`
         }
 
@@ -183,7 +183,7 @@ describe('SwsClient', function () {
 
       it(`'${errorText}' error then receives a HTTP 500 error when fetching a new access token and uses custom 'serviceErrorHandler' handler`, function () {
         let customHandlerResponse = 'This value is returned by our custom handler'
-        let customErrorHandler = (err) => {
+        let customErrorHandler = (request, err) => {
           return `${customHandlerResponse} ${err.response.status}`
         }
 
@@ -239,7 +239,7 @@ describe('SwsClient', function () {
 
       it(`'${errorText}' error then receives 'Refresh token expired' error when fetching new access token and handles error with custom handler`, function () {
         let customHandlerResponse = 'This value is returned by our custom handler'
-        let customErrorHandler = (err) => {
+        let customErrorHandler = (request, err) => {
           return `${customHandlerResponse} ${err.response.status}`
         }
 
