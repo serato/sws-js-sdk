@@ -163,9 +163,11 @@ The **Access Token Updated** token callback accepts two arguments: the value of 
 ```javascript
 let sws = new SwsClient({ appId: 'myAppId' })
 
-let accessTokenUpdatedCallback = (token, exp) => {
-  console.log('Access token value is ' + token)
-  console.log('Access token expires on ' + exp.toISOString())
+let accessTokenUpdatedCallback = (accessToken, accessTokenExp, refreshToken, refreshTokenExp) => {
+  console.log('Access token value is ' + accessToken)
+  console.log('Access token expires on ' + accessTokenExp.toISOString())
+  console.log('Refresh token value is ' + refreshToken)
+  console.log('Refresh token expires on ' + refreshTokenExp.toISOString())
 }
 
 // Attach the callback

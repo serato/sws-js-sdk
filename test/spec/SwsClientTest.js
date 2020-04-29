@@ -6,6 +6,7 @@ import { expect } from 'chai'
 const appId = 'myClientAppId'
 const getLicensesUri = '/api/v1/me/licenses'
 const newAccessTokenValue = 'New.Access.Token.Value'
+const newRefreshTokenValue = 'New.RefreshToken.Value'
 
 describe('SwsClient', function () {
   describe('receives invalid access token errors', function () {
@@ -27,6 +28,7 @@ describe('SwsClient', function () {
       it(`'${errorText}' error then successfully fetches a new access token and successfully retries original request`, function () {
         let successBody = { 'some': 'body content', 'more': ['body', 'content'] }
         let accessTokenExpiresAt = new Date(Date.now() + 3600000)
+        let refreshTokenExpiresAt = new Date(Date.now() + (365 * 3600000))
 
         let scope = nock(/serato/)
           .get(getLicensesUri, '')
@@ -36,6 +38,10 @@ describe('SwsClient', function () {
             'access': {
               'token': newAccessTokenValue,
               'expires_at': accessTokenExpiresAt.valueOf()
+            },
+            'refresh': {
+              'token': newRefreshTokenValue,
+              'expires_at': refreshTokenExpiresAt
             }
           })
           .get(getLicensesUri, '')
@@ -58,6 +64,7 @@ describe('SwsClient', function () {
         let secondErrorCode = 1
         let secondErrorText = 'Some kind of error'
         let accessTokenExpiresAt = new Date(Date.now() + 3600000)
+        let refreshTokenExpiresAt = new Date(Date.now() + (365 * 3600000))
 
         let scope = nock(/serato/)
           .get(getLicensesUri, '')
@@ -67,6 +74,10 @@ describe('SwsClient', function () {
             'access': {
               'token': newAccessTokenValue,
               'expires_at': accessTokenExpiresAt.valueOf()
+            },
+            'refresh': {
+              'token': newRefreshTokenValue,
+              'expires_at': refreshTokenExpiresAt
             }
           })
           .get(getLicensesUri, '')
@@ -90,6 +101,7 @@ describe('SwsClient', function () {
 
       it(`'${errorText}' error then successfully fetches a new access token but receives HTTP 500 error when retrying original request`, function () {
         let accessTokenExpiresAt = new Date(Date.now() + 3600000)
+        let refreshTokenExpiresAt = new Date(Date.now() + (365 * 3600000))
 
         let scope = nock(/serato/)
           .get(getLicensesUri, '')
@@ -99,6 +111,10 @@ describe('SwsClient', function () {
             'access': {
               'token': newAccessTokenValue,
               'expires_at': accessTokenExpiresAt.valueOf()
+            },
+            'refresh': {
+              'token': newRefreshTokenValue,
+              'expires_at': refreshTokenExpiresAt
             }
           })
           .get(getLicensesUri, '')
@@ -121,6 +137,7 @@ describe('SwsClient', function () {
 
       it(`'${errorText}' error then successfully fetches a new access token but receives HTTP 500 error when retrying original request and uses custom 'serviceErrorHandler' handler`, function () {
         let accessTokenExpiresAt = new Date(Date.now() + 3600000)
+        let refreshTokenExpiresAt = new Date(Date.now() + (365 * 3600000))
         let customHandlerResponse = 'This value is returned by our custom handler'
         let customErrorHandler = (request, err) => {
           return `${customHandlerResponse} ${err.response.status}`
@@ -134,6 +151,10 @@ describe('SwsClient', function () {
             'access': {
               'token': newAccessTokenValue,
               'expires_at': accessTokenExpiresAt.valueOf()
+            },
+            'refresh': {
+              'token': newRefreshTokenValue,
+              'expires_at': refreshTokenExpiresAt
             }
           })
           .get(getLicensesUri, '')
