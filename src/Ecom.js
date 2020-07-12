@@ -227,6 +227,32 @@ export default class Ecom extends Service {
   }
 
   /**
+   * Retrieve an invoice number for the given order.
+   * The logged-in user must be the order's owner.
+   * Requires a valid access token.
+   *
+   * @param orderId ID of the order for which an invoice will be returned.
+   * @param invoiceId ID of the invoice for the order that will be returned.
+   * @return {Promise}
+   */
+  getInvoiceNumber (orderId, invoiceId) {
+    const endpointPrefix = (this.userId === 0) ? '/api/v1/me' : `/api/v1/users/${this.userId}`
+    const endpoint = `${endpointPrefix}/orders/${orderId}/invoices/${invoiceId}`
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      endpoint,
+      null,
+      'GET',
+      null,
+      'blob',
+      {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    )
+  }
+
+  /**
    * Sends a PUT request to confirm the subscription plan change request.
    * @param {Object} param Options
    * @param {String} param.subscriptionId
