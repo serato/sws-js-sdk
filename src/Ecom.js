@@ -209,7 +209,7 @@ export default class Ecom extends Service {
    * @param invoiceId ID of the invoice for the order that will be returned.
    * @return {Promise}
    */
-  getInvoice (orderId, invoiceId) {
+  getInvoice (orderId, invoiceId, accept = "application/pdf") {
     const endpointPrefix = (this.userId === 0) ? '/api/v1/me' : `/api/v1/users/${this.userId}`
     const endpoint = `${endpointPrefix}/orders/${orderId}/invoices/${invoiceId}`
     return this.fetch(
@@ -220,33 +220,7 @@ export default class Ecom extends Service {
       null,
       'blob',
       {
-        'Accept': 'application/pdf',
-        'Content-Type': 'application/json'
-      }
-    )
-  }
-
-  /**
-   * Retrieve an invoice number for the given order.
-   * The logged-in user must be the order's owner.
-   * Requires a valid access token.
-   *
-   * @param orderId ID of the order for which an invoice will be returned.
-   * @param invoiceId ID of the invoice for the order that will be returned.
-   * @return {Promise}
-   */
-  getInvoiceNumber (orderId, invoiceId) {
-    const endpointPrefix = (this.userId === 0) ? '/api/v1/me' : `/api/v1/users/${this.userId}`
-    const endpoint = `${endpointPrefix}/orders/${orderId}/invoices/${invoiceId}`
-    return this.fetch(
-      this.bearerTokenAuthHeader(),
-      endpoint,
-      null,
-      'GET',
-      null,
-      'blob',
-      {
-        'Accept': 'application/json',
+        'Accept': accept,
         'Content-Type': 'application/json'
       }
     )
