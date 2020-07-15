@@ -1,6 +1,6 @@
 {
   "name": "@serato/sws-sdk",
-  "version": "3.0.0",
+  "version": "3.0.2",
   "description": "Serato Web Services JS SDK",
   "main": "src/index.js",
   "scripts": {
@@ -21,15 +21,15 @@
   },
   "homepage": "https://github.com/serato/sws-js-sdk#readme",
   "devDependencies": {
-    "@babel/core": "^7.9.0",
-    "@babel/preset-env": "^7.9.5",
-    "@babel/register": "^7.9.0",
-    "acorn": "^7.1.1",
-    "aws-sdk": "^2.665.0",
+    "@babel/core": "^7.10.4",
+    "@babel/preset-env": "^7.10.4",
+    "@babel/register": "^7.10.4",
+    "acorn": "^7.3.1",
+    "aws-sdk": "^2.713.0",
     "chai": "^4.2.0",
     "eslint": "^5.16.0",
     "eslint-config-standard": "^12",
-    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-node": "^7",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
@@ -38,6 +38,6 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
-    "js-base64": "^2.5.2"
+    "js-base64": "^2.6.3"
   }
 }

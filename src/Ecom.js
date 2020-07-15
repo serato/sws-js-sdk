@@ -204,12 +204,14 @@ export default class Ecom extends Service {
    * Retrieve an invoice PDF for the given order.
    * The logged-in user must be the order's owner.
    * Requires a valid access token.
+   * Defaults to returning pdf if no accept parameter, otherwise it returns json
    *
    * @param orderId ID of the order for which an invoice will be returned.
    * @param invoiceId ID of the invoice for the order that will be returned.
+   * @param accept Has to be "application/json", "application/pdf"(by deafult) (optional)
    * @return {Promise}
    */
-  getInvoice (orderId, invoiceId) {
+  getInvoice (orderId, invoiceId, accept = "application/pdf") {
     const endpointPrefix = (this.userId === 0) ? '/api/v1/me' : `/api/v1/users/${this.userId}`
     const endpoint = `${endpointPrefix}/orders/${orderId}/invoices/${invoiceId}`
     return this.fetch(
@@ -218,9 +220,9 @@ export default class Ecom extends Service {
       null,
       'GET',
       null,
-      'blob',
+      (accept === "application/pdf") ? 'blob' : 'json',
       {
-        'Accept': 'application/pdf',
+        'Accept': accept,
         'Content-Type': 'application/json'
       }
     )
