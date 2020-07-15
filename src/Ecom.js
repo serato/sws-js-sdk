@@ -211,7 +211,7 @@ export default class Ecom extends Service {
    * @param accept Has to be "application/json", "application/pdf"(by deafult) (optional)
    * @return {Promise}
    */
-  getInvoice (orderId, invoiceId, accept = "application/pdf") {
+  getInvoice (orderId, invoiceId, accept = 'application/pdf') {
     const endpointPrefix = (this.userId === 0) ? '/api/v1/me' : `/api/v1/users/${this.userId}`
     const endpoint = `${endpointPrefix}/orders/${orderId}/invoices/${invoiceId}`
     return this.fetch(
@@ -220,7 +220,7 @@ export default class Ecom extends Service {
       null,
       'GET',
       null,
-      (accept === "application/pdf") ? 'blob' : 'json',
+      (accept === 'application/pdf') ? 'blob' : 'json',
       {
         'Accept': accept,
         'Content-Type': 'application/json'
