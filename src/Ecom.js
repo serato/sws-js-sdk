@@ -218,7 +218,7 @@ export default class Ecom extends Service {
       null,
       'GET',
       null,
-      accept == "application/pdf" ? 'blob' : 'json',
+      (accept === "application/pdf") ? 'blob' : 'json',
       {
         'Accept': accept,
         'Content-Type': 'application/json'
