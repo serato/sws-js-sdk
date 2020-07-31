@@ -334,7 +334,7 @@ export default class Ecom extends Service {
    * @param {String} param.appName
    * @param {String} param.appVersion
    * @param {String} param.catalogCategory
-   *
+   * @returns {Promise}
    */
   getRecommendations ({ appName = '', appVersion = '', catalogCategory = '' } = {}) {
     return this.fetch(
