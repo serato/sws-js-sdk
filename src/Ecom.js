@@ -336,10 +336,10 @@ export default class Ecom extends Service {
    * @param {String} param.catalogCategory
    * @returns {Promise}
    */
-  getRecommendations ({ appName = '', appVersion = '', catalogCategory = '' } = {}) {
+  getRecommendations ({ appName = null, appVersion = null, catalogCategory = null } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      this.userId === 0 ? 'api/v1/me/recommendations/' : 'api/v1/users/' + this.userId + '/recommendations/',
+      this.userId === 0 ? '/api/v1/me/recommendations' : '/api/v1/users/' + this.userId + '/recommendations',
       this.toBody({
         'app_name': appName,
         'app_version': appVersion,
