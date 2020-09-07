@@ -42,4 +42,24 @@ export default class Notifications extends Service {
       'GET'
     )
   }
+
+  /**
+   * Retrieve a list of campaigns.
+   * Requires a valid access token.
+   *
+   * @param {Object} params - Input parameter object
+   * @param {?String} params.status - Status of the campaign to filter by. Must be one of 'active', 'draft' or
+   *                                  'archived' if set
+   * @return {Promise}
+   */
+  getCampaigns ({ status = null }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      '/api/v2/campaigns',
+      this.toBody({
+        'status': status
+      }),
+      'GET'
+    )
+  }
 }
