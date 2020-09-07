@@ -3,6 +3,7 @@ import { describe, it, before } from 'mocha'
 import { expect } from 'chai'
 
 describe('Notifications Tests', function () {
+  /** @type {Sws} */
   let swsClient
   before(function () {
     swsClient = new Sws({ appId: 'myClientAppId' })
@@ -17,9 +18,9 @@ describe('Notifications Tests', function () {
           hostAppOs: 'mac',
           locale: 'en_US'
         }).then(
-          data => {
+          response => {
             // We don't care about the contents of the response
-            expect(true)
+            expect(response).to.be.a('object')
           }
         )
       })
