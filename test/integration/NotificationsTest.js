@@ -47,5 +47,14 @@ describe('Notifications Tests', function () {
           }
         )
       })
+    it(`confirms URI used in 'adminGetNotifications()' method by returning a non-404 response`,
+      function () {
+        return swsClient.notifications.adminGetNotifications().then(
+          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+          err => {
+            expect(err.httpStatus).not.to.equal(404)
+          }
+        )
+      })
   })
 })

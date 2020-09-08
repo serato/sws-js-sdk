@@ -21,6 +21,9 @@ export default class Notifications extends Service {
 
   /**
    * Retrieve a list of notifcations to a client application.
+   * Does not require authorization.
+   *
+   * NOTE: This is the client app variant of the method. For the management variant, see `adminGetNotifications`.
    *
    * @param  {Object} params - Input parameter object
    * @param  {?String} [params.hostAppName = null]    - Host app name to filter the results by
@@ -112,6 +115,23 @@ export default class Notifications extends Service {
         'status': status
       }),
       'PUT'
+    )
+  }
+
+  /**
+   * Lists all notifications.
+   * Requires a valid access token.
+   *
+   * NOTE: This is the management variant of the method. The use-case and schema are different to `getNotifications`
+   *
+   * @return {Promise}
+   */
+  adminGetNotifications () {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      '/api/v2/notifications',
+      null,
+      'GET'
     )
   }
 }
