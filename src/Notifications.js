@@ -62,4 +62,28 @@ export default class Notifications extends Service {
       'GET'
     )
   }
+
+  /**
+   * Creates a campaign.
+   * Requires a valid access token.
+   *
+   * @param {Object}  params - Input parameter object
+   * @param {String}  params.name                 - Name of the campaign. Must be a non empty string
+   * @param {Boolean} params.anonymous            - Whether the notifications for the campaign are anonymous or not
+   * @param {?String} [params.description = null] - Description of the campaign
+   *
+   * @return {Promise}
+   */
+  createCampaign ({ name, anonymous, description = null }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      '/api/v2/campaigns',
+      this.toBody({
+        'name': name,
+        'description': description,
+        'anonymous': anonymous
+      }),
+      'POST'
+    )
+  }
 }

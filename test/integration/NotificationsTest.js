@@ -35,5 +35,17 @@ describe('Notifications Tests', function () {
           }
         )
       })
+    it(`confirms URI used in 'createCampaign()' method by returning a non-404 response`,
+      function () {
+        return swsClient.notifications.createCampaign({
+          name: null, /* Invalid value to prevent creation */
+          anonymous: null /* Invalid value to prevent creation */
+        }).then(
+          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+          err => {
+            expect(err.httpStatus).not.to.equal(404)
+          }
+        )
+      })
   })
 })
