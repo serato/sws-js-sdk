@@ -353,4 +353,26 @@ export default class Notifications extends Service {
       'PUT'
     )
   }
+
+  /**
+   * Delete a host specification for a notification.
+   * Requires a valid access token.
+   *
+   * @param {Object} params                - Input parameter object
+   * @param {String} params.notificationId - Id of the notification that the host specification belongs to
+   * @param {String} params.hostId         - ID of the host specification to delete
+   *
+   * @return {Promise}
+   */
+  deleteNotificationHostSpecification ({
+    notificationId,
+    hostId
+  }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      `/api/v2/notifications/${notificationId}/hosts/${hostId}`,
+      null,
+      'DELETE'
+    )
+  }
 }
