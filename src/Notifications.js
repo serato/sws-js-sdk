@@ -86,4 +86,32 @@ export default class Notifications extends Service {
       'POST'
     )
   }
+
+  /**
+   * Updates attributes of a campaign.
+   * Requires a valid access token.
+   *
+   * @param {Object}   params - Input parameter object
+   * @param {String}   params.campaignId           - ID of the campaign to update
+   * @param {?String}  [params.name = null]        - Name of the campaign. Must be a non empty string if provided
+   * @param {?Boolean} [params.anonymous = null]   - Whether the notifications for the campaign are anonymous or not
+   * @param {?String}  [params.description = null] - Description of the campaign
+   * @param {?String}  [params.status = null]      - Status of the campaign. Must be one of 'active',
+   *                                                'draft' or 'archived'
+   *
+   * @return {Promise}
+   */
+  updateCampaign ({ campaignId, name = null, anonymous = null, description = null, status = null }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      `/api/v2/campaigns/${campaignId}`,
+      this.toBody({
+        'name': name,
+        'description': description,
+        'anonymous': anonymous,
+        'status': status
+      }),
+      'PUT'
+    )
+  }
 }
