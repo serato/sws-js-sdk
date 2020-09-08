@@ -235,7 +235,7 @@ export default class Notifications extends Service {
    *
    * @return {Promise}
    */
-  getNotificationHostSpecifications ({ notificationId }) {
+  getHostSpecifications ({ notificationId }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       `/api/v2/notifications/${notificationId}/hosts`,
@@ -274,7 +274,7 @@ export default class Notifications extends Service {
    *
    * @return {Promise}
    */
-  createNotificationHostSpecification ({
+  createHostSpecification ({
     notificationId,
     appName,
     appVersionMin = null,
@@ -329,7 +329,7 @@ export default class Notifications extends Service {
    *
    * @return {Promise}
    */
-  updateNotificationHostSpecification ({
+  updateHostSpecification ({
     notificationId,
     hostId,
     appName = null,
@@ -364,7 +364,7 @@ export default class Notifications extends Service {
    *
    * @return {Promise}
    */
-  deleteNotificationHostSpecification ({
+  deleteHostSpecification ({
     notificationId,
     hostId
   }) {
