@@ -134,4 +134,48 @@ export default class Notifications extends Service {
       'GET'
     )
   }
+
+  /**
+   * Create a notification for a campaign.
+   * Requires a valid access token.
+   *
+   * @param {Object}  params                - Input parameter object
+   * @param {String}  params.campaignId     - ID of the campaign to create the notification for
+   * @param {String}  params.type           - The type (category) of the notification. Must be one of 'licensing',
+   *                                          'system', 'promotion', 'streaming' or 'device_connection'
+   * @param {Number}  params.priority       - An integer that indicates the priority of the notification
+   * @param {String}  params.templateName   - Name of the notification template that will be used on the client app
+   * @param {String}  params.templateOption - The variant (colours etc) of the template to use
+   * @param {?Date}   [params.startsAt]     - The date/time that the notification is valid from
+   * @param {?Date}   [params.endsAt]       - The date/time that the notificaiton is valid until
+   * @param {?String} [params.takeoverId]   - ID used to takeover a static notification on a client app
+   *
+   * @return {Promise}
+   */
+  createNotification ({
+    campaignId,
+    type,
+    priority,
+    templateName,
+    templateOption,
+    startsAt = null,
+    endsAt = null,
+    takeoverId = null
+  }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      '/api/v2/notifications',
+      this.toBody({
+        'campaign_id': campaignId,
+        'type': type,
+        'priority': priority,
+        'template_name': templateName,
+        'template_option': templateOption,
+        'starts_at': startsAt,
+        'ends_at': endsAt,
+        'takeover_id': takeoverId
+      }),
+      'POST'
+    )
+  }
 }

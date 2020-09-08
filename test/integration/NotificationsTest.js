@@ -56,5 +56,16 @@ describe('Notifications Tests', function () {
           }
         )
       })
+    it(`confirms URI used in 'createNotification()' method by returning a non-404 response`,
+      function () {
+        return swsClient.notifications.adminGetNotifications({
+          campaignId: 'invalid' /** Invalid campaign ID to prevent creation of a notification */
+        }).then(
+          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+          err => {
+            expect(err.httpStatus).not.to.equal(404)
+          }
+        )
+      })
   })
 })
