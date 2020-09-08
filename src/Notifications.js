@@ -375,4 +375,32 @@ export default class Notifications extends Service {
       'DELETE'
     )
   }
+
+  /**
+   * Creates or update content for a notification. Creation occurs if no existing content. Content will be overwritten
+   * if exists already and specified in the payload for this method.
+   *
+   * @param {Object} params                - Input parameter object
+   * @param {String} params.notificationId - Notification to create/update content for
+   * @param {String} params.language       - A two letter ISO 639-1 language code
+   * @param {Object} params.content        - Object containing the content to create or update. For the full object
+   * structure refer to: https://notifications.serato.com/api/v2/schema/json/content_create_update.json
+   * @param {Array} [params.content.text]    - Array of text to create/update. Empty to remove existing text
+   * @param {Array} [params.content.media]   - Array of media to create/update. Empty to remove existing media
+   * @param {Array} [params.content.actions] - Array of actions to create/update. Empty to remove existing actions
+   *
+   * @return {Promise}
+   */
+  createOrUpdateNotificationContent ({
+    notificationId,
+    language,
+    content
+  }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      `/api/v2/notifications/${notificationId}/content/${language}`,
+      this.toBody(content),
+      'PUT'
+    )
+  }
 }
