@@ -51,7 +51,7 @@ export default class Notifications extends Service {
    * Requires a valid access token.
    *
    * @param {Object} params - Input parameter object
-   * @param {?String} [params.status = null] - Status of the campaign to filter by. Must be one of 'active', 'draft' or
+   * @param {?String} [params.status] - Status of the campaign to filter by. Must be one of 'active', 'draft' or
    *                                           'archived' if set
    * @return {Promise}
    */
@@ -71,9 +71,9 @@ export default class Notifications extends Service {
    * Requires a valid access token.
    *
    * @param {Object}  params - Input parameter object
-   * @param {String}  params.name                 - Name of the campaign. Must be a non empty string
-   * @param {Boolean} params.anonymous            - Whether the notifications for the campaign are anonymous or not
-   * @param {?String} [params.description = null] - Description of the campaign
+   * @param {String}  params.name          - Name of the campaign. Must be a non empty string
+   * @param {Boolean} params.anonymous     - Whether the notifications for the campaign are anonymous or not
+   * @param {?String} [params.description] - Description of the campaign
    *
    * @return {Promise}
    */
@@ -96,10 +96,10 @@ export default class Notifications extends Service {
    *
    * @param {Object}   params - Input parameter object
    * @param {String}   params.campaignId           - ID of the campaign to update
-   * @param {?String}  [params.name = null]        - Name of the campaign. Must be a non empty string if provided
-   * @param {?Boolean} [params.anonymous = null]   - Whether the notifications for the campaign are anonymous or not
-   * @param {?String}  [params.description = null] - Description of the campaign
-   * @param {?String}  [params.status = null]      - Status of the campaign. Must be one of 'active',
+   * @param {?String}  [params.name]        - Name of the campaign. Must be a non empty string if provided
+   * @param {?Boolean} [params.anonymous]   - Whether the notifications for the campaign are anonymous or not
+   * @param {?String}  [params.description] - Description of the campaign
+   * @param {?String}  [params.status]      - Status of the campaign. Must be one of 'active',
    *                                                'draft' or 'archived'
    *
    * @return {Promise}
