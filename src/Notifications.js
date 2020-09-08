@@ -243,4 +243,58 @@ export default class Notifications extends Service {
       'GET'
     )
   }
+
+  /**
+   * Creates a host specification for a notification.
+   * Requires a valid access token.
+   *
+   * @param {Object} params                  - Input parameter object
+   * @param {String} params.notificationId   - ID of the notification to create the host specification for
+   * @param {String} params.appName          - Name of the host app. Must be one of 'serato_dj_pro', 'serato_dj_lite',
+   *                                           'serato_sample', 'serato_studio', 'my_account', 'express_checkout',
+   *                                           'serato_com' or 'mega_nav'
+   * @param {?String} [params.appVersionMin] - The minimum version of the host application which the notification is
+   *                                           compatible with. Must be a string that comprises 1 - 4 dot-separated
+   *                                           integer values. 0 means any version.
+   * @param {?String} [params.appVersionMax] - The exclusive maximum version of the host application which the
+   *                                           notification is compatible with. Must be a string that comprises 1 - 4
+   *                                           dot-separated integer values. 0 means any version.
+   * @param {?String} [params.osName]        - The name of the host operating system. Possible values are 'mac', 'win'
+   *                                           and (empty means all operating systems).
+   * @param {?String} [params.osVersionMin]  - The minimum version of the host operating system which the notification
+   *                                           is compatible with. Must be a string that comprises 1 - 4 dot-separated
+   *                                           integer values in the format major.minor.patch.build where major =>
+   *                                           no range, minor => 0-99, patch => 0-999, build => 0-999999. 0 means any
+   *                                           version.
+   * @param {?String} [params.osVersionMax] - The exlusive maximum version of the host operating system which the
+   *                                          notification is compatible with. Must be a string that comprises 1 - 4
+   *                                          dot-separated integer values in the format major.minor.patch.build where
+   *                                          major => no range, minor => 0-99, patch => 0-999, build => 0-999999. 
+   *                                          0 means any version.
+   *
+   * @return {Promise}
+   */
+  createNotificationHostSpecification ({
+    notificationId,
+    appName,
+    appVersionMin = null,
+    appVersionMax = null,
+    osName = null,
+    osVersionMin = null,
+    osVersionMax = null
+  }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      `/api/v2/notifications/${notificationId}/hosts`,
+      this.toBody({
+        'app_name': appName,
+        'app_version_min': appVersionMin,
+        'app_version_max': appVersionMax,
+        'os_name': osName,
+        'os_version_min': osVersionMin,
+        'os_version_max': osVersionMax
+      }),
+      'POST'
+    )
+  }
 }
