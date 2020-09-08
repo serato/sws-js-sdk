@@ -225,4 +225,22 @@ export default class Notifications extends Service {
       'PUT'
     )
   }
+
+  /**
+   * Gets the host specifications for a notification.
+   * Requires a valid access token.
+   *
+   * @param {Object} params                - Input parameter object
+   * @param {String} params.notificationId - ID of the notification to get the hosts app specifications for
+   *
+   * @return {Promise}
+   */
+  getNotificationHostSpecifications ({ notificationId }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      `/api/v2/notifications/${notificationId}/hosts`,
+      null,
+      'GET'
+    )
+  }
 }
