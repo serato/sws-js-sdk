@@ -269,7 +269,7 @@ export default class Notifications extends Service {
    * @param {?String} [params.osVersionMax] - The exlusive maximum version of the host operating system which the
    *                                          notification is compatible with. Must be a string that comprises 1 - 4
    *                                          dot-separated integer values in the format major.minor.patch.build where
-   *                                          major => no range, minor => 0-99, patch => 0-999, build => 0-999999. 
+   *                                          major => no range, minor => 0-99, patch => 0-999, build => 0-999999.
    *                                          0 means any version.
    *
    * @return {Promise}
@@ -324,7 +324,7 @@ export default class Notifications extends Service {
    * @param {?String} [params.osVersionMax] - The exlusive maximum version of the host operating system which the
    *                                          notification is compatible with. Must be a string that comprises 1 - 4
    *                                          dot-separated integer values in the format major.minor.patch.build where
-   *                                          major => no range, minor => 0-99, patch => 0-999, build => 0-999999. 
+   *                                          major => no range, minor => 0-99, patch => 0-999, build => 0-999999.
    *                                          0 means any version.
    *
    * @return {Promise}
