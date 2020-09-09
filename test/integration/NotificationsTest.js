@@ -67,5 +67,14 @@ describe('Notifications Tests', function () {
           }
         )
       })
+    it(`confirms URI used in 'getNotificationTemplates()' method by returning a 200 HTTP response`,
+      function () {
+        return swsClient.notifications.getNotificationTemplates().then(
+          response => {
+            // We don't care about the contents of the response
+            expect(response).to.be.a('object')
+          }
+        )
+      })
   })
 })

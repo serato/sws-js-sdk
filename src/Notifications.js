@@ -403,4 +403,19 @@ export default class Notifications extends Service {
       'PUT'
     )
   }
+
+  /**
+   * Lists all the available notification templates.
+   * Does not require authorization.
+   *
+   * @return {Promise}
+   */
+  getNotificationTemplates () {
+    return this.fetch(
+      null,
+      '/api/v2/templates',
+      null,
+      'GET'
+    )
+  }
 }
