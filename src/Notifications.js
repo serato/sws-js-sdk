@@ -158,6 +158,7 @@ export default class Notifications extends Service {
     priority,
     templateName,
     templateOption,
+    isPersistent,
     startsAt = null,
     endsAt = null,
     takeoverId = null
@@ -173,7 +174,8 @@ export default class Notifications extends Service {
         'template_option': templateOption,
         'starts_at': startsAt,
         'ends_at': endsAt,
-        'takeover_id': takeoverId
+        'takeover_id': takeoverId,
+        'is_persistent': isPersistent
       }),
       'POST'
     )
@@ -200,14 +202,15 @@ export default class Notifications extends Service {
    */
   updateNotification ({
     notificationId,
+    templateOption,
     type = null,
     priority = null,
     templateName = null,
-    templateOption,
     startsAt = null,
     endsAt = null,
     takeoverId = null,
-    status = null
+    status = null,
+    isPersistent = null
   }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
@@ -220,7 +223,8 @@ export default class Notifications extends Service {
         'starts_at': startsAt,
         'ends_at': endsAt,
         'takeover_id': takeoverId,
-        'status': status
+        'status': status,
+        'is_persistent': isPersistent
       }),
       'PUT'
     )
