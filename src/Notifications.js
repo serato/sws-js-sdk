@@ -146,9 +146,10 @@ export default class Notifications extends Service {
    * @param {Number}  params.priority       - An integer that indicates the priority of the notification
    * @param {String}  params.templateName   - Name of the notification template that will be used on the client app
    * @param {String}  params.templateOption - The variant (colours etc) of the template to use
-   * @param {?Date}   [params.startsAt]     - The date/time that the notification is valid from
-   * @param {?Date}   [params.endsAt]       - The date/time that the notificaiton is valid until
-   * @param {?String} [params.takeoverId]   - ID used to takeover a static notification on a client app
+   * @param {Boolean} params.isPersistent   - Whether the notification is persistent
+   * @param {Boolean} params.isTakeover     - Whether the notification is a takeover
+   * @param {?Date}   params.startsAt       - The date/time that the notification is valid from
+   * @param {?Date}   params.endsAt         - The date/time that the notificaiton is valid until
    *
    * @return {Promise}
    */
@@ -159,9 +160,9 @@ export default class Notifications extends Service {
     templateName,
     templateOption,
     isPersistent,
+    isTakeover = null,
     startsAt = null,
     endsAt = null,
-    takeoverId = null
   }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
@@ -174,8 +175,8 @@ export default class Notifications extends Service {
         'template_option': templateOption,
         'starts_at': startsAt,
         'ends_at': endsAt,
-        'takeover_id': takeoverId,
-        'is_persistent': isPersistent
+        'is_persistent': isPersistent,
+        'is_takeover': isTakeover,
       }),
       'POST'
     )
@@ -194,23 +195,23 @@ export default class Notifications extends Service {
    * @param {String}  [params.templateOption] - The variant (colours etc) of the template to use
    * @param {?Date}   [params.startsAt]       - The date/time that the notification is valid from
    * @param {?Date}   [params.endsAt]         - The date/time that the notificaiton is valid until
-   * @param {?String} [params.takeoverId]     - ID used to takeover a static notification on a client app
-   * @param {?String} [params.status]         - Status of the notification. Must be one of 'active', 'draft' or
-   *                                            'archived'
+   * @param {?String} [params.status]         - Status of the notification ('active', 'draft' or 'archived')
+   * @param {Boolean} params.isPersistent     - Whether the notification is a persistent
+   * @param {Boolean} params.isTakeover       - Whether the notification is a takeover
    *
    * @return {Promise}
    */
   updateNotification ({
     notificationId,
-    templateOption,
+    templateOption = null,
     type = null,
     priority = null,
     templateName = null,
     startsAt = null,
     endsAt = null,
-    takeoverId = null,
     status = null,
-    isPersistent = null
+    isPersistent = null,
+    isTakeover = null
   }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
@@ -222,9 +223,9 @@ export default class Notifications extends Service {
         'template_option': templateOption,
         'starts_at': startsAt,
         'ends_at': endsAt,
-        'takeover_id': takeoverId,
         'status': status,
-        'is_persistent': isPersistent
+        'is_persistent': isPersistent,
+        'is_takeover': isTakeover
       }),
       'PUT'
     )
