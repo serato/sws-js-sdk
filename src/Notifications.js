@@ -223,7 +223,6 @@ export default class Notifications extends Service {
         'template_option': templateOption,
         'starts_at': startsAt,
         'ends_at': endsAt,
-        'takeover_id': takeoverId,
         'status': status,
         'is_persistent': isPersistent,
         'is_takeover': isTakeover
