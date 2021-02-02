@@ -238,6 +238,24 @@ export default class Notifications extends Service {
   }
 
   /**
+   * Creates a clone of the notification whose ID is supplied in the URL.
+   * Requires a valid access token.
+   *
+   * @param {Object} params                - Input parameter object
+   * @param {String} params.notificationId - ID of the notification to clone
+   *
+   * @return {Promise}
+   */
+  cloneNotification ({ notificationId }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      `/api/v2/notifications/${notificationId}`,
+      null,
+      'POST'
+    )
+  }
+
+  /**
    * Gets the host specifications for a notification.
    * Requires a valid access token.
    *
