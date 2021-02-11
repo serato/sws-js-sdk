@@ -162,7 +162,7 @@ export default class Notifications extends Service {
     isPersistent,
     isTakeover = null,
     startsAt = null,
-    endsAt = null,
+    endsAt = null
   }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
@@ -176,7 +176,7 @@ export default class Notifications extends Service {
         'starts_at': startsAt,
         'ends_at': endsAt,
         'is_persistent': isPersistent,
-        'is_takeover': isTakeover,
+        'is_takeover': isTakeover
       }),
       'POST'
     )

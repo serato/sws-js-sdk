@@ -37,7 +37,7 @@
     "nock": "^10"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "js-base64": "^2.6.3"
   }
 }
