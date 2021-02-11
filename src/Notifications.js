@@ -140,6 +140,7 @@ export default class Notifications extends Service {
    * Requires a valid access token.
    *
    * @param {Object}  params                - Input parameter object
+   * @param {String}  params.name           - Name of the campaign message. Must be a non empty string
    * @param {String}  params.campaignId     - ID of the campaign to create the notification for
    * @param {String}  params.type           - The type (category) of the notification. Must be one of 'licensing',
    *                                          'system', 'promotion', 'streaming' or 'device_connection'
@@ -154,6 +155,7 @@ export default class Notifications extends Service {
    * @return {Promise}
    */
   createNotification ({
+    name,
     campaignId,
     type,
     priority,
@@ -168,6 +170,7 @@ export default class Notifications extends Service {
       this.bearerTokenAuthHeader(),
       '/api/v2/notifications',
       this.toBody({
+        'name': name,
         'campaign_id': campaignId,
         'type': type,
         'priority': priority,
@@ -187,6 +190,7 @@ export default class Notifications extends Service {
    * Requires a valid access token.
    *
    * @param {Object}  params                  - Input parameter object
+   * @param {?String}  params.name            - Name of the campaign message. Must be a non empty string if provided
    * @param {String}  params.notificationId   - ID of the notification to update
    * @param {String}  [params.type]           - The type (category) of the notification. Must be one of 'licensing',
    *                                          'system', 'promotion', 'streaming' or 'device_connection'
@@ -202,6 +206,7 @@ export default class Notifications extends Service {
    * @return {Promise}
    */
   updateNotification ({
+    name = null,
     notificationId,
     templateOption = null,
     type = null,
@@ -217,6 +222,7 @@ export default class Notifications extends Service {
       this.bearerTokenAuthHeader(),
       `/api/v2/notifications/${notificationId}`,
       this.toBody({
+        'name': name,
         'type': type,
         'priority': priority,
         'template_name': templateName,
@@ -228,6 +234,24 @@ export default class Notifications extends Service {
         'is_takeover': isTakeover
       }),
       'PUT'
+    )
+  }
+
+  /**
+   * Creates a clone of the notification whose ID is supplied in the URL.
+   * Requires a valid access token.
+   *
+   * @param {Object} params                - Input parameter object
+   * @param {String} params.notificationId - ID of the notification to clone
+   *
+   * @return {Promise}
+   */
+  cloneNotification ({ notificationId }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      `/api/v2/notifications/${notificationId}`,
+      null,
+      'POST'
     )
   }
 
