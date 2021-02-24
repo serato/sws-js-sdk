@@ -29,9 +29,9 @@ export default class Profile extends Service {
   getUsers ({ emailAddress = null } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      '/api/v1/users/',
+      '/api/v1/users',
       this.toBody({
-        'email_address': appName
+        'email_address': emailAddress
       }),
       'GET'
     )
