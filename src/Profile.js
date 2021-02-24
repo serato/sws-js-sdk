@@ -19,14 +19,14 @@ export default class Profile extends Service {
   }
 
   /**
-   * Returns Product Recommendations for given user.
+   * Returns a list of user's profile.
    * Requires a valid access token.
    *
    * @param {Object} param
    * @param {String} param.emailAddress
    * @returns {Promise}
    */
-  getUsers ({ emailAddress = null } = {}) {
+  getProfiles ({ emailAddress = null } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       '/api/v1/users',
