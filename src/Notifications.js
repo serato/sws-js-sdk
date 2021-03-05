@@ -478,7 +478,7 @@ export default class Notifications extends Service {
    */
   getTestUsers () {
     return this.fetch(
-      null,
+      this.bearerTokenAuthHeader(),
       '/api/v2/testusers',
       null,
       'GET'
