@@ -447,4 +447,57 @@ export default class Notifications extends Service {
       'GET'
     )
   }
+
+  /**
+   * Creates a test user.
+   *
+   * @param {Int} userId - User ID
+   * @param {Boolean} enabled - defaults to true, which means a user is enabled by default
+   *
+   * @return {Promise}
+   */
+  createTestUser ({
+    userId,
+    enabled = true
+  }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      `/api/v2/testusers`,
+      this.toBody({
+        'user_id': userId,
+        'enabled': enabled
+      }),
+      'POST'
+    )
+  }
+
+  /**
+   * Lists all the test users.
+   *
+   * @return {Promise}
+   */
+  getTestUsers () {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      '/api/v2/testusers',
+      null,
+      'GET'
+    )
+  }
+
+  /**
+   * Remove a user from the list of test users.
+   *
+   * @param {String} userId - User ID
+   *
+   * @return {Promise}
+   */
+  deleteTestUser ({ userId }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      `/api/v2/testusers/${userId}`,
+      null,
+      'DELETE'
+    )
+  }
 }
