@@ -202,6 +202,7 @@ export default class Notifications extends Service {
    * @param {?String} [params.status]         - Status of the notification ('active', 'draft' or 'archived')
    * @param {Boolean} params.isPersistent     - Whether the notification is a persistent
    * @param {Boolean} params.isTakeover       - Whether the notification is a takeover
+   * @param {?Number} params.campaignId       - Campaign ID
    *
    * @return {Promise}
    */
@@ -216,7 +217,8 @@ export default class Notifications extends Service {
     endsAt = null,
     status = null,
     isPersistent = null,
-    isTakeover = null
+    isTakeover = null,
+    campaignId = null
   }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
@@ -231,7 +233,8 @@ export default class Notifications extends Service {
         'ends_at': endsAt,
         'status': status,
         'is_persistent': isPersistent,
-        'is_takeover': isTakeover
+        'is_takeover': isTakeover,
+        'campaign_id': campaignId
       }),
       'PUT'
     )
