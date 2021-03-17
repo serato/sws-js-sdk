@@ -74,17 +74,21 @@ export default class Notifications extends Service {
    * @param {String}  params.name          - Name of the campaign. Must be a non empty string
    * @param {Boolean} params.anonymous     - Whether the notifications for the campaign are anonymous or not
    * @param {?String} [params.description] - Description of the campaign
+   * @param {?Date}   [params.startsAt]    - The date/time that the campaign is valid from
+   * @param {?Date}   [params.endsAt]      - The date/time that the campaign is valid until
    *
    * @return {Promise}
    */
-  createCampaign ({ name, anonymous, description = null }) {
+  createCampaign ({ name, anonymous, description = null, startsAt = null, endsAt = null }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       '/api/v2/campaigns',
       this.toBody({
         'name': name,
         'description': description,
-        'anonymous': anonymous
+        'anonymous': anonymous,
+        'starts_at': startsAt,
+        'ends_at': endsAt
       }),
       'POST'
     )
@@ -101,10 +105,20 @@ export default class Notifications extends Service {
    * @param {?String}  [params.description] - Description of the campaign
    * @param {?String}  [params.status]      - Status of the campaign. Must be one of 'active',
    *                                                'draft' or 'archived'
+   * @param {?Date}   [params.startsAt]    - The date/time that the campaign is valid from
+   * @param {?Date}   [params.endsAt]      - The date/time that the campaign is valid until
    *
    * @return {Promise}
    */
-  updateCampaign ({ campaignId, name = null, anonymous = null, description = null, status = null }) {
+  updateCampaign ({
+    campaignId,
+    name = null,
+    anonymous = null,
+    description = null,
+    status = null,
+    startsAt = null,
+    endsAt = null
+  }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       `/api/v2/campaigns/${campaignId}`,
@@ -112,7 +126,9 @@ export default class Notifications extends Service {
         'name': name,
         'description': description,
         'anonymous': anonymous,
-        'status': status
+        'status': status,
+        'starts_at': startsAt,
+        'ends_at': endsAt
       }),
       'PUT'
     )
