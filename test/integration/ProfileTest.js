@@ -67,7 +67,7 @@ describe('Profile Tests', function () {
         city: 'Chumbo',
         region: 'Swumbo',
         postCode: 1234,
-        country: 'Austria'
+        countryCode: 'AT'
       }).then(
         () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
         err => {
@@ -87,7 +87,7 @@ describe('Profile Tests', function () {
         city: 'Chumbo',
         region: 'Swumbo',
         postCode: 1234,
-        country: 'Austria'
+        countryCode: 'AT'
       }).then(
         () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
         err => {
