@@ -76,6 +76,7 @@ export default class Profile extends Service {
    * @param   {Number} param.threadsPerPage
    * @param   {String} param.language
    * @param   {String} param.displayName
+   * @param   {String} param.company
    * @returns {Promise}
    */
   updateProfile ({
@@ -96,7 +97,8 @@ export default class Profile extends Service {
     autoSubscribe,
     threadsPerPage,
     language,
-    displayName
+    displayName,
+    company
   }
   = {}
   ) {
@@ -121,7 +123,8 @@ export default class Profile extends Service {
         auto_subscribe: autoSubscribe,
         threads_per_page: threadsPerPage,
         language: language,
-        display_name: displayName
+        display_name: displayName,
+        company: company
       }),
       'PUT'
     )
