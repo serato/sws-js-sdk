@@ -115,7 +115,7 @@ export default class Profile extends Service {
         address_2: address2,
         city: city,
         region: region,
-        post_code: postCode,
+        postcode: postCode,
         country_code: countryCode,
         notify_tracked: notifyTracked,
         notify_private: notifyPrivate,
