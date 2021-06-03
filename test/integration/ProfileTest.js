@@ -66,7 +66,7 @@ describe('Profile Tests', function () {
         address2: 'Chungus',
         city: 'Chumbo',
         region: 'Swumbo',
-        postCode: 1234,
+        postcode: 1234,
         countryCode: 'AT',
         company: 'Serato'
       }).then(
@@ -87,7 +87,7 @@ describe('Profile Tests', function () {
         address2: 'Chungus',
         city: 'Chumbo',
         region: 'Swumbo',
-        postCode: 1234,
+        postcode: 1234,
         countryCode: 'AT',
         company: 'Serato'
       }).then(
