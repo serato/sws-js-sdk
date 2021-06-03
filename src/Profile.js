@@ -67,7 +67,7 @@ export default class Profile extends Service {
    * @param   {String} param.address2
    * @param   {String} param.city
    * @param   {String} param.region
-   * @param   {Number} param.postCode
+   * @param   {Number} param.postcode
    * @param   {String} param.countryCode
    * @param   {Boolean} param.notifyTracked
    * @param   {Boolean} param.notifyPrivate
@@ -89,7 +89,7 @@ export default class Profile extends Service {
     address2,
     city,
     region,
-    postCode,
+    postcode,
     countryCode,
     notifyTracked,
     notifyPrivate,
@@ -115,7 +115,7 @@ export default class Profile extends Service {
         address_2: address2,
         city: city,
         region: region,
-        post_code: postCode,
+        postcode: postcode,
         country_code: countryCode,
         notify_tracked: notifyTracked,
         notify_private: notifyPrivate,
