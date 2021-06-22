@@ -1,6 +1,6 @@
 {
   "name": "@serato/sws-sdk",
-  "version": "3.0.7",
+  "version": "4.0.2",
   "description": "Serato Web Services JS SDK",
   "main": "src/index.js",
   "scripts": {
@@ -37,7 +37,7 @@
     "nock": "^10"
   },
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "0.19.*",
     "js-base64": "^2.6.3"
   }
 }

@@ -67,8 +67,8 @@ export default class Profile extends Service {
    * @param   {String} param.address2
    * @param   {String} param.city
    * @param   {String} param.region
-   * @param   {Number} param.postCode
-   * @param   {String} param.country
+   * @param   {Number} param.postcode
+   * @param   {String} param.countryCode
    * @param   {Boolean} param.notifyTracked
    * @param   {Boolean} param.notifyPrivate
    * @param   {Boolean} param.autoRead
@@ -76,6 +76,7 @@ export default class Profile extends Service {
    * @param   {Number} param.threadsPerPage
    * @param   {String} param.language
    * @param   {String} param.displayName
+   * @param   {String} param.company
    * @returns {Promise}
    */
   updateProfile ({
@@ -88,15 +89,16 @@ export default class Profile extends Service {
     address2,
     city,
     region,
-    postCode,
-    country,
+    postcode,
+    countryCode,
     notifyTracked,
     notifyPrivate,
     autoRead,
     autoSubscribe,
     threadsPerPage,
     language,
-    displayName
+    displayName,
+    company
   }
   = {}
   ) {
@@ -113,15 +115,16 @@ export default class Profile extends Service {
         address_2: address2,
         city: city,
         region: region,
-        post_code: postCode,
-        country: country,
+        postcode: postcode,
+        country_code: countryCode,
         notify_tracked: notifyTracked,
         notify_private: notifyPrivate,
         auto_read: autoRead,
         auto_subscribe: autoSubscribe,
         threads_per_page: threadsPerPage,
         language: language,
-        display_name: displayName
+        display_name: displayName,
+        company: company
       }),
       'PUT'
     )
