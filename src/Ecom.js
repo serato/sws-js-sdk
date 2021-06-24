@@ -197,7 +197,6 @@ export default class Ecom extends Service {
         immediate: immediate
       }),
       'POST'
-
     )
   }
 
