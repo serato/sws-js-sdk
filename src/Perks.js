@@ -25,10 +25,10 @@ export default class Perks extends Service {
    *
    * @returns {Promise}
    */
-  getPerks () {
+  getRewards () {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      this.userId === 0 ? '/api/v1/me/perks' : '/api/v1/users/' + this.userId + '/perks',
+      this.userId === 0 ? '/api/v1/me/rewards' : '/api/v1/users/' + this.userId + '/rewards',
       null
     )
   }

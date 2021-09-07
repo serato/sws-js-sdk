@@ -4,9 +4,9 @@ import { expect } from 'chai'
 
 describe('Perks Tests', function () {
   describe('Timeout', function () {
-    it(`tests handling timeout on accessing /perks endpoint`, function () {
+    it(`tests handling timeout on accessing /rewards endpoint`, function () {
       let sws = new Sws({ appId: 'myClientAppId', timeout: 1 })
-      return sws.perks.getPerks().then().catch((err) => {
+      return sws.perks.getRewards().then().catch((err) => {
         expect(err.code).to.equal('ECONNABORTED')
       })
     })
@@ -18,10 +18,10 @@ describe('Perks Tests', function () {
   })
 
   describe('Perks URI Validation Tests', function () {
-    it(`confirms URI used in 'getPerks()' method with no user ID, by returning a non-404 HTTP response`,
+    it(`confirms URI used in 'getRewards()' method with no user ID, by returning a non-404 HTTP response`,
       function () {
         swsClient.userId = 0
-        return swsClient.perks.getPerks().then(
+        return swsClient.perks.getRewards().then(
           () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
           err => {
             expect(err.httpStatus).not.to.equal(404)
@@ -29,10 +29,10 @@ describe('Perks Tests', function () {
         )
       })
 
-    it(`confirms URI used in 'getPerks()' method with user ID, by returning a non-404 HTTP response`,
+    it(`confirms URI used in 'getRewards()' method with user ID, by returning a non-404 HTTP response`,
       function () {
         swsClient.userId = 123
-        return swsClient.perks.getPerks().then(
+        return swsClient.perks.getRewards().then(
           () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
           err => {
             expect(err.httpStatus).not.to.equal(404)
