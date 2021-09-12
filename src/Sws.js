@@ -6,7 +6,7 @@ import Ecom from './Ecom'
 import Profile from './Profile'
 import Notifications from './Notifications'
 import DigitalAssets from './DigitalAssets'
-import Perks from './Perks'
+import Rewards from './Rewards'
 
 const serviceUriDefault = {
   id: 'id.serato.com',
@@ -15,7 +15,7 @@ const serviceUriDefault = {
   notifications: 'notifications.serato.com',
   profile: 'profile.serato.com',
   da: 'da.serato.com',
-  perks: 'perks.serato.com'
+  rewards: 'rewards.serato.com'
 }
 
 /**
@@ -39,7 +39,7 @@ export default class Sws {
    * @param {String} config.serviceUri.notifications Base URI for SWS Notifications Service
    * @param {String} config.serviceUri.profile Base URI for SWS Profile Service
    * @param {String} config.serviceUri.da Base URI for SWS Digital Assets Service
-   * @param {String} config.serviceUri.perks Base URI for SWS Perks Service
+   * @param {String} config.serviceUri.rewards Base URI for SWS Perks Service
    * @return {void}
    */
   constructor ({ appId, secret = '', userId = 0, timeout = 3000, serviceUri = {} }) {
@@ -57,7 +57,7 @@ export default class Sws {
       notifications: serviceUri.notifications ? serviceUri.notifications : serviceUriDefault.notifications,
       profile: serviceUri.profile ? serviceUri.profile : serviceUriDefault.profile,
       da: serviceUri.da ? serviceUri.da : serviceUriDefault.da,
-      perks: serviceUri.perks ? serviceUri.perks : serviceUri.perks
+      rewards: serviceUri.rewards ? serviceUri.rewards : serviceUri.rewards
     }
     // Create service clients
     this._service = {
@@ -67,7 +67,7 @@ export default class Sws {
       notifications: new Notifications(this),
       profile: new Profile(this),
       da: new DigitalAssets(this),
-      perks: new Perks(this)
+      rewards: new Rewards(this)
       // Define more clients here,
       // and add a getter method
     }
@@ -313,10 +313,10 @@ export default class Sws {
   /**
    * Get the Perks service client instance
    *
-   * @return {Perks} Perks service client
+   * @return {Rewards} Perks service client
    */
-  get perks () {
-    return this._service.perks
+  get rewards () {
+    return this._service.rewards
   }
 }
 

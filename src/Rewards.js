@@ -5,9 +5,9 @@ import Service from './Service'
 /**
  * Perks Service class
  *
- * Exposes SWS Perks Service API endpoints via class methods
+ * Exposes SWS Rewards Service API endpoints via class methods
  */
-export default class Perks extends Service {
+export default class Rewards extends Service {
   /**
    * Constructor
    *
@@ -16,11 +16,11 @@ export default class Perks extends Service {
    */
   constructor (Sws) {
     super(Sws)
-    this._serviceUri = Sws.serviceUri.perks
+    this._serviceUri = Sws.serviceUri.rewards
   }
 
   /**
-   * Return perks owned by a user.
+   * Return rewards owned by a user.
    * Requires a valid access token.
    *
    * @returns {Promise}
