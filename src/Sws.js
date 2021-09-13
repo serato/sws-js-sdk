@@ -57,7 +57,7 @@ export default class Sws {
       notifications: serviceUri.notifications ? serviceUri.notifications : serviceUriDefault.notifications,
       profile: serviceUri.profile ? serviceUri.profile : serviceUriDefault.profile,
       da: serviceUri.da ? serviceUri.da : serviceUriDefault.da,
-      rewards: serviceUri.rewards ? serviceUri.rewards : serviceUri.rewards
+      rewards: serviceUri.rewards ? serviceUri.rewards : serviceUriDefault.rewards
     }
     // Create service clients
     this._service = {
