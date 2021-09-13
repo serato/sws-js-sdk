@@ -3,7 +3,7 @@
 import Service from './Service'
 
 /**
- * Perks Service class
+ * Rewards Service class
  *
  * Exposes SWS Rewards Service API endpoints via class methods
  */

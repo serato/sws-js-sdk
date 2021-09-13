@@ -39,7 +39,7 @@ export default class Sws {
    * @param {String} config.serviceUri.notifications Base URI for SWS Notifications Service
    * @param {String} config.serviceUri.profile Base URI for SWS Profile Service
    * @param {String} config.serviceUri.da Base URI for SWS Digital Assets Service
-   * @param {String} config.serviceUri.rewards Base URI for SWS Perks Service
+   * @param {String} config.serviceUri.rewards Base URI for SWS Rewards Service
    * @return {void}
    */
   constructor ({ appId, secret = '', userId = 0, timeout = 3000, serviceUri = {} }) {
@@ -311,9 +311,9 @@ export default class Sws {
     return this._service.da
   }
   /**
-   * Get the Perks service client instance
+   * Get the Rewards service client instance
    *
-   * @return {Rewards} Perks service client
+   * @return {Rewards} Rewards service client
    */
   get rewards () {
     return this._service.rewards

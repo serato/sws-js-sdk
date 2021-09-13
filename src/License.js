@@ -87,7 +87,7 @@ export default class License extends Service {
   getProducts ({ appName, appVersion, term, showLicenceActivations } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      this.userId === 0 ? '/api/v1/me/So' : '/api/v1/users/' + this.userId + '/products',
+      this.userId === 0 ? '/api/v1/me/products' : '/api/v1/users/' + this.userId + '/products',
       this.toBody({ app_name: appName, app_version: appVersion, term: term, show_license_activations: showLicenceActivations })
     )
   }
