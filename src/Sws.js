@@ -6,6 +6,7 @@ import Ecom from './Ecom'
 import Profile from './Profile'
 import Notifications from './Notifications'
 import DigitalAssets from './DigitalAssets'
+import Rewards from './Rewards'
 
 const serviceUriDefault = {
   id: 'id.serato.com',
@@ -13,7 +14,8 @@ const serviceUriDefault = {
   ecom: 'ecom.serato.com',
   notifications: 'notifications.serato.com',
   profile: 'profile.serato.com',
-  da: 'da.serato.com'
+  da: 'da.serato.com',
+  rewards: 'rewards.serato.com'
 }
 
 /**
@@ -37,6 +39,7 @@ export default class Sws {
    * @param {String} config.serviceUri.notifications Base URI for SWS Notifications Service
    * @param {String} config.serviceUri.profile Base URI for SWS Profile Service
    * @param {String} config.serviceUri.da Base URI for SWS Digital Assets Service
+   * @param {String} config.serviceUri.rewards Base URI for SWS Rewards Service
    * @return {void}
    */
   constructor ({ appId, secret = '', userId = 0, timeout = 3000, serviceUri = {} }) {
@@ -53,7 +56,8 @@ export default class Sws {
       ecom: serviceUri.ecom ? serviceUri.ecom : serviceUriDefault.ecom,
       notifications: serviceUri.notifications ? serviceUri.notifications : serviceUriDefault.notifications,
       profile: serviceUri.profile ? serviceUri.profile : serviceUriDefault.profile,
-      da: serviceUri.da ? serviceUri.da : serviceUriDefault.da
+      da: serviceUri.da ? serviceUri.da : serviceUriDefault.da,
+      rewards: serviceUri.rewards ? serviceUri.rewards : serviceUriDefault.rewards
     }
     // Create service clients
     this._service = {
@@ -62,7 +66,8 @@ export default class Sws {
       ecom: new Ecom(this),
       notifications: new Notifications(this),
       profile: new Profile(this),
-      da: new DigitalAssets(this)
+      da: new DigitalAssets(this),
+      rewards: new Rewards(this)
       // Define more clients here,
       // and add a getter method
     }
@@ -304,6 +309,14 @@ export default class Sws {
    */
   get da () {
     return this._service.da
+  }
+  /**
+   * Get the Rewards service client instance
+   *
+   * @return {Rewards} Rewards service client
+   */
+  get rewards () {
+    return this._service.rewards
   }
 }
 
