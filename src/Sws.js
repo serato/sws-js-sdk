@@ -8,6 +8,62 @@ import Notifications from './Notifications'
 import DigitalAssets from './DigitalAssets'
 import Rewards from './Rewards'
 
+/**
+ * @typedef {Object<string,string>} RequestHeaders
+ */
+
+/**
+ * @typedef {Object<string,string>} RequestParams
+ */
+
+/**
+ * SWS request object.
+ *
+ * @typedef {Object} Request
+ * @property {Number} timeout Request timeout (ms)
+ * @property {String} url Request URI
+ * @property {String} method HTTP method
+ * @property {String} responseType Response type for the request (e.g. json)
+ * @property {RequestHeaders} headers HTTP request headers
+ * @property {RequestParams} [params = undefined] params URL params
+ * @property {RequestParams} [data = undefined] data Request body
+ */
+
+/**
+ * Callback when a SWS request returns an error.
+ *
+ * @callback RequestErrorHandler
+ * @param {Request} request
+ * @param {Error} error
+ * @returns {void}
+ */
+
+/**
+ * Base URIs for SWS web services.
+ *
+ * @typedef {Object} ServiceUri
+ * @property {String} [id=undefined] id Base URI for SWS ID Service
+ * @property {String} [license=undefined] license Base URI for SWS License Service
+ * @property {String} [ecom=undefined] ecom Base URI for SWS Ecommerce Service
+ * @property {String} [notifications=undefined] notifications Base URI for SWS Notifications Service
+ * @property {String} [profile=undefined] profile Base URI for SWS Profile Service
+ * @property {String} [da=undefined] da Base URI for SWS Digital Assets Service
+ * @property {String} [rewards=undefined] rewards Base URI for SWS Rewards Service
+ */
+
+/**
+ * Sws configuration object.
+ *
+ * @typedef {Object} SwsConfiguration
+ * @property {String} appId Application ID
+ * @property {String} [secret=''] secret Application secret
+ * @property {Number} [timeout=3000] timeout Request timeout
+ * @property {ServiceUri} [serviceUri={}] serviceUri Base URIs for SWS services
+ */
+
+/**
+ * @type {ServiceUri}
+ */
 const serviceUriDefault = {
   id: 'id.serato.com',
   license: 'license.serato.com',
@@ -18,34 +74,22 @@ const serviceUriDefault = {
   rewards: 'rewards.serato.com'
 }
 
+export { serviceUriDefault }
+
 /**
- * Sws class.
- *
- * Provides single point of configuration and access to service clients.
+ * @classdesc Provides single point of configuration and access to service clients.
+ * @class
  */
 export default class Sws {
   /**
    * Constructor
    *
-   * @param {Object} config Configuration options
-   * @param {String} config.appId Application ID
-   * @param {String} config.secret Application secret
-   * @param {String} config.userId End user ID
-   * @param {Number} config.timeout Request timeout
-   * @param {Object} config.serviceUri Base URIs for SWS services
-   * @param {String} config.serviceUri.id Base URI for SWS ID Service
-   * @param {String} config.serviceUri.license Base URI for SWS License Service
-   * @param {String} config.serviceUri.ecom Base URI for SWS Ecommerce Service
-   * @param {String} config.serviceUri.notifications Base URI for SWS Notifications Service
-   * @param {String} config.serviceUri.profile Base URI for SWS Profile Service
-   * @param {String} config.serviceUri.da Base URI for SWS Digital Assets Service
-   * @param {String} config.serviceUri.rewards Base URI for SWS Rewards Service
+   * @param {SwsConfiguration} config Configuration options
    * @return {void}
    */
-  constructor ({ appId, secret = '', userId = 0, timeout = 3000, serviceUri = {} }) {
+  constructor ({ appId, secret = '', timeout = 3000, serviceUri = {} }) {
     this._appId = appId
     this._secret = secret
-    this._userId = userId
     this._timeout = timeout
     this._accessToken = ''
     this._refreshToken = ''
@@ -76,7 +120,7 @@ export default class Sws {
   /**
    * Sets the invalid access token callback for all clients
    *
-   * @param {Function} f Callback function
+   * @param {RequestErrorHandler} f Callback function
    * @return {Void}
    */
   setInvalidAccessTokenHandler (f) {
@@ -88,7 +132,7 @@ export default class Sws {
   /**
    * Sets the invalid refresh token callback for all clients
    *
-   * @param {Function} f Callback function
+   * @param {RequestErrorHandler} f Callback function
    * @return {Void}
    */
   setInvalidRefreshTokenHandler (f) {
@@ -100,7 +144,7 @@ export default class Sws {
   /**
    * Sets the password re-entry required callback for all clients
    *
-   * @param {Function} f Callback function
+   * @param {RequestErrorHandler} f Callback function
    * @return {Void}
    */
   setPasswordReEntryRequiredHandler (f) {
@@ -112,7 +156,7 @@ export default class Sws {
   /**
    * Sets the access denied callback for all clients
    *
-   * @param {Function} f Callback function
+   * @param {RequestErrorHandler} f Callback function
    * @return {Void}
    */
   setAccessDeniedHandler (f) {
@@ -124,7 +168,7 @@ export default class Sws {
   /**
    * Sets the service error callback for all clients
    *
-   * @param {Function} f Callback function
+   * @param {RequestErrorHandler} f Callback function
    * @return {Void}
    */
   setServiceErrorHandler (f) {
@@ -136,7 +180,7 @@ export default class Sws {
   /**
    * Sets the service unavailable callback for all clients
    *
-   * @param {Function} f Callback function
+   * @param {RequestErrorHandler} f Callback function
    * @return {Void}
    */
   setServiceUnavailableHandler (f) {
@@ -148,7 +192,7 @@ export default class Sws {
   /**
    * Sets the timeout exceeded callback for all clients
    *
-   * @param {Function} f Callback function
+   * @param {RequestErrorHandler} f Callback function
    * @return {Void}
    */
   setTimesoutExceededHandler (f) {
@@ -178,7 +222,7 @@ export default class Sws {
   /**
    * Get the service URI endpoints for SWS services
    *
-   * @return {Object} Service URIs
+   * @return {ServiceUri} Service URIs
    */
   get serviceUri () {
     return this._serviceUri
@@ -318,8 +362,4 @@ export default class Sws {
   get rewards () {
     return this._service.rewards
   }
-}
-
-export {
-  serviceUriDefault
 }

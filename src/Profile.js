@@ -1,6 +1,8 @@
 'use strict'
 
 import Service from './Service'
+import Sws from './Sws'
+
 /**
  * Profile Service class
  *

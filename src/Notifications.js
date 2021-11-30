@@ -1,6 +1,7 @@
 'use strict'
 
 import Service from './Service'
+import Sws from './Sws'
 
 /**
  * Notifications Service class

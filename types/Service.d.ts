@@ -1,0 +1,41 @@
+export default class Service {
+    constructor(Sws: Sws);
+    _sws: Sws;
+    _serviceUri: string;
+    _lastRequest: import("./Sws").Request;
+    _invalidAccessTokenHandler: typeof handleFetchError;
+    _invalidRefreshTokenHandler: typeof handleFetchError;
+    _passwordReEntryRequiredHandler: typeof handleFetchError;
+    _accessDeniedHandler: typeof handleFetchError;
+    _timeoutExceededHandler: typeof handleFetchError;
+    _serviceErrorHandler: typeof handleFetchError;
+    _serviceUnavailableHandler: typeof handleFetchError;
+    protected bearerTokenAuthHeader(): string;
+    protected basicAuthHeader(): string;
+    get userId(): number;
+    get serviceUri(): string;
+    protected toBody(data: any): import("./Sws").RequestParams;
+    protected fetch(auth: string, endpoint: string, body: any, method?: string, timeout?: number, responseType?: string, headers?: {
+        Accept: string;
+        'Content-Type': string;
+    }): Promise<any>;
+    fetchRequest(request: any): Promise<any>;
+    set invalidAccessTokenHandler(arg: import("./Sws").RequestErrorHandler);
+    get invalidAccessTokenHandler(): import("./Sws").RequestErrorHandler;
+    set invalidRefreshTokenHandler(arg: import("./Sws").RequestErrorHandler);
+    get invalidRefreshTokenHandler(): import("./Sws").RequestErrorHandler;
+    set passwordReEntryRequiredHandler(arg: import("./Sws").RequestErrorHandler);
+    get passwordReEntryRequiredHandler(): import("./Sws").RequestErrorHandler;
+    set accessDeniedHandler(arg: import("./Sws").RequestErrorHandler);
+    get accessDeniedHandler(): import("./Sws").RequestErrorHandler;
+    set timeoutExceededHandler(arg: import("./Sws").RequestErrorHandler);
+    get timeoutExceededHandler(): import("./Sws").RequestErrorHandler;
+    set serviceErrorHandler(arg: import("./Sws").RequestErrorHandler);
+    get serviceErrorHandler(): import("./Sws").RequestErrorHandler;
+    set serviceUnavailableHandler(arg: import("./Sws").RequestErrorHandler);
+    get serviceUnavailableHandler(): import("./Sws").RequestErrorHandler;
+    get lastRequest(): import("./Sws").Request;
+}
+import Sws from "./Sws";
+declare function handleFetchError(request: any, err: Error): void;
+export {};

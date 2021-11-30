@@ -3,28 +3,26 @@
 import Sws from './Sws'
 
 /**
- * SwsClient class.
+ * A function that is called each time a new Access token is received.
  *
- * Extends Sws to provide functionality for use in client side applications.
- *
- * Specifically, it adds:
- *
- * - A `setInvalidAccessTokenHandler` handler that refreshes the access token
- *   and retries the original request.
- * - Adds an `accessTokenUpdatedHandler` callback that is called whenever the
- *   access token is successfully refreshed.
+ * @callback AccessTokenUpdatedHandler
+ * @param {String} accessToken
+ * @param {Date} accessTokenExpires
+ * @param {String} refreshToken
+ * @param {Date} refreshTokenExpires
+ * @returns {void}
  */
-export class SwsClient extends Sws {
+
+/**
+ * @classdesc Extends Sws to provide functionality for use in client side applications.
+ * @class
+ * @extends Sws
+ */
+ export class SwsClient extends Sws {
   /**
    * Constructor
    *
-   * @param {Object} param Configuration options
-   * @param {String} param.appId Application ID
-   * @param {String} param.secret Application secret
-   * @param {Number} param.timeout Request timeout
-   * @param {Object} param.serviceUri Base URIs for SWS services
-   * @param {String} param.serviceUri.id Base URI for SWS ID Service
-   * @param {String} param.serviceUri.license Base URI for SWS License Service
+   * @param { import("./Sws").SwsConfiguration) } config Configuration options
    * @return {void}
    */
   constructor ({ appId, secret = '', timeout = 3000, serviceUri = {} }) {
@@ -70,7 +68,7 @@ export class SwsClient extends Sws {
   /**
    * Set the access token updated callback
    *
-   * @param {function} f Callback
+   * @param {AccessTokenUpdatedHandler} f Callback
    * @return {void}
    */
   set accessTokenUpdatedHandler (f) {
@@ -80,7 +78,7 @@ export class SwsClient extends Sws {
   /**
    * Get the access token updated callback
    *
-   * @return {function}
+   * @return {AccessTokenUpdatedHandler}
    */
   get accessTokenUpdatedHandler () {
     return this._accessTokenUpdatedHandler
