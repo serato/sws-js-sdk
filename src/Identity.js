@@ -4,11 +4,44 @@ import Service from './Service'
 import Sws from './Sws'
 
 /**
+ * @typedef {String} RawToken
+ * @typedef {Object<string, string[]>} Scopes
+ *
+ * @typedef {Object} Token
+ * @property {RawToken} token
+ * @property {Number} expires_at UNIX timestamp expiry time of token
+ * @property {'Bearer'} type
+ *
+ * @typedef {Object} AccessToken
+ * @extends Token
+ * @property {Scopes} scopes
+ *
+ * @typedef {Object} UserTokens
+ * @property {AccessToken} access
+ * @property {Token} refresh
+ *
+ * @typedef {Object} User
+ * @property {Number} id
+ * @property {String} email_address
+ * @property {String} [first_name = undefined] first_name
+ * @property {String} [last_name = undefined] last_name
+ * @property {String} date_created Date of account creation expressed in ISO 8061 format
+ * @property {String} locale ISO 15897 locale string
+ *
+ * @typedef {Object} UserLogin
+ * @property {User} user
+ * @property {UserTokens} tokens
+ *
+ * @typedef {Object} OkMessage
+ * @property {String} message
+ */
+
+/**
  * Indentity Service class
  *
  * Exposes SWS Indentity Service API endpoints via class methods
  */
-export default class Identity extends Service {
+export default class IdentityService extends Service {
   /**
    * Constructor
    *
@@ -23,8 +56,8 @@ export default class Identity extends Service {
   /**
    * Request a new access token
    *
-   * @param {String} refreshToken Refresh token
-   * @returns {Promise}
+   * @param {RawToken} refreshToken Refresh token
+   * @returns {Promise<UserLogin>}
    */
   tokenRefresh (refreshToken) {
     return this.fetch(
@@ -37,9 +70,8 @@ export default class Identity extends Service {
 
   /**
    * Request user data for the user identified by the current access token.
-   * Requires a valid access token.
    *
-   * @return {Promise}
+   * @return {Promise<User>}
    */
   getUser () {
     return this.fetch(
@@ -56,11 +88,11 @@ export default class Identity extends Service {
    * @param {Object} param Options
    * @param {String} param.emailAddress Email address of the user to log in as
    * @param {String} param.password Password of the user to log in as
-   * @param {String} param.deviceId ID of the user's device
-   * @param {String} param.deviceName Name of the user's device
-   * @return {Promise}
+   * @param {String} [param.deviceId = undefined] param.deviceId ID of the user's device
+   * @param {String} [param.deviceName = undefined] param.deviceName Name of the user's device
+   * @return {Promise<UserLogin>}
    */
-  login ({ emailAddress, password, deviceId, deviceName } = {}) {
+  login ({ emailAddress, password, deviceId, deviceName }) {
     return this.fetch(
       this.basicAuthHeader(),
       '/api/v1/login',
@@ -75,7 +107,7 @@ export default class Identity extends Service {
    * Logout user from all SSO authenticated apps
    *
    * @param {Object} param Options
-   * @param {String} param.refreshToken Users Refresh token to invalidate
+   * @param {RawToken} param.refreshToken Users Refresh token to invalidate
    * @param {String} param.refreshTokenIds Comma delimited string containing multiple refresh tokens
    * @param {Boolean} param.disableLogin When provided, the user will be prevented from logging into the SSO service
    * @return {Promise}
@@ -111,13 +143,13 @@ export default class Identity extends Service {
    * @param {Object} param Options
    * @param {String} param.emailAddress
    * @param {String} param.password
-   * @param {String} param.firstName
-   * @param {String} param.lastName
-   * @param {String} param.timestamp
-   * @param {String} param.locale
-   * @returns {Promise}
+   * @param {String} [param.firstName = undefined] param.firstName
+   * @param {String} [param.lastName = undefined] param.lastName
+   * @param {String} [param.timestamp = undefined] param.timestamp
+   * @param {String} [param.locale = undefined] param.locale
+   * @returns {Promise<User>}
    */
-  addUser ({ emailAddress, password, firstName, lastName, timestamp, locale } = {}) {
+  addUser ({ emailAddress, password, firstName, lastName, timestamp, locale }) {
     return this.fetch(
       this.basicAuthHeader(),
       '/api/v1/users',
@@ -136,7 +168,7 @@ export default class Identity extends Service {
   /**
    * Deactivate a user account through DELETE request on /me &  /users/{user_id} endpoints.
    *
-   * @returns {Promise}
+   * @returns {Promise<OkMessage>}
    * **/
   deactivateUser () {
     return this.fetch(
@@ -150,12 +182,12 @@ export default class Identity extends Service {
   /**
    * Change email address through POST request on /me/sendverifyemailaddress &  /users/{user_id}/sendverifyemailaddress endpoints.
    *
-   *@param {Object} param Options
+   * @param {Object} param Options
    * @param {String} param.emailAddress Email address to change to
-   * @param {String} param.redirectUri URI to redirect to after an email is sent.
+   * @param {String} [param.redirectUri = undefined] param.redirectUri URI to redirect to after an email is sent.
    * @returns {Promise}
    * **/
-  changeEmailAddress ({ emailAddress, redirectUri } = {}) {
+  changeEmailAddress ({ emailAddress, redirectUri }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       this.userId === 0 ? '/api/v1/me/sendverifyemailaddress' : '/api/v1/users/' + this.userId + '/sendverifyemailaddress',

@@ -1,25 +1,25 @@
 export default class Service {
     constructor(Sws: Sws);
-    _sws: Sws;
-    _serviceUri: string;
-    _lastRequest: import("./Sws").Request;
-    _invalidAccessTokenHandler: typeof handleFetchError;
-    _invalidRefreshTokenHandler: typeof handleFetchError;
-    _passwordReEntryRequiredHandler: typeof handleFetchError;
-    _accessDeniedHandler: typeof handleFetchError;
-    _timeoutExceededHandler: typeof handleFetchError;
-    _serviceErrorHandler: typeof handleFetchError;
-    _serviceUnavailableHandler: typeof handleFetchError;
+    private _sws;
+    private _serviceUri;
+    private _lastRequest;
+    private _invalidAccessTokenHandler;
+    private _invalidRefreshTokenHandler;
+    private _passwordReEntryRequiredHandler;
+    private _accessDeniedHandler;
+    private _timeoutExceededHandler;
+    private _serviceErrorHandler;
+    private _serviceUnavailableHandler;
     protected bearerTokenAuthHeader(): string;
     protected basicAuthHeader(): string;
-    get userId(): number;
-    get serviceUri(): string;
     protected toBody(data: any): import("./Sws").RequestParams;
-    protected fetch(auth: string, endpoint: string, body: any, method?: string, timeout?: number, responseType?: string, headers?: {
+    protected fetch(auth: string, endpoint: string, body: any, method?: HttpMethod, timeout?: number, responseType?: ResponseType, headers?: {
         Accept: string;
         'Content-Type': string;
     }): Promise<any>;
-    fetchRequest(request: any): Promise<any>;
+    public fetchRequest(request: any): Promise<any>;
+    get userId(): number;
+    get serviceUri(): string;
     set invalidAccessTokenHandler(arg: import("./Sws").RequestErrorHandler);
     get invalidAccessTokenHandler(): import("./Sws").RequestErrorHandler;
     set invalidRefreshTokenHandler(arg: import("./Sws").RequestErrorHandler);
@@ -36,6 +36,6 @@ export default class Service {
     get serviceUnavailableHandler(): import("./Sws").RequestErrorHandler;
     get lastRequest(): import("./Sws").Request;
 }
+export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'OPTIONS';
+export type ResponseType = 'json' | 'blob';
 import Sws from "./Sws";
-declare function handleFetchError(request: any, err: Error): void;
-export {};

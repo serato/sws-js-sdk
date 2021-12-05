@@ -1,28 +1,13 @@
 export default class Sws {
     constructor({ appId, secret, timeout, serviceUri }: SwsConfiguration);
-    _appId: string;
-    _secret: string;
-    _timeout: number;
-    _accessToken: string;
-    _refreshToken: string;
-    _serviceUri: {
-        id: string;
-        license: string;
-        ecom: string;
-        notifications: string;
-        profile: string;
-        da: string;
-        rewards: string;
-    };
-    _service: {
-        license: License;
-        id: Identity;
-        ecom: Ecom;
-        notifications: Notifications;
-        profile: Profile;
-        da: DigitalAssets;
-        rewards: Rewards;
-    };
+    private _appId;
+    private _secret;
+    private _timeout;
+    private _accessToken;
+    private _refreshToken;
+    private _userId;
+    private _serviceUri;
+    private _service;
     setInvalidAccessTokenHandler(f: RequestErrorHandler): void;
     setInvalidRefreshTokenHandler(f: RequestErrorHandler): void;
     setPasswordReEntryRequiredHandler(f: RequestErrorHandler): void;
@@ -35,7 +20,6 @@ export default class Sws {
     get serviceUri(): ServiceUri;
     set userId(arg: number);
     get userId(): number;
-    _userId: number;
     set accessToken(arg: string);
     get accessToken(): string;
     set refreshToken(arg: string);
@@ -47,6 +31,7 @@ export default class Sws {
     get ecom(): Ecom;
     get profile(): Profile;
     get notifications(): Notifications;
+    get notificationsV1(): NotificationsV1;
     get da(): DigitalAssets;
     get rewards(): Rewards;
 }
@@ -85,7 +70,8 @@ export const serviceUriDefault: ServiceUri;
 import License from "./License";
 import Identity from "./Identity";
 import Ecom from "./Ecom";
-import Notifications from "./Notifications";
 import Profile from "./Profile";
+import Notifications from "./Notifications";
+import NotificationsV1 from "./NotificationsV1";
 import DigitalAssets from "./DigitalAssets";
 import Rewards from "./Rewards";

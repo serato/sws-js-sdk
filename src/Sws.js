@@ -5,19 +5,13 @@ import Identity from './Identity'
 import Ecom from './Ecom'
 import Profile from './Profile'
 import Notifications from './Notifications'
+import NotificationsV1 from './NotificationsV1'
 import DigitalAssets from './DigitalAssets'
 import Rewards from './Rewards'
 
 /**
  * @typedef {Object<string,string>} RequestHeaders
- */
-
-/**
  * @typedef {Object<string,string>} RequestParams
- */
-
-/**
- * SWS request object.
  *
  * @typedef {Object} Request
  * @property {Number} timeout Request timeout (ms)
@@ -27,19 +21,11 @@ import Rewards from './Rewards'
  * @property {RequestHeaders} headers HTTP request headers
  * @property {RequestParams} [params = undefined] params URL params
  * @property {RequestParams} [data = undefined] data Request body
- */
-
-/**
- * Callback when a SWS request returns an error.
  *
  * @callback RequestErrorHandler
  * @param {Request} request
  * @param {Error} error
  * @returns {void}
- */
-
-/**
- * Base URIs for SWS web services.
  *
  * @typedef {Object} ServiceUri
  * @property {String} [id=undefined] id Base URI for SWS ID Service
@@ -49,10 +35,6 @@ import Rewards from './Rewards'
  * @property {String} [profile=undefined] profile Base URI for SWS Profile Service
  * @property {String} [da=undefined] da Base URI for SWS Digital Assets Service
  * @property {String} [rewards=undefined] rewards Base URI for SWS Rewards Service
- */
-
-/**
- * Sws configuration object.
  *
  * @typedef {Object} SwsConfiguration
  * @property {String} appId Application ID
@@ -88,12 +70,19 @@ export default class Sws {
    * @return {void}
    */
   constructor ({ appId, secret = '', timeout = 3000, serviceUri = {} }) {
+    /** @private */
     this._appId = appId
+    /** @private */
     this._secret = secret
+    /** @private */
     this._timeout = timeout
+    /** @private */
     this._accessToken = ''
+    /** @private */
     this._refreshToken = ''
-    // Set custom service URIs if provided
+    /** @private */
+    this._userId = 0
+    /**@private */
     this._serviceUri = {
       id: serviceUri.id ? serviceUri.id : serviceUriDefault.id,
       license: serviceUri.license ? serviceUri.license : serviceUriDefault.license,
@@ -103,12 +92,13 @@ export default class Sws {
       da: serviceUri.da ? serviceUri.da : serviceUriDefault.da,
       rewards: serviceUri.rewards ? serviceUri.rewards : serviceUriDefault.rewards
     }
-    // Create service clients
+    /** @private */
     this._service = {
       license: new License(this),
       id: new Identity(this),
       ecom: new Ecom(this),
       notifications: new Notifications(this),
+      notificationsV1: new NotificationsV1(this),
       profile: new Profile(this),
       da: new DigitalAssets(this),
       rewards: new Rewards(this)
@@ -343,8 +333,16 @@ export default class Sws {
    *
    * @return {Notifications} Notifications service client
    */
-  get notifications () {
+   get notifications () {
     return this._service.notifications
+  }
+  /**
+   * Get the notifications service client instance
+   *
+   * @return {NotificationsV1} Notifications V1 service client
+   */
+   get notificationsV1 () {
+    return this._service.notificationsV1
   }
   /**
    * Get the DigitalAssets service client instance

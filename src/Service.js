@@ -5,6 +5,11 @@ import axios from 'axios'
 import Sws from './Sws'
 
 /**
+ * @typedef {'GET' | 'POST' | 'PUT' | 'DELETE' | 'OPTIONS'} HttpMethod
+ * @typedef {'json' | 'blob'} ResponseType
+ */
+
+/**
  * @class
  * @abstract
  */
@@ -16,16 +21,25 @@ export default class Service {
    * @return {void}
    */
   constructor (Sws) {
+    /** @private */
     this._sws = Sws
+    /** @private */
     this._serviceUri = ''
+    /** @private */
     this._lastRequest = null
-
+    /** @private */
     this._invalidAccessTokenHandler = handleFetchError
+    /** @private */
     this._invalidRefreshTokenHandler = handleFetchError
+    /** @private */
     this._passwordReEntryRequiredHandler = handleFetchError
+    /** @private */
     this._accessDeniedHandler = handleFetchError
+    /** @private */
     this._timeoutExceededHandler = handleFetchError
+    /** @private */
     this._serviceErrorHandler = handleFetchError
+    /** @private */
     this._serviceUnavailableHandler = handleFetchError
   }
 
@@ -51,24 +65,6 @@ export default class Service {
    */
   basicAuthHeader () {
     return 'Basic ' + Base64.encode(this._sws.appId + ':' + this._sws.appSecret)
-  }
-
-  /**
-   * Get the user ID
-   *
-   * @return {Number} User ID
-   */
-  get userId () {
-    return this._sws.userId
-  }
-
-  /**
-   * Get the service URI endpoint
-   *
-   * @return {String} Service URI
-   */
-  get serviceUri () {
-    return this._serviceUri
   }
 
   /**
@@ -99,9 +95,9 @@ export default class Service {
    * @param  {String} auth Authorisation header value
    * @param  {String} endpoint API endpoint
    * @param  { import("./Sws").RequestParams) } body Object to send in the body
-   * @param  {String} [method='GET'] method HTTP Method GET, POST, PUT or DELETE (defaults to GET)
+   * @param  {HttpMethod} [method='GET'] method HTTP Method GET, POST, PUT or DELETE (defaults to GET)
    * @param  {Number} [timeout=undefined] timeout Request timeout (ms)
-   * @param  {String} [responseType='json'] responseType Response type for the request (e.g. json)
+   * @param  {ResponseType} [responseType='json'] responseType Response type for the request (e.g. json)
    * @param  { import("./Sws").RequestHeaders) } headers headers Custom headers (defaults to Accept/Content-Type json)
    * @return {Promise}
    */
@@ -131,6 +127,8 @@ export default class Service {
 
   /**
    * Executes a request to an API endpoint
+   *
+   * @public
    *
    * @param { import("./Sws").Request) } request Request object
    * @returns {Promise}
@@ -177,6 +175,24 @@ export default class Service {
           handleFetchError(request, err)
         }
       })
+  }
+
+  /**
+   * Get the user ID
+   *
+   * @return {Number} User ID
+   */
+   get userId () {
+    return this._sws.userId
+  }
+
+  /**
+   * Get the service URI endpoint
+   *
+   * @return {String} Service URI
+   */
+  get serviceUri () {
+    return this._serviceUri
   }
 
   /**
@@ -336,11 +352,11 @@ function handleFetchError (request, err) {
  *
  * @param  {String} auth Authorisation header value
  * @param  {String} endpoint API endpoint
- * @param  {Object} body Object to send in the body
- * @param  {String} method HTTP Method GET, POST, PUT or DELETE (defaults to GET)
+ * @param  { import("./Sws").RequestParams) } body Object to send in the body
+ * @param  {HttpMethod} method HTTP Method GET, POST, PUT or DELETE (defaults to GET)
  * @param  {Number} timeout Request timout (ms)
- * @param  {String} responseType Response type for the request (e.g. json)
- * @param  {Object} headers Custom headers (defaults to Accept/Content-Type json)
+ * @param  {ResponseType} responseType Response type for the request (e.g. json)
+ * @param  { import("./Sws").RequestHeaders) } headers Custom headers (defaults to Accept/Content-Type json)
  * @return { import("./Sws").Request) }
  */
 function buildRequest (auth, endpoint, body, method, timeout, responseType, headers) {

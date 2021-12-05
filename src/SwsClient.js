@@ -11,14 +11,12 @@ import Sws from './Sws'
  * @param {String} refreshToken
  * @param {Date} refreshTokenExpires
  * @returns {void}
- */
-
-/**
+ *
  * @classdesc Extends Sws to provide functionality for use in client side applications.
  * @class
  * @extends Sws
  */
- export class SwsClient extends Sws {
+ export default class SwsClient extends Sws {
   /**
    * Constructor
    *
@@ -28,6 +26,7 @@ import Sws from './Sws'
   constructor ({ appId, secret = '', timeout = 3000, serviceUri = {} }) {
     super({ appId: appId, secret: secret, timeout: timeout, serviceUri: serviceUri })
 
+    /** @private */
     this._accessTokenUpdatedHandler = () => {}
 
     this.setInvalidAccessTokenHandler((request, err) => {

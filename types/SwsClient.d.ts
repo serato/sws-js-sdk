@@ -1,5 +1,5 @@
-export class SwsClient extends Sws {
-    _accessTokenUpdatedHandler: () => void;
+export default class SwsClient extends Sws {
+    private _accessTokenUpdatedHandler;
     set accessTokenUpdatedHandler(arg: AccessTokenUpdatedHandler);
     get accessTokenUpdatedHandler(): AccessTokenUpdatedHandler;
 }
