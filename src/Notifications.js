@@ -37,10 +37,10 @@ export default class Notifications extends Service {
       this.bearerTokenAuthHeader(),
       '/api/v1/notifications',
       this.toBody({
-        'host_app_name': hostAppName,
-        'host_app_version': hostAppVersion,
-        'host_app_os': hostAppOs,
-        'locale': locale
+        host_app_name: hostAppName,
+        host_app_version: hostAppVersion,
+        host_app_os: hostAppOs,
+        locale: locale
       }),
       'GET'
     )
@@ -60,7 +60,7 @@ export default class Notifications extends Service {
       this.bearerTokenAuthHeader(),
       '/api/v2/campaigns',
       this.toBody({
-        'status': status
+        status: status
       }),
       'GET'
     )
@@ -84,11 +84,11 @@ export default class Notifications extends Service {
       this.bearerTokenAuthHeader(),
       '/api/v2/campaigns',
       this.toBody({
-        'name': name,
-        'description': description,
-        'anonymous': anonymous,
-        'starts_at': startsAt,
-        'ends_at': endsAt
+        name: name,
+        description: description,
+        anonymous: anonymous,
+        starts_at: startsAt,
+        ends_at: endsAt
       }),
       'POST'
     )
@@ -123,12 +123,12 @@ export default class Notifications extends Service {
       this.bearerTokenAuthHeader(),
       `/api/v2/campaigns/${campaignId}`,
       this.toBody({
-        'name': name,
-        'description': description,
-        'anonymous': anonymous,
-        'status': status,
-        'starts_at': startsAt,
-        'ends_at': endsAt
+        name: name,
+        description: description,
+        anonymous: anonymous,
+        status: status,
+        starts_at: startsAt,
+        ends_at: endsAt
       }),
       'PUT'
     )
@@ -186,16 +186,16 @@ export default class Notifications extends Service {
       this.bearerTokenAuthHeader(),
       '/api/v2/notifications',
       this.toBody({
-        'name': name,
-        'campaign_id': campaignId,
-        'type': type,
-        'priority': priority,
-        'template_name': templateName,
-        'template_option': templateOption,
-        'starts_at': startsAt,
-        'ends_at': endsAt,
-        'is_persistent': isPersistent,
-        'is_takeover': isTakeover
+        name: name,
+        campaign_id: campaignId,
+        type: type,
+        priority: priority,
+        template_name: templateName,
+        template_option: templateOption,
+        starts_at: startsAt,
+        ends_at: endsAt,
+        is_persistent: isPersistent,
+        is_takeover: isTakeover
       }),
       'POST'
     )
@@ -240,17 +240,17 @@ export default class Notifications extends Service {
       this.bearerTokenAuthHeader(),
       `/api/v2/notifications/${notificationId}`,
       this.toBody({
-        'name': name,
-        'type': type,
-        'priority': priority,
-        'template_name': templateName,
-        'template_option': templateOption,
-        'starts_at': startsAt,
-        'ends_at': endsAt,
-        'status': status,
-        'is_persistent': isPersistent,
-        'is_takeover': isTakeover,
-        'campaign_id': campaignId
+        name: name,
+        type: type,
+        priority: priority,
+        template_name: templateName,
+        template_option: templateOption,
+        starts_at: startsAt,
+        ends_at: endsAt,
+        status: status,
+        is_persistent: isPersistent,
+        is_takeover: isTakeover,
+        campaign_id: campaignId
       }),
       'PUT'
     )
@@ -335,12 +335,12 @@ export default class Notifications extends Service {
       this.bearerTokenAuthHeader(),
       `/api/v2/notifications/${notificationId}/hosts`,
       this.toBody({
-        'app_name': appName,
-        'app_version_min': appVersionMin,
-        'app_version_max': appVersionMax,
-        'os_name': osName,
-        'os_version_min': osVersionMin,
-        'os_version_max': osVersionMax
+        app_name: appName,
+        app_version_min: appVersionMin,
+        app_version_max: appVersionMax,
+        os_name: osName,
+        os_version_min: osVersionMin,
+        os_version_max: osVersionMax
       }),
       'POST'
     )
@@ -391,12 +391,12 @@ export default class Notifications extends Service {
       this.bearerTokenAuthHeader(),
       `/api/v2/notifications/${notificationId}/hosts/${hostId}`,
       this.toBody({
-        'app_name': appName,
-        'app_version_min': appVersionMin,
-        'app_version_max': appVersionMax,
-        'os_name': osName,
-        'os_version_min': osVersionMin,
-        'os_version_max': osVersionMax
+        app_name: appName,
+        app_version_min: appVersionMin,
+        app_version_max: appVersionMax,
+        os_name: osName,
+        os_version_min: osVersionMin,
+        os_version_max: osVersionMax
       }),
       'PUT'
     )
@@ -481,10 +481,10 @@ export default class Notifications extends Service {
   }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      `/api/v2/testusers`,
+      '/api/v2/testusers',
       this.toBody({
-        'user_id': userId,
-        'enabled': enabled
+        user_id: userId,
+        enabled: enabled
       }),
       'POST'
     )

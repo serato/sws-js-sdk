@@ -35,7 +35,7 @@ export class SwsClient extends Sws {
     this.setInvalidAccessTokenHandler((request, err) => {
       // `err.client` is the specific client instance that made the inital request
       // when the `invalid access token` error was received.
-      let client = err.client
+      const client = err.client
 
       return this.id.tokenRefresh(this.refreshToken)
         .then(

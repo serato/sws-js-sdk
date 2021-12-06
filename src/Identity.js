@@ -64,7 +64,7 @@ export default class Identity extends Service {
       this.basicAuthHeader(),
       '/api/v1/login',
       this.toBody({
-        'email_address': emailAddress, 'password': password, 'device_id': deviceId, 'device_name': deviceName
+        email_address: emailAddress, password: password, device_id: deviceId, device_name: deviceName
       }),
       'POST'
     )
@@ -85,8 +85,8 @@ export default class Identity extends Service {
         null,
         '/api/v1/me/logout',
         this.toBody({
-          'refresh_token': refreshToken,
-          'disable_login': disableLogin
+          refresh_token: refreshToken,
+          disable_login: disableLogin
         }),
         'POST'
       )
@@ -95,8 +95,8 @@ export default class Identity extends Service {
         null,
         '/api/v1/me/logout',
         this.toBody({
-          'refresh_token_ids': refreshTokenIds,
-          'disable_login': disableLogin
+          refresh_token_ids: refreshTokenIds,
+          disable_login: disableLogin
         }),
         'POST'
       )
@@ -121,12 +121,12 @@ export default class Identity extends Service {
       this.basicAuthHeader(),
       '/api/v1/users',
       this.toBody({
-        'email_address': emailAddress,
-        'password': password,
-        'first_name': firstName,
-        'last_name': lastName,
-        'timestamp': timestamp,
-        'locale': locale
+        email_address: emailAddress,
+        password: password,
+        first_name: firstName,
+        last_name: lastName,
+        timestamp: timestamp,
+        locale: locale
       }),
       'POST'
     )
@@ -158,7 +158,7 @@ export default class Identity extends Service {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       this.userId === 0 ? '/api/v1/me/sendverifyemailaddress' : '/api/v1/users/' + this.userId + '/sendverifyemailaddress',
-      this.toBody({ 'email_address': emailAddress, 'redirect_uri': redirectUri }),
+      this.toBody({ email_address: emailAddress, redirect_uri: redirectUri }),
       'POST'
     )
   }
