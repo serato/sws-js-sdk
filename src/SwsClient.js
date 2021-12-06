@@ -136,7 +136,7 @@ import { v4 as uuidv4 } from 'uuid'
    * @param {String} [method = 's256'] method
    * @returns {Promise<CodeChallenge>}
    */
-  createCodeChallenge (method) {
+  createCodeChallenge (method = 's256') {
     const verifier = this.createRandomString()
     return this.sha256(verifier).then(challengeBuffer => {
       return { method, verifier, challenge: this.bufferToBase64UrlEncoded(challengeBuffer) }
