@@ -10,20 +10,6 @@ describe('Notifications Tests', function () {
   })
 
   describe('Notifications URI Validation Tests', function () {
-    it(`confirms URI used in 'getNotifications()' method by returning a 200 HTTP response`,
-      function () {
-        return swsClient.notifications.getNotifications({
-          hostAppName: 'serato_com',
-          hostAppVersion: 1,
-          hostAppOs: 'mac',
-          locale: 'en_US'
-        }).then(
-          response => {
-            // We don't care about the contents of the response
-            expect(response).to.be.a('object')
-          }
-        )
-      })
     it(`confirms URI used in 'getCampaigns()' method by returning a non-404 response`,
       function () {
         return swsClient.notifications.getCampaigns({
@@ -34,7 +20,8 @@ describe('Notifications Tests', function () {
             expect(err.httpStatus).not.to.equal(404)
           }
         )
-      })
+      }
+    )
     it(`confirms URI used in 'createCampaign()' method by returning a non-404 response`,
       function () {
         return swsClient.notifications.createCampaign({
@@ -46,27 +33,18 @@ describe('Notifications Tests', function () {
             expect(err.httpStatus).not.to.equal(404)
           }
         )
-      })
-    it(`confirms URI used in 'adminGetNotifications()' method by returning a non-404 response`,
+      }
+    )
+    it(`confirms URI used in 'getNotifications()' method by returning a non-404 response`,
       function () {
-        return swsClient.notifications.adminGetNotifications().then(
+        return swsClient.notifications.getNotifications().then(
           () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
           err => {
             expect(err.httpStatus).not.to.equal(404)
           }
         )
-      })
-    it(`confirms URI used in 'createNotification()' method by returning a non-404 response`,
-      function () {
-        return swsClient.notifications.adminGetNotifications({
-          campaignId: 'invalid' /** Invalid campaign ID to prevent creation of a notification */
-        }).then(
-          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
-          err => {
-            expect(err.httpStatus).not.to.equal(404)
-          }
-        )
-      })
+      }
+    )
     it(`confirms URI used in 'getNotificationTemplates()' method by returning a 200 HTTP response`,
       function () {
         return swsClient.notifications.getNotificationTemplates().then(
@@ -75,6 +53,41 @@ describe('Notifications Tests', function () {
             expect(response).to.be.a('object')
           }
         )
-      })
+      }
+    )
+    it(`confirms URI used in 'createTestUser()' method by returning a non-404 response`,
+      function () {
+        return swsClient.notifications.createTestUser({
+          userId: 123
+        }).then(
+          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+          err => {
+            expect(err.httpStatus).not.to.equal(404)
+          }
+        )
+      }
+    )
+    it(`confirms URI used in 'getTestUsers()' method by returning a non-404 response`,
+      function () {
+        return swsClient.notifications.getTestUsers().then(
+          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+          err => {
+            expect(err.httpStatus).not.to.equal(404)
+          }
+        )
+      }
+    )
+    it(`confirms URI used in 'deleteTestUser()' method by returning a non-404 response`,
+      function () {
+        return swsClient.notifications.deleteTestUser({
+          userId: 123
+        }).then(
+          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+          err => {
+            expect(err.httpStatus).not.to.equal(404)
+          }
+        )
+      }
+    )
   })
 })

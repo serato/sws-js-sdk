@@ -38,7 +38,7 @@ describe('Identity Tests', function () {
     // })
 
     it(`confirms URI used in 'login()' method, by returning a non-404 HTTP response`, function () {
-      return swsClient.id.login().then(
+      return swsClient.id.login({ emailAddress: 'email@address', password: 'pass' }).then(
         () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
         err => {
           expect(err.httpStatus).not.to.equal(404)

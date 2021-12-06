@@ -1,4 +1,5 @@
-import Sws, { serviceUriDefault } from '../../src/index'
+import { serviceUriDefault } from '../../src/index'
+import Sws from '../../src/Sws'
 import { describe, it } from 'mocha'
 import { expect } from 'chai'
 
