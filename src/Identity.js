@@ -7,18 +7,20 @@ import Sws from './Sws'
  * @typedef {String} RawToken
  * @typedef {Object<string, string[]>} Scopes
  *
- * @typedef {Object} Token
+ * @typedef {Object} RefreshToken
  * @property {RawToken} token
  * @property {Number} expires_at UNIX timestamp expiry time of token
  * @property {'Bearer'} type
  *
  * @typedef {Object} AccessToken
- * @extends Token
+ * @property {RawToken} token
+ * @property {Number} expires_at UNIX timestamp expiry time of token
+ * @property {'Bearer'} type
  * @property {Scopes} scopes
  *
  * @typedef {Object} UserTokens
  * @property {AccessToken} access
- * @property {Token} refresh
+ * @property {RefreshToken} refresh
  *
  * @typedef {Object} User
  * @property {Number} id
@@ -61,7 +63,7 @@ export default class IdentityService extends Service {
    * @param {String} code Authorization code
    * @param {String} redirectUri The redirect URI used during the authorization workflow
    * @param {String} codeVerifier PKCE code verifier
-   * @returns {Promise}
+   * @returns {Promise<UserLogin>}
    */
    tokenExchange (code, redirectUri, codeVerifier) {
     return this.fetch(
@@ -82,7 +84,7 @@ export default class IdentityService extends Service {
    * Request a new access token
    *
    * @param {RawToken} refreshToken Refresh token
-   * @returns {Promise<UserLogin>}
+   * @returns {Promise<UserTokens>}
    */
   tokenRefresh (refreshToken) {
     return this.fetch(

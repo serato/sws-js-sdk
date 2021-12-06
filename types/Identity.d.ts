@@ -1,5 +1,6 @@
 export default class IdentityService extends Service {
-    tokenRefresh(refreshToken: RawToken): Promise<UserLogin>;
+    tokenExchange(code: string, redirectUri: string, codeVerifier: string): Promise<UserLogin>;
+    tokenRefresh(refreshToken: RawToken): Promise<UserTokens>;
     getUser(): Promise<User>;
     login({ emailAddress, password, deviceId, deviceName }: {
         emailAddress: string;
@@ -30,15 +31,20 @@ export type RawToken = string;
 export type Scopes = {
     [x: string]: string[];
 };
-export type Token = {
+export type RefreshToken = {
     token: RawToken;
     expires_at: number;
     type: 'Bearer';
 };
-export type AccessToken = any;
+export type AccessToken = {
+    token: RawToken;
+    expires_at: number;
+    type: 'Bearer';
+    scopes: Scopes;
+};
 export type UserTokens = {
     access: AccessToken;
-    refresh: Token;
+    refresh: RefreshToken;
 };
 export type User = {
     id: number;
