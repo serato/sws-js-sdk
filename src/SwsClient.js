@@ -81,7 +81,6 @@ import { v4 as uuidv4 } from 'uuid'
    * Creates the data required to redirect a client application through the authorization process.
    *
    * @public
-   *
    * @param {String} redirectUrl 
    * @param {String} [refreshTokenId = undefined] refreshTokenId 
    * @returns {Promise<AuthorizationRequest>}
@@ -133,13 +132,14 @@ import { v4 as uuidv4 } from 'uuid'
   }
 
   /**
+   * @private
    * @param {String} [method = 's256'] method
    * @returns {Promise<CodeChallenge>}
    */
   createCodeChallenge (method = 's256') {
     const verifier = this.createRandomString()
     return this.sha256(verifier).then(challengeBuffer => {
-      return { method, verifier, challenge: this.bufferToBase64UrlEncoded(challengeBuffer) }
+      return { method, verifier, challenge: this.bufferToString(challengeBuffer) }
     })
   }
 
@@ -208,25 +208,35 @@ import { v4 as uuidv4 } from 'uuid'
 
   /**
    * @private
-   *
-   * @param {Number[] | Uint8Array} input 
+   * @param {Number[] | ArrayBuffer} input 
    * @returns {String}
    */
-  bufferToBase64UrlEncoded (input) {
-    const ie11SafeInput = new Uint8Array(input)
-    return this.urlEncodeB64(
-      window.btoa(String.fromCharCode(...Array.from(ie11SafeInput)))
-    )
+  bufferToString (input) {
+    const hashArray = Array.from(new Uint8Array(input))
+    return hashArray
+      .map((bytes) => bytes.toString(16).padStart(2, '0'))
+      .join('')
   }
 
-  /**
-   * @private
-   *
-   * @param {String} input 
-   * @returns {String}
-   */
-   urlEncodeB64 (input) {
-    const b64Chars = { '+': '-', '/': '_', '=': '' }
-    return input.replace(/[+/=]/g, (m) => b64Chars[m])
-  }
+  // /**
+  //  * @private
+  //  * @param {Number[] | ArrayBuffer} input 
+  //  * @returns {String}
+  //  */
+  // bufferToBase64UrlEncoded (input) {
+  //   const ie11SafeInput = new Uint8Array(input)
+  //   return this.urlEncodeB64(
+  //     window.btoa(String.fromCharCode(...Array.from(ie11SafeInput)))
+  //   )
+  // }
+
+  // /**
+  //  * @private
+  //  * @param {String} input 
+  //  * @returns {String}
+  //  */
+  //  urlEncodeB64 (input) {
+  //   const b64Chars = { '+': '-', '/': '_', '=': '' }
+  //   return input.replace(/[+/=]/g, (m) => b64Chars[m])
+  // }
 }

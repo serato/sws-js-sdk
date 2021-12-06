@@ -4,13 +4,12 @@ export default class SwsClient extends Sws {
     set accessTokenUpdatedHandler(arg: AccessTokenUpdatedHandler);
     get accessTokenUpdatedHandler(): AccessTokenUpdatedHandler;
     private createAuthState;
-    createCodeChallenge(method?: string): Promise<CodeChallenge>;
+    private createCodeChallenge;
     private getCrypto;
     private getCryptoSubtle;
     private createRandomString;
     private sha256;
-    private bufferToBase64UrlEncoded;
-    private urlEncodeB64;
+    private bufferToString;
 }
 export type AccessTokenUpdatedHandler = (accessToken: string, accessTokenExpires: Date, refreshToken: string, refreshTokenExpires: Date) => void;
 export type CodeChallengeMethod = 's256';
