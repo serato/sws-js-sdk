@@ -54,6 +54,31 @@ export default class IdentityService extends Service {
   }
 
   /**
+   * Exchange an authorization code for access and refresh tokens.
+   *
+   * Currently only supports authorization code flow with PKCE.
+   *
+   * @param {String} code Authorization code
+   * @param {String} redirectUri The redirect URI used during the authorization workflow
+   * @param {String} codeVerifier PKCE code verifier
+   * @returns {Promise}
+   */
+   tokenExchange (code, redirectUri, codeVerifier) {
+    return this.fetch(
+      null,
+      '/api/v1/tokens/exchange',
+      this.toBody({
+        grant_type: 'authorization_code',
+        app_id: this._sws.appId,
+        code,
+        redirect_uri: redirectUri,
+        code_verifier: codeVerifier
+      }),
+      'POST'
+    )
+  }
+
+  /**
    * Request a new access token
    *
    * @param {RawToken} refreshToken Refresh token
