@@ -1,3 +1,4 @@
+export { Sws };
 export * from "./Sws";
 export * from "./SwsClient";
 export { default } from "./SwsClient";
@@ -9,3 +10,4 @@ export * as Notifications from "./Notifications";
 export * as NotificationsV1 from "./NotificationsV1";
 export * as Profile from "./Profile";
 export * as Rewards from "./Rewards";
+import Sws from "./Sws";

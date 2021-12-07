@@ -22,10 +22,10 @@ import { v4 as uuidv4 } from 'uuid'
  *
  * @typedef {Object} AuthorizationRequest
  * @property {String} state
- * @property {CodeChallenge}  codeChallenge
+ * @property {String} codeVerifier
  * @property {String} url
  *
- * @classdesc Extends Sws to provide functionality for use in browser-based client side applications.
+ * @classdesc Extends Sws to provide functionality for use in web browser-based applications.
  * @class
  * @extends Sws
  */
@@ -99,8 +99,9 @@ import { v4 as uuidv4 } from 'uuid'
       if (refreshTokenId) {
         urlParams.push('rtid=' + encodeURIComponent(refreshTokenId))
       }
+      const codeVerifier = codeChallenge.verifier
       const url = this.serviceUri?.id + '/en/authorize?' + urlParams.join('&')
-      return { state, codeChallenge, url }
+      return { state, codeVerifier, url }
     })
   }
 
@@ -179,26 +180,26 @@ import { v4 as uuidv4 } from 'uuid'
 
   /**
    * @private
-   * @param {String} s 
+   * @param {String} str
    * @returns {Promise<Number[] | Uint8Array>}
    */
-  sha256 (s) {
+  sha256 (str) {
     const digest = this.getCryptoSubtle().digest(
       { name: 'SHA-256' },
-      new TextEncoder().encode(s)
+      new TextEncoder().encode(str)
     )
     if (window.msCrypto) {
       // msCrypto is not Promised based
       // https://msdn.microsoft.com/en-us/expression/dn904640(v=vs.71)
-      return new Promise((res, rej) => {
-        digest.oncomplete = (e) => {
-          res(e.target.result)
+      return new Promise((resolve, reject) => {
+        digest.oncomplete = (evt) => {
+          resolve(evt.target.result)
         }
-        digest.onerror = (e) => {
-          rej(e.error)
+        digest.onerror = (evt) => {
+          reject(evt.error)
         }
         digest.onabort = () => {
-          rej('The digest operation was aborted')
+          reject('Digest operation aborted')
         }
       })
     }
@@ -217,26 +218,4 @@ import { v4 as uuidv4 } from 'uuid'
       .map((bytes) => bytes.toString(16).padStart(2, '0'))
       .join('')
   }
-
-  // /**
-  //  * @private
-  //  * @param {Number[] | ArrayBuffer} input 
-  //  * @returns {String}
-  //  */
-  // bufferToBase64UrlEncoded (input) {
-  //   const ie11SafeInput = new Uint8Array(input)
-  //   return this.urlEncodeB64(
-  //     window.btoa(String.fromCharCode(...Array.from(ie11SafeInput)))
-  //   )
-  // }
-
-  // /**
-  //  * @private
-  //  * @param {String} input 
-  //  * @returns {String}
-  //  */
-  //  urlEncodeB64 (input) {
-  //   const b64Chars = { '+': '-', '/': '_', '=': '' }
-  //   return input.replace(/[+/=]/g, (m) => b64Chars[m])
-  // }
 }

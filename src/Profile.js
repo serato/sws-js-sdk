@@ -3,8 +3,6 @@
 import Service from './Service'
 import Sws from './Sws'
 
-// "date_created", "date_updated"
-
 /**
  * @typedef Avatar
  * @property {Number} ts A timestamp of the creation date of the current avatar image. `0` when the default avatar is used.

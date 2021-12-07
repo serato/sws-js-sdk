@@ -20,7 +20,7 @@ export type CodeChallenge = {
 };
 export type AuthorizationRequest = {
     state: string;
-    codeChallenge: CodeChallenge;
+    codeVerifier: string;
     url: string;
 };
 import Sws from "./Sws";
