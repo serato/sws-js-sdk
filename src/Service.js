@@ -77,10 +77,10 @@ export default class Service {
    * @return { import("./Sws").RequestParams) } Params
    */
   toBody (data) {
-    let requestData = {}
-    for (let p in data) {
-      let val = data[p]
-      if (data.hasOwnProperty(p) && typeof val !== 'undefined' && val !== null) {
+    const requestData = {}
+    for (const p in data) {
+      const val = data[p]
+      if (Object.prototype.hasOwnProperty.call(data, p) && typeof val !== 'undefined' && val !== null) {
         requestData[p] = val
       }
     }
@@ -109,7 +109,7 @@ export default class Service {
     timeout = null,
     responseType = 'json',
     headers = {
-      'Accept': 'application/json',
+      Accept: 'application/json',
       'Content-Type': 'application/json'
     }
   ) {
@@ -144,8 +144,8 @@ export default class Service {
           return Promise.resolve(this.timeoutExceededHandler(request, err))
         }
 
-        let status = err.response.status
-        let code = err.response.data.code
+        const status = err.response.status
+        const code = err.response.data.code
 
         if (status === 500) {
           return Promise.resolve(this.serviceErrorHandler(request, err))
@@ -333,8 +333,8 @@ export default class Service {
  */
 function handleFetchError (request, err) {
   if (err.response) {
-    let errText = err.response.data.error ? err.response.data.error : err.response.data.message
-    let error = new Error(errText)
+    const errText = err.response.data.error ? err.response.data.error : err.response.data.message
+    const error = new Error(errText)
     error.httpStatus = err.response.status
     if (err.response.data.code) {
       error.code = err.response.data.code
@@ -360,7 +360,7 @@ function handleFetchError (request, err) {
  * @return { import("./Sws").Request) }
  */
 function buildRequest (auth, endpoint, body, method, timeout, responseType, headers) {
-  let request = {
+  const request = {
     timeout: timeout,
     url: endpoint,
     method: method,
@@ -369,7 +369,7 @@ function buildRequest (auth, endpoint, body, method, timeout, responseType, head
   }
 
   if (auth !== null) {
-    request.headers['Authorization'] = auth
+    request.headers.Authorization = auth
   }
 
   if (method === 'GET') {

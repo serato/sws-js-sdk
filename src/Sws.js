@@ -114,7 +114,7 @@ export default class Sws {
    * @return {Void}
    */
   setInvalidAccessTokenHandler (f) {
-    for (let service in this._service) {
+    for (const service in this._service) {
       this._service[service].invalidAccessTokenHandler = f
     }
   }
@@ -126,7 +126,7 @@ export default class Sws {
    * @return {Void}
    */
   setInvalidRefreshTokenHandler (f) {
-    for (let service in this._service) {
+    for (const service in this._service) {
       this._service[service].invalidRefreshTokenHandler = f
     }
   }
@@ -138,7 +138,7 @@ export default class Sws {
    * @return {Void}
    */
   setPasswordReEntryRequiredHandler (f) {
-    for (let service in this._service) {
+    for (const service in this._service) {
       this._service[service].passwordReEntryRequiredHandler = f
     }
   }
@@ -150,7 +150,7 @@ export default class Sws {
    * @return {Void}
    */
   setAccessDeniedHandler (f) {
-    for (let service in this._service) {
+    for (const service in this._service) {
       this._service[service].accessDeniedHandler = f
     }
   }
@@ -162,7 +162,7 @@ export default class Sws {
    * @return {Void}
    */
   setServiceErrorHandler (f) {
-    for (let service in this._service) {
+    for (const service in this._service) {
       this._service[service].serviceErrorHandler = f
     }
   }
@@ -174,7 +174,7 @@ export default class Sws {
    * @return {Void}
    */
   setServiceUnavailableHandler (f) {
-    for (let service in this._service) {
+    for (const service in this._service) {
       this._service[service].serviceUnavailableHandler = f
     }
   }
@@ -186,7 +186,7 @@ export default class Sws {
    * @return {Void}
    */
   setTimesoutExceededHandler (f) {
-    for (let service in this._service) {
+    for (const service in this._service) {
       this._service[service].timeoutExceededHandler = f
     }
   }
@@ -320,6 +320,7 @@ export default class Sws {
   get ecom () {
     return this._service.ecom
   }
+
   /**
    * Get the profile service client instance
    *
@@ -328,6 +329,7 @@ export default class Sws {
   get profile () {
     return this._service.profile
   }
+
   /**
    * Get the notifications service client instance
    *
@@ -336,6 +338,7 @@ export default class Sws {
    get notifications () {
     return this._service.notifications
   }
+
   /**
    * Get the notifications service client instance
    *
@@ -352,6 +355,7 @@ export default class Sws {
   get da () {
     return this._service.da
   }
+
   /**
    * Get the Rewards service client instance
    *

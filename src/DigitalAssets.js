@@ -83,13 +83,13 @@ export default class DigitalAssetsService extends Service {
       this.bearerTokenAuthHeader(),
       '/api/v1/assets',
       this.toBody({
-        'host_app_name': hostAppName,
-        'host_app_version': hostAppVersion,
-        'host_app_os': hostOs,
-        'type': type,
-        'release_type': releaseType,
-        'release_date': releaseDate,
-        'latest_only': latestOnly
+        host_app_name: hostAppName,
+        host_app_version: hostAppVersion,
+        host_app_os: hostOs,
+        type: type,
+        release_type: releaseType,
+        release_date: releaseDate,
+        latest_only: latestOnly
       }),
       'GET'
     )

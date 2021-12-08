@@ -323,7 +323,7 @@ export default class EcomService extends Service {
       this.bearerTokenAuthHeader(),
       this.userId === 0 ? '/api/v1/me/subscriptions/' + subscriptionId : '/api/v1/users/' + this.userId + '/subscriptions/' + subscriptionId,
       this.toBody({
-        'number_of_billing_cycle': numberOfBillingCycle, 'payment_method_token': paymentToken
+        number_of_billing_cycle: numberOfBillingCycle, payment_method_token: paymentToken
       }),
       'PUT'
     )
@@ -340,7 +340,9 @@ export default class EcomService extends Service {
   deletePaymentMethod (paymentToken) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      this.userId === 0 ? '/api/v1/me/paymentmethods/' + paymentToken : '/api/v1/users/' + this.userId +
+      this.userId === 0
+        ? '/api/v1/me/paymentmethods/' + paymentToken
+        : '/api/v1/users/' + this.userId +
         '/paymentmethods/' + paymentToken,
       null,
       'DELETE'
@@ -361,7 +363,9 @@ export default class EcomService extends Service {
   updatePaymentMethod ({ paymentToken, nonce, deviceData, billingAddressId }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      this.userId === 0 ? '/api/v1/me/paymentmethods/' + paymentToken : '/api/v1/users/' + this.userId +
+      this.userId === 0
+        ? '/api/v1/me/paymentmethods/' + paymentToken
+        : '/api/v1/users/' + this.userId +
         '/paymentmethods/' + paymentToken,
       this.toBody({
         nonce: nonce,
@@ -387,7 +391,9 @@ export default class EcomService extends Service {
     }
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      this.userId === 0 ? '/api/v1/me/subscriptions/' + subscriptionId + '/planchanges' : '/api/v1/users/' + this.userId +
+      this.userId === 0
+        ? '/api/v1/me/subscriptions/' + subscriptionId + '/planchanges'
+        : '/api/v1/users/' + this.userId +
         '/subscriptions/' + subscriptionId + '/planchanges',
       this.toBody({
         catalog_product_id: catalogProductId,
@@ -418,7 +424,7 @@ export default class EcomService extends Service {
       null,
       (accept === 'application/pdf') ? 'blob' : 'json',
       {
-        'Accept': accept,
+        Accept: accept,
         'Content-Type': 'application/json'
       }
     )
@@ -435,7 +441,9 @@ export default class EcomService extends Service {
   confirmSubscriptionPlanChangeRequest ({ subscriptionId, planChangeRequestId }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      this.userId === 0 ? '/api/v1/me/subscriptions/' + subscriptionId + '/planchanges/' + planChangeRequestId : '/api/v1/users/' + this.userId +
+      this.userId === 0
+        ? '/api/v1/me/subscriptions/' + subscriptionId + '/planchanges/' + planChangeRequestId
+        : '/api/v1/users/' + this.userId +
         '/subscriptions/' + subscriptionId + '/planchanges/' + planChangeRequestId,
       null,
       'PUT'
@@ -453,7 +461,9 @@ export default class EcomService extends Service {
   retrySubscriptionCharge ({ subscriptionId }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      this.userId === 0 ? '/api/v1/me/subscriptions/' + subscriptionId + '/retrycharge' : '/api/v1/users/' +
+      this.userId === 0
+        ? '/api/v1/me/subscriptions/' + subscriptionId + '/retrycharge'
+        : '/api/v1/users/' +
         this.userId + '/subscriptions/' + subscriptionId + '/retrycharge',
       null,
       'POST'
@@ -470,7 +480,9 @@ export default class EcomService extends Service {
   cancelSubscription ({ subscriptionId }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      this.userId === 0 ? '/api/v1/me/subscriptions/' + subscriptionId : '/api/v1/users/' +
+      this.userId === 0
+        ? '/api/v1/me/subscriptions/' + subscriptionId
+        : '/api/v1/users/' +
         this.userId + '/subscriptions/' + subscriptionId,
       null,
       'DELETE'
@@ -502,7 +514,7 @@ export default class EcomService extends Service {
       this.bearerTokenAuthHeader(),
       this.userId === 0 ? '/api/v1/me/vouchers' : '/api/v1/users/' + this.userId + '/vouchers',
       this.toBody({
-        'voucher_id': voucherId
+        voucher_id: voucherId
       }),
       'POST'
     )
@@ -538,9 +550,9 @@ export default class EcomService extends Service {
       this.bearerTokenAuthHeader(),
       this.userId === 0 ? '/api/v1/me/recommendations' : '/api/v1/users/' + this.userId + '/recommendations',
       this.toBody({
-        'app_name': appName,
-        'app_version': appVersion,
-        'catalog_category': catalogCategory
+        app_name: appName,
+        app_version: appVersion,
+        catalog_category: catalogCategory
       }),
       'GET'
     )

@@ -120,7 +120,7 @@ export default class ProfileService extends Service {
       this.bearerTokenAuthHeader(),
       '/api/v1/users',
       this.toBody({
-        'email_address': emailAddress
+        email_address: emailAddress
       }),
       'GET'
     )

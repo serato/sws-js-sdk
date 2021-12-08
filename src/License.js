@@ -214,7 +214,8 @@ export default class LicenseService extends Service {
   updateProduct ({ productId, ilokUserId }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      this.userId === 0 ? '/api/v1/me/products/' + productId
+      this.userId === 0
+        ? '/api/v1/me/products/' + productId
         : '/api/v1/users/' + this.userId + '/products/' + productId,
       this.toBody({
         ilok_user_id: ilokUserId
@@ -244,7 +245,8 @@ export default class LicenseService extends Service {
     hostMachineName,
     licenseId,
     systemTime
-  }) {
+  }
+  = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       this.userId === 0 ? '/api/v1/me/licenses/authorizations' : '/api/v1/users/' + this.userId + '/licenses/authorizations',
@@ -272,7 +274,8 @@ export default class LicenseService extends Service {
   updateLicenseAuthorization ({ authorizationId, statusCode }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      this.userId === 0 ? '/api/v1/me/licenses/authorizations/' + authorizationId
+      this.userId === 0
+        ? '/api/v1/me/licenses/authorizations/' + authorizationId
         : '/api/v1/users/' + this.userId + '/licenses/authorizations/' + authorizationId,
       this.toBody({ status_code: statusCode }),
       'PUT'
