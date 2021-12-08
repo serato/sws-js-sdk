@@ -82,7 +82,7 @@ export default class Sws {
     this._refreshToken = ''
     /** @private */
     this._userId = 0
-    /**@private */
+    /** @private */
     this._serviceUri = {
       id: serviceUri.id ? serviceUri.id : serviceUriDefault.id,
       license: serviceUri.license ? serviceUri.license : serviceUriDefault.license,
@@ -335,7 +335,7 @@ export default class Sws {
    *
    * @return {Notifications} Notifications service client
    */
-   get notifications () {
+  get notifications () {
     return this._service.notifications
   }
 
@@ -344,9 +344,10 @@ export default class Sws {
    *
    * @return {NotificationsV1} Notifications V1 service client
    */
-   get notificationsV1 () {
+  get notificationsV1 () {
     return this._service.notificationsV1
   }
+
   /**
    * Get the DigitalAssets service client instance
    *

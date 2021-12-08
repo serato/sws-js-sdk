@@ -32,7 +32,6 @@ export type Resource = {
     file_size?: number;
     url?: string;
     secured_by?: string[];
-    "": string;
 };
 export type Asset = {
     id: number;

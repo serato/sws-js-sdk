@@ -29,7 +29,7 @@ import { v4 as uuidv4 } from 'uuid'
  * @class
  * @extends Sws
  */
- export default class SwsClient extends Sws {
+export default class SwsClient extends Sws {
   /**
    * Constructor
    *
@@ -81,8 +81,8 @@ import { v4 as uuidv4 } from 'uuid'
    * Creates the data required to redirect a client application through the authorization process.
    *
    * @public
-   * @param {String} redirectUrl 
-   * @param {String} [refreshTokenId = undefined] refreshTokenId 
+   * @param {String} redirectUrl
+   * @param {String} [refreshTokenId = undefined] refreshTokenId
    * @returns {Promise<AuthorizationRequest>}
    */
   createAuthorizationRequest (redirectUrl, refreshTokenId = undefined) {
@@ -100,7 +100,7 @@ import { v4 as uuidv4 } from 'uuid'
         urlParams.push('rtid=' + encodeURIComponent(refreshTokenId))
       }
       const codeVerifier = codeChallenge.verifier
-      const url = this.serviceUri?.id + '/en/authorize?' + urlParams.join('&')
+      const url = this.serviceUri.id + '/en/authorize?' + urlParams.join('&')
       return { state, codeVerifier, url }
     })
   }
@@ -199,7 +199,7 @@ import { v4 as uuidv4 } from 'uuid'
           reject(evt.error)
         }
         digest.onabort = () => {
-          reject('Digest operation aborted')
+          reject(new Error('Digest operation aborted'))
         }
       })
     }
@@ -209,7 +209,7 @@ import { v4 as uuidv4 } from 'uuid'
 
   /**
    * @private
-   * @param {Number[] | ArrayBuffer} input 
+   * @param {Number[] | ArrayBuffer} input
    * @returns {String}
    */
   bufferToString (input) {

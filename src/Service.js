@@ -2,7 +2,6 @@
 
 import { Base64 } from 'js-base64'
 import axios from 'axios'
-import Sws from './Sws'
 
 /**
  * @typedef {'GET' | 'POST' | 'PUT' | 'DELETE' | 'OPTIONS'} HttpMethod
@@ -182,7 +181,7 @@ export default class Service {
    *
    * @return {Number} User ID
    */
-   get userId () {
+  get userId () {
     return this._sws.userId
   }
 

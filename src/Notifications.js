@@ -1,7 +1,6 @@
 'use strict'
 
 import Service from './Service'
-import Sws from './Sws'
 
 /**
  * @typedef {'active' | 'draft' | 'archived'} Status
@@ -53,7 +52,7 @@ import Sws from './Sws'
  * @property {MediaContentType} mime_type
  * @property {MediaSrc  } src
  * @property {Metadata} metadata
- * 
+ *
  * @typedef {Object} AppNotificationHeader
  * @property {String} language
  * @property {NotificationType} type
@@ -76,7 +75,7 @@ import Sws from './Sws'
  *
  * @typedef {Object} AppNotificationList
  * @property {AppNotification[]} items
- * 
+ *
  * @typedef {Object} Host
  * @property {String} id
  * @property {AppName} app_name
@@ -93,13 +92,13 @@ import Sws from './Sws'
  * @property {Metadata} metadata
  *
  * @typedef {Object} Media
- * @typedef {String} id
+ * @property {String} id
  * @property {MediaContentType} mime_type
- * @property {MediaSrc  } src
+ * @property {MediaSrc} src
  * @property {Metadata} metadata
  *
  * @typedef {Object} Action
- * @typedef {String} id
+ * @property {String} id
  * @property {String} label
  * @property {String} url
  * @property {Metadata} metadata
@@ -236,7 +235,7 @@ export default class NotificationsService extends Service {
    *
    * @return {Promise<Campaign>}
    */
-  updateCampaign ({campaignId, name, anonymous, description, status, startsAt, endsAt }) {
+  updateCampaign ({ campaignId, name, anonymous, description, status, startsAt, endsAt }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       `/api/v2/campaigns/${campaignId}`,

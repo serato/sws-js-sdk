@@ -178,9 +178,18 @@ export type Text = {
     content: string;
     metadata: Metadata;
 };
-export type Media = any;
-export type id = string;
-export type Action = any;
+export type Media = {
+    id: string;
+    mime_type: MediaContentType;
+    src: MediaSrc;
+    metadata: Metadata;
+};
+export type Action = {
+    id: string;
+    label: string;
+    url: string;
+    metadata: Metadata;
+};
 export type Content = {
     language: Language;
     text: Text[];

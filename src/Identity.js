@@ -1,7 +1,6 @@
 'use strict'
 
 import Service from './Service'
-import Sws from './Sws'
 
 /**
  * @typedef {String} RawToken
@@ -65,7 +64,7 @@ export default class IdentityService extends Service {
    * @param {String} codeVerifier PKCE code verifier
    * @returns {Promise<UserLogin>}
    */
-   tokenExchange (code, redirectUri, codeVerifier) {
+  tokenExchange (code, redirectUri, codeVerifier) {
     return this.fetch(
       null,
       '/api/v1/tokens/exchange',

@@ -1,7 +1,6 @@
 'use strict'
 
 import Service from './Service'
-import Sws from './Sws'
 
 /**
  * @typedef {'dj' | 'wailshark' | 'sample' | 'serato_studio'} SubscriptionGroup
@@ -20,7 +19,7 @@ import Sws from './Sws'
  * @property {Number} current_billing_cycle The billing cycle this discount is on.
  * @property {Number} number_of_billing_cycles The number of billing cycles this discount is for.
  * @property {DiscountSource} source
- * 
+ *
  * @typedef {Object} SubscriptionPlan
  * @property {String} id
  * @property {String} name
@@ -77,7 +76,7 @@ import Sws from './Sws'
  *
  * @typedef {Object} SubscriptionOptions
  * @property {Number[]} allow_concurrent_subscription
- * @property {Number[]} allow_change_to 
+ * @property {Number[]} allow_change_to
  *
  * @typedef {Object} CatalogProduct
  * @property {Number} id

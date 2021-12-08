@@ -1,7 +1,6 @@
 'use strict'
 
 import Service from './Service'
-import Sws from './Sws'
 
 /**
  * @typedef {'serato_dj_pro' | 'serato_dj_lite' | 'serato_sample' | 'serato_studio' | 'scratch_live' | 'pitchntime_le' | 'pitchntime_pro'} HostApplicationName
@@ -24,7 +23,6 @@ import Sws from './Sws'
  * @property {Number} [file_size = undefined] file_size File size in bytes.
  * @property {String} [url = undefined] url Permanent URL for the resource. One of `url` or `id` will be present.
  * @property {String[]} [secured_by = undefined] secured_by A list of access scopes, one or more of which is required to access the resource.
- * @property {String} 
  *
  * @typedef {Object} Asset
  * @property {Number} id

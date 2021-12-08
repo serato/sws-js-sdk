@@ -38,4 +38,3 @@ export default class Service {
 }
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'OPTIONS';
 export type ResponseType = 'json' | 'blob';
-import Sws from "./Sws";

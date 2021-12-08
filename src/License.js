@@ -1,7 +1,6 @@
 'use strict'
 
 import Service from './Service'
-import Sws from './Sws'
 
 /**
  * @typedef {String} RlmLicenseFileContents

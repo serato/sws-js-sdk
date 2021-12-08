@@ -1,7 +1,6 @@
 'use strict'
 
 import Service from './Service'
-import Sws from './Sws'
 
 /**
  * @typedef {'sale' | 'generic' | 'none'} MessageType
@@ -97,10 +96,10 @@ export default class NotificationsV1Service extends Service {
       this.bearerTokenAuthHeader(),
       '/api/v1/notifications',
       this.toBody({
-        'host_app_name': hostAppName,
-        'host_app_version': hostAppVersion,
-        'host_app_os': hostAppOs,
-        'locale': locale
+        host_app_name: hostAppName,
+        host_app_version: hostAppVersion,
+        host_app_os: hostAppOs,
+        locale: locale
       }),
       'GET'
     )

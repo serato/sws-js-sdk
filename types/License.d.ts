@@ -25,7 +25,7 @@ export default class LicenseService extends Service {
         productId: string;
         ilokUserId: string;
     }): Promise<Product>;
-    addLicenseAuthorization({ action, appName, appVersion, hostMachineId, hostMachineName, licenseId, systemTime }: {
+    addLicenseAuthorization({ action, appName, appVersion, hostMachineId, hostMachineName, licenseId, systemTime }?: {
         action: string;
         appName: string;
         appVersion: string;
