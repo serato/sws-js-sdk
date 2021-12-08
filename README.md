@@ -204,7 +204,7 @@ After the authorization process the SWS Identity Service will return the browser
 
 Compare the `state` URL parameter with the stored `state` value to confirm the authenticity of authorization request.
 
-Use the [IdentityService.tokenExchange](./src/Indentity.js) method to exchange `code`, `redirectUrl` and `codeVerifier` for JWT access and refresh tokens.
+Use the [IdentityService.tokenExchange](./src/Identity.js) method to exchange `code`, `redirectUrl` and `codeVerifier` for JWT access and refresh tokens.
 
 ### Invalid Access Token handler
 

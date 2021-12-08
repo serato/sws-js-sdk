@@ -6,7 +6,7 @@
 
 The SDK now includes functionality to facilitate the authorization of a client application using the SWS Identity Service. The authorization workkflow supported is [Authorization Code flow with Proof Key for Code Exchange (PKCE)](https://oauth.net/2/pkce/).
 
-The SDK can produce the parameters required for a client application to initiate an authorization workflow using [SwsClient.createAuthorizationRequest](./src/SwsClient.js) method. It then provides a [IdentityService.tokenExchange](./src/Indentity.js) that allows a client application to exchange parameters for the JWT tokens required to access other SWS web services.
+The SDK can produce the parameters required for a client application to initiate an authorization workflow using [SwsClient.createAuthorizationRequest](./src/SwsClient.js) method. It then provides a [IdentityService.tokenExchange](./src/Identity.js) that allows a client application to exchange parameters for the JWT tokens required to access other SWS web services.
 
 #### More reading
 
