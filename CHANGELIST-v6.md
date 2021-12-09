@@ -64,7 +64,7 @@ const sws = new Sws()
 
 ### Modified constructor for Sws
 
-The configuration object constructor argument of [Sws](./src/Sws.js) no allows for the providing of a `userId` property.
+The configuration object constructor argument of [Sws](./src/Sws.js) no longer allows for the providing of a `userId` property.
 
 ### New `NotificationsV1Service` service class
 
