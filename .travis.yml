@@ -4,8 +4,6 @@ node_js:
 cache:
   directories:
     - "node_modules"
-env:
-  secure: p5BQNLHUBUEmsiQbXGVRMixkbBig7bX7r77/TTHuYCvqbZdy6F05ASNH6z3zHQF292BooBPOzFLCvXWQIB6oFPyAusSDEhYAFFXdtfyK7znBzMYFCSZ8+M6HN+iFvGET4jbCKnEEJ9ZiSvgMBZI5OpXQvNLF+YXRJQ3yNZXXSjUr0Elk4hIycVYB/HMdrsngcdm42OOxYBBNBU4fL68ntctvyKsyvjHIw5XOn6MIzHYlpTvww2Npzdj3KImeIySX/ZDiu+I3Z/jUfi4QXFOLwxG05GAlFZ6YMIHnKpcDA103if6oRviM3l1yH6Km61QpPWxHkRNknH9yNY+uz/GWU6wrvQNTrwCydIfdZOp74zzAGBo2W6hKxGp9N719HvHAoD8Btk9EmtqeZmhEo4QLxRn8cDTC+oczOEMeGygzLQfKShi2lqJEEG1QTWbqfeeKBZwK1Jv6Wt+tuwsj3XQV3oWnf9v2lfZvQzKqlJC6BqUstR94kEDshkUK9O8tx8cHmYMMXrPVXGwZ0JPy+9U5oZehRi8MF45aek5y3hI+rnddVRXv02h5xsdxhdfZ5lyobdS7CmM9EdZ965y4laOdaxGIXrcH27UV3L34amcepiHzks45/Rt4/9gR+mmH8NA1jcFB1PrspI6KfXpBGH8UjiQ2oVGT0t+fwhCFnUA/qJU=
 branches:
   only:
   - master
@@ -16,8 +14,6 @@ script:
 - npm run lint
 - npm run test
 - npm run test-integration
-after_success:
-- npm run docs
 addons:
   artifacts:
     s3_region: us-east-1
@@ -30,5 +26,3 @@ notifications:
       secure: C9E+FYhown1Fkkrx892fAClW5bzvFNFm7jrOoALDZekNqRld0RXRiIlSj5Tmi6dFxMftg6bYp73BQpSYXIbkXR5i1CtHHNa4fpQpFL+jzwkuehipvKt+0ncZmZSfhzRAvDfkY/iBGLaWEfsSvNhAmh8wMNDtjgyM5oJOBDEGCp0uCnNgUTydWfsYQTA7XWdvvb4A/iC6LFXphAuZkgEPvF9kkBDT/S3RronjHgUuxTxUDkVCgFGJWJdZtuk49U+hFs1tE300Cdpyi8oqFLzCQDxeuVp15YfE9FhNoPdZNdSteJGvll7fB9qHJCBQ4nueGRYvV8zqaquudeXdjNVnloOR2qPZmoew4/AmpIAs/RAEWTnr8LO7fFt0crLEHdz63t/n6wl6Bu1Jqf0HmK1rVQepEkrHc78I1LV7vBh28kgb+0rZN5nSAMzs5DQ3ORFNYJQBk9tXhBmoxSxeJ7b4Y8KwpiirgIMCPBeWl+d9A2jRb2P7f6JItGAAfvrWXJP/OB/32EzbptLs65K0u/KE7utNQHwkJOSQRhR7ah7YIDux/Jf2vPXc6kie+Lswp2XRL2xqoiS356n6s22W/vYDSO1IBbv4JJOR4P/3ngEBaAgRGDrfaqYQV0ly9Sh95ho+OsIBJV2d2/F7WOoEKeHLVK7bpIvbBestfphaQfZb57s=
   on_success: change
   on_failure: always
-after_script:
-- "node ./docversions.js"
