@@ -15,6 +15,7 @@
     // Types should go into this directory.
     // Removing this would place the .d.ts files
     // next to the .js files
-    "outDir": "types"
+    // NOTE: It would be nicer/cleaner to use this option but we can't.
+    // "outDir": "types"
   }
 }
