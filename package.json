@@ -3,9 +3,6 @@
   "version": "6.0.0",
   "description": "Serato Web Services JS SDK",
   "main": "src/index.js",
-  "files": [
-    "src"
-  ],
   "scripts": {
     "lint": "./node_modules/.bin/eslint ./src/*.js",
     "test": "mocha --require @babel/register --recursive test/spec/*.js",
