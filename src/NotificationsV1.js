@@ -67,9 +67,9 @@ import Service from './Service'
  * *** Definitions for request parameter objects ***
  *
  * @typedef {Object} GetNotificationsParams
- * @property {AppName} [hostAppName = undefined] hostAppName
+ * @property { import("./Notifications").AppName } [hostAppName = undefined] hostAppName
  * @property {String} [hostAppVersion = undefined] hostAppVersion
- * @property {OsName} [hostAppOs = undefined] hostAppOs
+ * @property { import("./Notifications").OsName } [hostAppOs = undefined] hostAppOs
  * @property {String} [locale = undefined] locale
  */
 

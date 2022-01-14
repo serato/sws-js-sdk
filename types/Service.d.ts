@@ -1,5 +1,5 @@
 export default class Service {
-    constructor(Sws: Sws);
+    constructor(Sws: any);
     private _sws;
     private _serviceUri;
     private _lastRequest;
@@ -12,12 +12,9 @@ export default class Service {
     private _serviceUnavailableHandler;
     protected bearerTokenAuthHeader(): string;
     protected basicAuthHeader(): string;
-    protected toBody(data: any): import("./Sws").RequestParams;
-    protected fetch(auth: string, endpoint: string, body: any, method?: HttpMethod, timeout?: number, responseType?: ResponseType, headers?: {
-        Accept: string;
-        'Content-Type': string;
-    }): Promise<any>;
-    public fetchRequest(request: any): Promise<any>;
+    protected toBody(data: import("./Sws").RequestParams): import("./Sws").RequestParams;
+    protected fetch(auth: string, endpoint: string, body: import("./Sws").RequestParams, method?: HttpMethod, timeout?: number, responseType?: ResponseType, headers?: import("./Sws").RequestHeaders): Promise<any>;
+    public fetchRequest(request: import("./Sws").Request): Promise<any>;
     get userId(): number;
     get serviceUri(): string;
     set invalidAccessTokenHandler(arg: import("./Sws").RequestErrorHandler);

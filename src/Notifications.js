@@ -272,7 +272,7 @@ import Service from './Service'
  * @property {Metadata} metadata
  *
  * @typedef {Object} MediaParam
- * @property {MediaMimeType} mime_type
+ * @property {MediaContentType} mime_type
  * @property {MediaSource} src
  * @property {Metadata} metadata
  *

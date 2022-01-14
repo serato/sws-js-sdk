@@ -256,7 +256,7 @@ export type TextParam = {
     metadata: Metadata;
 };
 export type MediaParam = {
-    mime_type: MediaMimeType;
+    mime_type: MediaContentType;
     src: MediaSource;
     metadata: Metadata;
 };

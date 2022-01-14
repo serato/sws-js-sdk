@@ -33,7 +33,7 @@ export default class SwsClient extends Sws {
   /**
    * Constructor
    *
-   * @param { import("./Sws").SwsConfiguration) } config Configuration options
+   * @param { import("./Sws").SwsConfiguration } config Configuration options
    * @return {void}
    */
   constructor ({ appId, secret = '', timeout = 3000, serviceUri = {} }) {

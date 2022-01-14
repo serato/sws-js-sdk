@@ -16,7 +16,7 @@ export default class Service {
   /**
    * Constructor
    *
-   * @param {Sws} Sws Configured Sws instance
+   * @param { import("./Sws").Sws } Sws Configured Sws instance
    * @return {void}
    */
   constructor (Sws) {
@@ -72,8 +72,8 @@ export default class Service {
    *
    * @protected
    *
-   * @param { import("./Sws").RequestParams) } data Request params
-   * @return { import("./Sws").RequestParams) } Params
+   * @param { import("./Sws").RequestParams } data Request params
+   * @return { import("./Sws").RequestParams } Params
    */
   toBody (data) {
     const requestData = {}
@@ -93,11 +93,11 @@ export default class Service {
    *
    * @param  {String} auth Authorisation header value
    * @param  {String} endpoint API endpoint
-   * @param  { import("./Sws").RequestParams) } body Object to send in the body
+   * @param  { import("./Sws").RequestParams } body Object to send in the body
    * @param  {HttpMethod} [method='GET'] method HTTP Method GET, POST, PUT or DELETE (defaults to GET)
    * @param  {Number} [timeout=undefined] timeout Request timeout (ms)
    * @param  {ResponseType} [responseType='json'] responseType Response type for the request (e.g. json)
-   * @param  { import("./Sws").RequestHeaders) } headers headers Custom headers (defaults to Accept/Content-Type json)
+   * @param  { import("./Sws").RequestHeaders } headers headers Custom headers (defaults to Accept/Content-Type json)
    * @return {Promise}
    */
   fetch (
@@ -129,7 +129,7 @@ export default class Service {
    *
    * @public
    *
-   * @param { import("./Sws").Request) } request Request object
+   * @param { import("./Sws").Request } request Request object
    * @returns {Promise}
    */
   fetchRequest (request) {
@@ -196,7 +196,7 @@ export default class Service {
 
   /**
    * Set the invalid access token callback
-   * @param { import("./Sws").RequestErrorHandler) } f Callback
+   * @param { import("./Sws").RequestErrorHandler } f Callback
    * @return {void}
    */
   set invalidAccessTokenHandler (f) {
@@ -205,7 +205,7 @@ export default class Service {
 
   /**
    * Get the invalid access token callback
-   * @return { import("./Sws").RequestErrorHandler) }
+   * @return { import("./Sws").RequestErrorHandler }
    */
   get invalidAccessTokenHandler () {
     return this._invalidAccessTokenHandler
@@ -213,7 +213,7 @@ export default class Service {
 
   /**
    * Set the invalid refresh token callback
-   * @param { import("./Sws").RequestErrorHandler) } f Callback
+   * @param { import("./Sws").RequestErrorHandler } f Callback
    * @return {void}
    */
   set invalidRefreshTokenHandler (f) {
@@ -222,7 +222,7 @@ export default class Service {
 
   /**
    * Get the invalid refresh token callback
-   * @return { import("./Sws").RequestErrorHandler) }
+   * @return { import("./Sws").RequestErrorHandler }
    */
   get invalidRefreshTokenHandler () {
     return this._invalidRefreshTokenHandler
@@ -230,7 +230,7 @@ export default class Service {
 
   /**
    * Set the password re-entry required callback
-   * @param { import("./Sws").RequestErrorHandler) } f Callback
+   * @param { import("./Sws").RequestErrorHandler } f Callback
    * @return {void}
    */
   set passwordReEntryRequiredHandler (f) {
@@ -239,7 +239,7 @@ export default class Service {
 
   /**
    * Get the password re-entry required callback
-   * @return { import("./Sws").RequestErrorHandler) }
+   * @return { import("./Sws").RequestErrorHandler }
    */
   get passwordReEntryRequiredHandler () {
     return this._passwordReEntryRequiredHandler
@@ -247,7 +247,7 @@ export default class Service {
 
   /**
    * Set the access denied callback
-   * @param { import("./Sws").RequestErrorHandler) } f Callback
+   * @param { import("./Sws").RequestErrorHandler } f Callback
    * @return {void}
    */
   set accessDeniedHandler (f) {
@@ -256,7 +256,7 @@ export default class Service {
 
   /**
    * Get the access denied callback
-   * @return { import("./Sws").RequestErrorHandler) }
+   * @return { import("./Sws").RequestErrorHandler }
    */
   get accessDeniedHandler () {
     return this._accessDeniedHandler
@@ -264,7 +264,7 @@ export default class Service {
 
   /**
    * Set the timeout exceeded callback
-   * @param { import("./Sws").RequestErrorHandler) } f Callback
+   * @param { import("./Sws").RequestErrorHandler } f Callback
    * @return {void}
    */
   set timeoutExceededHandler (f) {
@@ -273,7 +273,7 @@ export default class Service {
 
   /**
    * Get the timeout exceeded callback
-   * @return { import("./Sws").RequestErrorHandler) }
+   * @return { import("./Sws").RequestErrorHandler }
    */
   get timeoutExceededHandler () {
     return this._timeoutExceededHandler
@@ -281,7 +281,7 @@ export default class Service {
 
   /**
    * Set the service error callback
-   * @param { import("./Sws").RequestErrorHandler) } f Callback
+   * @param { import("./Sws").RequestErrorHandler } f Callback
    * @return {void}
    */
   set serviceErrorHandler (f) {
@@ -290,7 +290,7 @@ export default class Service {
 
   /**
    * Get the service error callback
-   * @return { import("./Sws").RequestErrorHandler) }
+   * @return { import("./Sws").RequestErrorHandler }
    */
   get serviceErrorHandler () {
     return this._serviceErrorHandler
@@ -298,7 +298,7 @@ export default class Service {
 
   /**
    * Set the service unavailable callback
-   * @param { import("./Sws").RequestErrorHandler) } f Callback
+   * @param { import("./Sws").RequestErrorHandler } f Callback
    * @return {void}
    */
   set serviceUnavailableHandler (f) {
@@ -307,7 +307,7 @@ export default class Service {
 
   /**
    * Get the service unavailable callback
-   * @return { import("./Sws").RequestErrorHandler) }
+   * @return { import("./Sws").RequestErrorHandler }
    */
   get serviceUnavailableHandler () {
     return this._serviceUnavailableHandler
@@ -316,7 +316,7 @@ export default class Service {
   /**
    * Returns the configuration of the last request
    *
-   * @return { import("./Sws").Request) }
+   * @return { import("./Sws").Request }
    */
   get lastRequest () {
     return this._lastRequest
@@ -326,7 +326,7 @@ export default class Service {
 /**
  * Default error handler for HTTP fetch error
  *
- * @param { import("./Sws").Request) } request Request object
+ * @param { import("./Sws").Request } request Request object
  * @param {Error} err Fetch Error
  * @throws {Error}
  */
@@ -351,12 +351,12 @@ function handleFetchError (request, err) {
  *
  * @param  {String} auth Authorisation header value
  * @param  {String} endpoint API endpoint
- * @param  { import("./Sws").RequestParams) } body Object to send in the body
+ * @param  { import("./Sws").RequestParams } body Object to send in the body
  * @param  {HttpMethod} method HTTP Method GET, POST, PUT or DELETE (defaults to GET)
  * @param  {Number} timeout Request timout (ms)
  * @param  {ResponseType} responseType Response type for the request (e.g. json)
- * @param  { import("./Sws").RequestHeaders) } headers Custom headers (defaults to Accept/Content-Type json)
- * @return { import("./Sws").Request) }
+ * @param  { import("./Sws").RequestHeaders } headers Custom headers (defaults to Accept/Content-Type json)
+ * @return { import("./Sws").Request }
  */
 function buildRequest (auth, endpoint, body, method, timeout, responseType, headers) {
   const request = {

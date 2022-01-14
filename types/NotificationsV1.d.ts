@@ -64,9 +64,9 @@ export type NotificationV1List = {
     items: NotificationV1[];
 };
 export type GetNotificationsParams = {
-    hostAppName?: AppName;
+    hostAppName?: import("./Notifications").AppName;
     hostAppVersion?: string;
-    hostAppOs?: OsName;
+    hostAppOs?: import("./Notifications").OsName;
     locale?: string;
 };
 import Service from "./Service";
