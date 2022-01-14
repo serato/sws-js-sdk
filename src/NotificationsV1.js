@@ -63,6 +63,14 @@ import Service from './Service'
  *
  * @typedef {Object} NotificationList
  * @property {Notification[]} items
+ *
+ * *** Definitions for request parameter objects ***
+ *
+ * @typedef {Object} GetNotificationsParams
+ * @property {AppName} [hostAppName = undefined] hostAppName
+ * @property {String} [hostAppVersion = undefined] hostAppVersion
+ * @property {OsName} [hostAppOs = undefined] hostAppOs
+ * @property {String} [locale = undefined] locale
  */
 
 /**
@@ -84,11 +92,7 @@ export default class NotificationsV1Service extends Service {
    * Retrieve a list of notifcations for a client application.
    * Does not require authorization.
    *
-   * @param  {Object} [params = undefined] params Input parameter object
-   * @param  {String} [params.hostAppName = undefined] params.hostAppName Host app name to filter the results by
-   * @param  {String} [params.hostAppVersion = undefined] params.hostAppVersion Host app version to filter by
-   * @param  {String} [params.hostAppOs = undefined] params.hostAppOs Host app operating system to filter by
-   * @param  {String} [params.locale = undefined] params.locale Locale of the client to indicate content language preference
+   * @param  {GetNotificationsParams} [params = undefined] params  Notification params
    * @return {Promise<NotificationList>}
    */
   getNotifications ({ hostAppName, hostAppVersion, hostAppOs, locale } = {}) {

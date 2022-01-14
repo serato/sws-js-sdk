@@ -1,96 +1,21 @@
 export default class NotificationsService extends Service {
-    getCampaigns({ status }?: {
-        status?: string;
-    }): Promise<CampaignList>;
-    createCampaign({ name, anonymous, description, startsAt, endsAt }: {
-        name: string;
-        anonymous: boolean;
-        description?: string;
-        startsAt?: Date;
-        endsAt?: Date;
-    }): Promise<Campaign>;
-    updateCampaign({ campaignId, name, anonymous, description, status, startsAt, endsAt }: {
-        campaignId: string;
-        name?: string;
-        anonymous?: boolean;
-        description?: string;
-        status?: string;
-        startsAt?: Date;
-        endsAt?: Date;
-    }): Promise<Campaign>;
+    getCampaigns({ status }?: GetCampaignsParams): Promise<CampaignList>;
+    createCampaign({ name, anonymous, description, startsAt, endsAt }: CreateCampaignParams): Promise<Campaign>;
+    updateCampaign({ campaignId, name, anonymous, description, status, startsAt, endsAt }: UpdateCampaignParams): Promise<Campaign>;
     getNotifications(): Promise<AppNotificationList>;
-    createNotification({ name, campaignId, type, priority, templateName, templateOption, isPersistent, isTakeover, startsAt, endsAt }: {
-        name: string;
-        campaignId: string;
-        type: string;
-        priority: number;
-        templateName: string;
-        templateOption: string;
-        isPersistent: boolean;
-        isTakeover?: boolean;
-        startsAt?: Date;
-        endsAt?: Date;
-    }): Promise<Notification>;
-    updateNotification({ notificationId, name, templateOption, type, priority, templateName, startsAt, endsAt, status, isPersistent, isTakeover, campaignId }: {
-        notificationId: string;
-        name?: string;
-        type?: string;
-        priority?: number;
-        templateName?: string;
-        templateOption?: string;
-        startsAt?: Date;
-        endsAt?: Date;
-        status?: string;
-        isPersistent?: boolean;
-        isTakeover?: boolean;
-        campaignId?: number;
-    }): Promise<Notification>;
-    cloneNotification({ notificationId }: {
-        notificationId: string;
-    }): Promise<Notification>;
-    createHostSpecification({ notificationId, appName, appVersionMin, appVersionMax, osName, osVersionMin, osVersionMax }: {
-        notificationId: string;
-        appName: string;
-        appVersionMin?: string;
-        appVersionMax?: string;
-        osName?: string;
-        osVersionMin?: string;
-        osVersionMax?: string;
-    }): Promise<Host>;
-    updateHostSpecification({ notificationId, hostId, appName, appVersionMin, appVersionMax, osName, osVersionMin, osVersionMax }: {
-        notificationId: string;
-        hostId: string;
-        appName?: string;
-        appVersionMin?: string;
-        appVersionMax?: string;
-        osName?: string;
-        osVersionMin?: string;
-        osVersionMax?: string;
-    }): Promise<Host>;
-    deleteHostSpecification({ notificationId, hostId }: {
-        notificationId: string;
-        hostId: string;
-    }): Promise<any>;
-    createOrUpdateNotificationContent({ notificationId, language, content }: {
-        notificationId: string;
-        language: string;
-        content: {
-            text?: any[];
-            media?: any[];
-            actions?: any[];
-        };
-    }): Promise<Content>;
+    createNotification({ name, campaignId, type, priority, templateName, templateOption, isPersistent, isTakeover, startsAt, endsAt }: CreateNotificationParams): Promise<Notification>;
+    updateNotification({ notificationId, name, templateOption, type, priority, templateName, startsAt, endsAt, status, isPersistent, isTakeover, campaignId }: UpdateNotificationParams): Promise<Notification>;
+    cloneNotification({ notificationId }: CloneNotificationParams): Promise<Notification>;
+    createHostSpecification({ notificationId, appName, appVersionMin, appVersionMax, osName, osVersionMin, osVersionMax }: CreateHostSpecificationParams): Promise<Host>;
+    updateHostSpecification({ notificationId, hostId, appName, appVersionMin, appVersionMax, osName, osVersionMin, osVersionMax }: UpdateHostSpecificationParams): Promise<Host>;
+    deleteHostSpecification({ notificationId, hostId }: DeleteHostSpecificationParams): Promise<any>;
+    createOrUpdateNotificationContent({ notificationId, language, content }: CreateUpdateContentParams): Promise<Content>;
     getNotificationTemplates(): Promise<TemplateList>;
-    createTestUser({ userId, enabled }: {
-        userId: number;
-        enabled?: boolean;
-    }): Promise<TestUser>;
+    createTestUser({ userId, enabled }: CreateTestUserParams): Promise<TestUser>;
     getTestUsers(): Promise<TestUserList>;
-    deleteTestUser({ userId }: {
-        userId: string;
-    }): Promise<any>;
+    deleteTestUser({ userId }: DeleteTestUserParams): Promise<any>;
 }
-export type Status = 'active' | 'draft' | 'archived';
+export type Status = 'active' | 'draft' | 'archived' | 'testing';
 export type NotificationType = 'licensing' | 'system' | 'promotion' | 'streaming' | 'device_connection';
 export type TextContentType = 'text/plain' | 'text/html' | 'text/markdown';
 export type MediaContentType = 'image/jpeg' | 'image/gif' | 'image/png' | 'image/webp';
@@ -98,7 +23,7 @@ export type OsName = 'mac' | 'win';
 export type AppName = 'serato_dj_pro' | 'serato_dj_lite' | 'serato_sample' | 'serato_studio' | 'my_account' | 'express_checkout' | 'serato_com' | 'mega_nav';
 export type Language = 'en' | 'de' | 'fr' | 'es' | 'pt' | 'it' | 'ja' | 'zh';
 export type TemplateOptions = 'dark' | 'light' | 'dark-orange-button' | 'light-orange-button';
-export type MediaSrc = {
+export type MediaSource = {
     small: string;
     medium: string;
     large: string;
@@ -137,7 +62,7 @@ export type AppNotificationAction = {
 };
 export type AppNotificationMedia = {
     mime_type: MediaContentType;
-    src: MediaSrc;
+    src: MediaSource;
     metadata: Metadata;
 };
 export type AppNotificationHeader = {
@@ -181,7 +106,7 @@ export type Text = {
 export type Media = {
     id: string;
     mime_type: MediaContentType;
-    src: MediaSrc;
+    src: MediaSource;
     metadata: Metadata;
 };
 export type Action = {
@@ -246,5 +171,108 @@ export type TestUser = {
 };
 export type TestUserList = {
     items: TestUser[];
+};
+export type GetCampaignsParams = {
+    status?: Status;
+};
+export type CreateCampaignParams = {
+    name: string;
+    anonymous: boolean;
+    description?: string;
+    startsAt?: Date;
+    endsAt?: Date;
+};
+export type UpdateCampaignParams = {
+    campaignId: string;
+    name?: string;
+    anonymous?: boolean;
+    description?: string;
+    status?: Status;
+    startsAt?: Date;
+    endsAt?: Date;
+};
+export type CreateNotificationParams = {
+    name: string;
+    campaignId: string;
+    type: NotificationType;
+    priority: number;
+    templateName: string;
+    templateOption: string;
+    isPersistent: boolean;
+    isTakeover?: boolean;
+    startsAt?: Date;
+    endsAt?: Date;
+};
+export type UpdateNotificationParams = {
+    notificationId: string;
+    name?: string;
+    type?: NotificationType;
+    priority?: number;
+    templateName?: string;
+    templateOption?: string;
+    startsAt?: Date;
+    endsAt?: Date;
+    status?: Status;
+    isPersistent?: boolean;
+    isTakeover?: boolean;
+    campaignId?: number;
+};
+export type CloneNotificationParams = {
+    notificationId: string;
+};
+export type CreateHostSpecificationParams = {
+    notificationId: string;
+    appName: AppName;
+    appVersionMin?: string;
+    appVersionMax?: string;
+    osName?: OsName;
+    osVersionMin?: string;
+    osVersionMax?: string;
+};
+export type UpdateHostSpecificationParams = {
+    notificationId: string;
+    hostId: string;
+    appName: AppName;
+    appVersionMin?: string;
+    appVersionMax?: string;
+    osName?: OsName;
+    osVersionMin?: string;
+    osVersionMax?: string;
+};
+export type DeleteHostSpecificationParams = {
+    notificationId: string;
+    hostId: string;
+};
+export type CreateTestUserParams = {
+    userId: number;
+    enabled?: boolean;
+};
+export type DeleteTestUserParams = {
+    userId: number;
+};
+export type TextParam = {
+    mime_type: TextContentType;
+    content: string;
+    metadata: Metadata;
+};
+export type MediaParam = {
+    mime_type: MediaMimeType;
+    src: MediaSource;
+    metadata: Metadata;
+};
+export type ActionParam = {
+    label: string;
+    url?: string;
+    metadata: Metadata;
+};
+export type ContentParam = {
+    text?: TextParam[];
+    media?: MediaParam[];
+    actions?: ActionParam[];
+};
+export type CreateUpdateContentParams = {
+    notificationId: string;
+    language: Language;
+    content: ContentParam;
 };
 import Service from "./Service";

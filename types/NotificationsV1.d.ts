@@ -1,10 +1,5 @@
 export default class NotificationsV1Service extends Service {
-    getNotifications({ hostAppName, hostAppVersion, hostAppOs, locale }?: {
-        hostAppName?: string;
-        hostAppVersion?: string;
-        hostAppOs?: string;
-        locale?: string;
-    }): Promise<NotificationList>;
+    getNotifications({ hostAppName, hostAppVersion, hostAppOs, locale }?: GetNotificationsParams): Promise<NotificationList>;
 }
 export type MessageType = 'sale' | 'generic' | 'none';
 export type MessageContentType = 'text/plain';
@@ -67,5 +62,11 @@ export type Notification = {
 };
 export type NotificationList = {
     items: Notification[];
+};
+export type GetNotificationsParams = {
+    hostAppName?: AppName;
+    hostAppVersion?: string;
+    hostAppOs?: OsName;
+    locale?: string;
 };
 import Service from "./Service";
