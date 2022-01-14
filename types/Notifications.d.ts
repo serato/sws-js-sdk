@@ -10,7 +10,7 @@ export default class NotificationsService extends Service {
     updateHostSpecification({ notificationId, hostId, appName, appVersionMin, appVersionMax, osName, osVersionMin, osVersionMax }: UpdateHostSpecificationParams): Promise<Host>;
     deleteHostSpecification({ notificationId, hostId }: DeleteHostSpecificationParams): Promise<any>;
     createOrUpdateNotificationContent({ notificationId, language, content }: CreateUpdateContentParams): Promise<Content>;
-    getNotificationTemplates(): Promise<TemplateList>;
+    getNotificationTemplates(): Promise<NotificationTemplateList>;
     createTestUser({ userId, enabled }: CreateTestUserParams): Promise<TestUser>;
     getTestUsers(): Promise<TestUserList>;
     deleteTestUser({ userId }: DeleteTestUserParams): Promise<any>;
@@ -150,7 +150,7 @@ export type TemplateMetaData = {
     required: boolean;
     order: number;
 };
-export type Template = {
+export type NotificationTemplate = {
     name: string;
     description: string;
     is_takeover: boolean;
@@ -160,8 +160,8 @@ export type Template = {
     action_items?: TemplateMetaData[];
     media_items?: TemplateMetaData[];
 };
-export type TemplateList = {
-    items: Template[];
+export type NotificationTemplateList = {
+    items: NotificationTemplate[];
 };
 export type TestUser = {
     user_id: number;

@@ -1,5 +1,5 @@
 export default class NotificationsV1Service extends Service {
-    getNotifications({ hostAppName, hostAppVersion, hostAppOs, locale }?: GetNotificationsParams): Promise<NotificationList>;
+    getNotifications({ hostAppName, hostAppVersion, hostAppOs, locale }?: GetNotificationsParams): Promise<NotificationV1List>;
 }
 export type MessageType = 'sale' | 'generic' | 'none';
 export type MessageContentType = 'text/plain';
@@ -10,7 +10,7 @@ export type Schedule = {
     starts_at: string;
     ends_at: string;
 };
-export type Campaign = {
+export type CampaignV1 = {
     id: string;
     name: string;
     description: string;
@@ -27,7 +27,7 @@ export type MessageV1Action = {
 export type MessageV2Action = {
     url: string;
 };
-export type Media = {
+export type MediaV1 = {
     type: MediaType;
     url: string;
     metadata?: {
@@ -44,7 +44,7 @@ export type MessageV2 = {
     type: MessageType;
     title: string;
     actions: MessageV2Action[];
-    media: Media;
+    media: MediaV1;
 };
 export type MessageVersions = {
     v1: MessageV1;
@@ -56,12 +56,12 @@ export type Message = {
     language: string;
     versions: MessageVersions;
 };
-export type Notification = {
-    campaign: Campaign;
+export type NotificationV1 = {
+    campaign: CampaignV1;
     message: Message;
 };
-export type NotificationList = {
-    items: Notification[];
+export type NotificationV1List = {
+    items: NotificationV1[];
 };
 export type GetNotificationsParams = {
     hostAppName?: AppName;

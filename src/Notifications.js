@@ -138,7 +138,7 @@ import Service from './Service'
  * @property {Boolean} required
  * @property {Number} order The display order of items in the template.
  *
- * @typedef {Object} Template
+ * @typedef {Object} NotificationTemplate
  * @property {String} name
  * @property {String} description
  * @property {Boolean} is_takeover
@@ -148,8 +148,8 @@ import Service from './Service'
  * @property {TemplateMetaData[]} [action_items = undefined] action_items
  * @property {TemplateMetaData[]} [media_items = undefined] media_items
  *
- * @typedef {Object} TemplateList
- * @property {Template[]} items
+ * @typedef {Object} NotificationTemplateList
+ * @property {NotificationTemplate[]} items
  *
  * @typedef {Object} TestUser
  * @property {Number} user_id
@@ -573,7 +573,7 @@ export default class NotificationsService extends Service {
    * Lists all the available notification templates.
    * Does not require authorization.
    *
-   * @return {Promise<TemplateList>}
+   * @return {Promise<NotificationTemplateList>}
    */
   getNotificationTemplates () {
     return this.fetch(
