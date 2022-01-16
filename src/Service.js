@@ -16,7 +16,7 @@ export default class Service {
   /**
    * Constructor
    *
-   * @param { import("./Sws").Sws } Sws Configured Sws instance
+   * @param Sws Configured Sws instance
    * @return {void}
    */
   constructor (Sws) {
