@@ -46,10 +46,10 @@ import Service from './Service'
  * @property {String} [postcode = undefined] postcode
  * @property {String} [country_code = undefined] country_code
  * @property {String} [company = undefined] company
- * @property {String} date_created Date created timestamp in ISO 8601 format.
- * @property {String} date_updated Date updated timestamp in ISO 8601 format.
+ * @property {String} [date_created = undefined] date_created Date created timestamp in ISO 8601 format.
+ * @property {String} [date_updated = undefined] date_updated Date updated timestamp in ISO 8601 format.
  * @property {String} [display_name = undefined] display_name
- * @property {Avatar} avatar
+ * @property {Avatar} [avatar = undefined] avatar
  * @property {Number} [edit_avatar_disabled = undefined] edit_avatar_disabled
  * @property {Twitch} [twitch = undefined] twitch
  *

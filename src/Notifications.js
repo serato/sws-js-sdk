@@ -205,7 +205,7 @@ import Service from './Service'
  * @property {Status} [status = undefined] status        Status of the notification ('active', 'draft' or 'archived')
  * @property {Boolean} [isPersistent = undefined] isPersistent    Whether the notification is a persistent
  * @property {Boolean} [isTakeover = undefined] isTakeover      Whether the notification is a takeover
- * @property {Number} [campaignId = undefined] campaignId      Campaign ID
+ * @property {String} [campaignId = undefined] campaignId      Campaign ID
  *
  * @typedef {Object} CloneNotificationParams
  * @property {String} notificationId   ID of the notification to update

@@ -216,7 +216,7 @@ export namespace Notifications {
         status?: Status;
         isPersistent?: boolean;
         isTakeover?: boolean;
-        campaignId?: number;
+        campaignId?: string;
     };
     export type CloneNotificationParams = {
         notificationId: string;

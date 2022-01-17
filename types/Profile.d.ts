@@ -94,10 +94,10 @@ export namespace Profile {
         postcode?: string;
         country_code?: string;
         company?: string;
-        date_created: string;
-        date_updated: string;
+        date_created?: string;
+        date_updated?: string;
         display_name?: string;
-        avatar: Avatar;
+        avatar?: Avatar;
         edit_avatar_disabled?: number;
         twitch?: Twitch;
     };
