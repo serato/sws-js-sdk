@@ -16,15 +16,19 @@ The SDK can produce the parameters required for a client application to initiate
 
 All classes and data return types now have corresponding Typescript definitions.
 
-Typescript definitions are auto-generated from JSDoc annontations using the Typescript compiler, as described in the [Typescript documentation](https://www.typescriptlang.org/docs/handbook/declaration-files/dts-from-js.html).
+Typescript definitions are partially auto-generated from JSDoc annontations using the Typescript compiler, as described in the [Typescript documentation](https://www.typescriptlang.org/docs/handbook/declaration-files/dts-from-js.html).
 
 The [documentation](https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html) also describes which JSDoc annotations are supported.
 
-The `.d.ts` files produced by the Typescript compiler are output to the [types](./types) directory. Typescript definitions can be regenerated using the following:
+The initial `.d.ts` files produced by the Typescript compiler are output to the [types-temp](./types) directory. Typescript definitions can be regenerated into this directory using the following:
 
 ```bash
 npx -p typescript tsc
 ```
+
+After the inital `.d.ts` files have been generated the SWS client classes need to be manually edited as follows:
+
+-- TODO --
 
 ## Breaking changes
 
