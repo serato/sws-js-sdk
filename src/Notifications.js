@@ -184,8 +184,8 @@ import Service from './Service'
  * @typedef {Object} CreateNotificationParams
  * @property {String} name           Name of the campaign message. Must be a non empty string
  * @property {String} campaignId     ID of the campaign to create the notification for
- * @property {NotificationType} type           The type (category) of the notification.
- * @property {Number} priority       An integer that indicates the priority of the notification
+ * @property {NotificationType} [type = undefined]           The type (category) of the notification.
+ * @property {Number} [priority = undefined]       An integer that indicates the priority of the notification
  * @property {String} [templateName = undefined] templateName   Name of the notification template that will be used on the client app
  * @property {String} [templateOption = undefined] templateOption The variant (colours etc) of the template to use
  * @property {Boolean} isPersistent   Whether the notification is persistent

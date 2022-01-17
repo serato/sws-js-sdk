@@ -195,8 +195,8 @@ export namespace Notifications {
     export type CreateNotificationParams = {
         name: string;
         campaignId: string;
-        type: NotificationType;
-        priority: number;
+        type?: NotificationType;
+        priority?: number;
         templateName?: string;
         templateOption?: string;
         isPersistent: boolean;
