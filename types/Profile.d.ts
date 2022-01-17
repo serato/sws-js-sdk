@@ -74,7 +74,7 @@ export namespace Profile {
         extensions: TwitchExtension[];
     };
     export type Profile = {
-        id: number;
+        user_id: number;
         email_address: string;
         global_contact_status: number;
         notify_tracked?: boolean;

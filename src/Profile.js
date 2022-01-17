@@ -26,7 +26,7 @@ import Service from './Service'
  * @property {TwitchExtension[]} extensions
  *
  * @typedef {Object} Profile
- * @property {Number} id
+ * @property {Number} user_id
  * @property {String} email_address
  * @property {Number} global_contact_status
  * @property {Boolean} [notify_tracked = undefined] notify_tracked
