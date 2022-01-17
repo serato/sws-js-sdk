@@ -180,8 +180,8 @@ export namespace Notifications {
         name: string;
         anonymous: boolean;
         description?: string;
-        startsAt?: Date;
-        endsAt?: Date;
+        startsAt?: string;
+        endsAt?: string;
     };
     export type UpdateCampaignParams = {
         campaignId: string;
@@ -189,8 +189,8 @@ export namespace Notifications {
         anonymous?: boolean;
         description?: string;
         status?: Status;
-        startsAt?: Date;
-        endsAt?: Date;
+        startsAt?: string;
+        endsAt?: string;
     };
     export type CreateNotificationParams = {
         name: string;

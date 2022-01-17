@@ -169,8 +169,8 @@ import Service from './Service'
  * @property {String} name          Name of the campaign. Must be a non empty string
  * @property {Boolean} anonymous     Whether the notifications for the campaign are anonymous or not
  * @property {String} [description = undefined] description  Description of the campaign
- * @property {Date} [startsAt = undefined] startsAt   The date/time that the campaign is valid from
- * @property {Date} [endsAt = undefined] endsAt     The date/time that the campaign is valid until
+ * @property {String} [startsAt = undefined] startsAt   The date/time that the campaign is valid from
+ * @property {String} [endsAt = undefined] endsAt     The date/time that the campaign is valid until
  *
  * @typedef {Object} UpdateCampaignParams
  * @property {String} campaignId           ID of the campaign to update
@@ -178,8 +178,8 @@ import Service from './Service'
  * @property {Boolean} [anonymous = undefined] anonymous  Whether the notifications for the campaign are anonymous or not
  * @property {String} [description = undefined] description   Description of the campaign
  * @property {Status} [status = undefined] status     Status of the campaign. Must be one of 'active', 'draft' or 'archived'
- * @property {Date} [startsAt = undefined] startsAt   The date/time that the campaign is valid from
- * @property {Date} [endsAt = undefined] endsAt     The date/time that the campaign is valid until
+ * @property {String} [startsAt = undefined] startsAt   The date/time that the campaign is valid from
+ * @property {String} [endsAt = undefined] endsAt     The date/time that the campaign is valid until
  *
  * @typedef {Object} CreateNotificationParams
  * @property {String} name           Name of the campaign message. Must be a non empty string
