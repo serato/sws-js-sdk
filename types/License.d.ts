@@ -41,9 +41,9 @@ export default class LicenseService extends Service {
 }
 export type RlmLicenseFileContents = string;
 export type LicenseTerm = 'permanent' | 'subscription' | 'trial' | 'timelimited';
-export type LicenseHostApplicationId = 'dj' | 'dj_lite' | 'serato_sample' | 'wailshark' | 'serato_studio';
-export type LicenseHostApplication = {
-    id: LicenseHostApplicationId;
+export type HostApplicationId = 'dj' | 'dj_lite' | 'serato_sample' | 'wailshark' | 'serato_studio';
+export type HostApplication = {
+    id: HostApplicationId;
     version: string;
 };
 export type HostMachine = {
@@ -53,7 +53,7 @@ export type HostMachine = {
     activated_at: string;
 };
 export type Activation = {
-    app: LicenseHostApplication;
+    app: HostApplication;
     machine: HostMachine;
 };
 export type RlmSchema = {

@@ -5,10 +5,10 @@ import Service from './Service'
 /**
  * @typedef {String} RlmLicenseFileContents
  * @typedef {'permanent' | 'subscription' | 'trial' | 'timelimited'} LicenseTerm
- * @typedef {'dj' | 'dj_lite' | 'serato_sample' | 'wailshark' | 'serato_studio'} LicenseHostApplicationId
+ * @typedef {'dj' | 'dj_lite' | 'serato_sample' | 'wailshark' | 'serato_studio'} HostApplicationId
  *
- * @typedef {Object} LicenseHostApplication
- * @property {LicenseHostApplicationId} id Host application identifer
+ * @typedef {Object} HostApplication
+ * @property {HostApplicationId} id Host application identifer
  * @property {String} version
  *
  * @typedef {Object} HostMachine
@@ -18,7 +18,7 @@ import Service from './Service'
  * @property {String} activated_at
  *
  * @typedef {Object} Activation
- * @property {LicenseHostApplication} app
+ * @property {HostApplication} app
  * @property {HostMachine} machine
  *
  * @typedef {Object} RlmSchema

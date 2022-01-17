@@ -13,7 +13,7 @@ import Service from './Service'
  * @property {String} starts_at
  * @property {String} ends_at
  *
- * @typedef {Object} CampaignV1
+ * @typedef {Object} Campaign
  * @property {String} id
  * @property {String} name
  * @property {String} description
@@ -30,7 +30,7 @@ import Service from './Service'
  * @typedef {Object} MessageV2Action
  * @property {String} url
  *
- * @typedef {Object} MediaV1
+ * @typedef {Object} Media
  * @property {MediaType} type
  * @property {String} url
  * @property {Object<string, string>} [metadata = undefined] metadata
@@ -45,7 +45,7 @@ import Service from './Service'
  * @property {MessageType} type
  * @property {String} title
  * @property {MessageV2Action[]} actions
- * @property {MediaV1} media
+ * @property {Media} media
  *
  * @typedef {Object} MessageVersions
  * @property {MessageV1} v1
@@ -57,12 +57,12 @@ import Service from './Service'
  * @property {String} language
  * @property {MessageVersions} versions
  *
- * @typedef {Object} NotificationV1
- * @property {CampaignV1} campaign
+ * @typedef {Object} Notification
+ * @property {Campaign} campaign
  * @property {Message} message
  *
- * @typedef {Object} NotificationV1List
- * @property {NotificationV1[]} items
+ * @typedef {Object} NotificationList
+ * @property {Notification[]} items
  *
  * *** Definitions for request parameter objects ***
  *
@@ -93,7 +93,7 @@ export default class NotificationsV1Service extends Service {
    * Does not require authorization.
    *
    * @param  {GetNotificationsParams} [params = undefined] params
-   * @return {Promise<NotificationV1List>}
+   * @return {Promise<NotificationList>}
    */
   getNotifications ({ hostAppName, hostAppVersion, hostAppOs, locale } = {}) {
     return this.fetch(
