@@ -13,9 +13,9 @@ import Service from './Service'
  * @typedef {'dark' | 'light' | 'dark-orange-button' | 'light-orange-button'} TemplateOptions
  *
  * @typedef {Object} MediaSource
- * @property {String} small
+ * @property {String} [small = undefined] small
  * @property {String} medium
- * @property {String} large
+ * @property {String} [large = undefined] large
  *
  * @typedef {Object<string, any>} Metadata
  *
@@ -186,12 +186,12 @@ import Service from './Service'
  * @property {String} campaignId     ID of the campaign to create the notification for
  * @property {NotificationType} type           The type (category) of the notification.
  * @property {Number} priority       An integer that indicates the priority of the notification
- * @property {String} templateName   Name of the notification template that will be used on the client app
- * @property {String} templateOption The variant (colours etc) of the template to use
+ * @property {String} [templateName = undefined] templateName   Name of the notification template that will be used on the client app
+ * @property {String} [templateOption = undefined] templateOption The variant (colours etc) of the template to use
  * @property {Boolean} isPersistent   Whether the notification is persistent
  * @property {Boolean} [isTakeover = undefined] isTakeover    Whether the notification is a takeover
- * @property {Date} [startsAt = undefined] startsAt      The date/time that the notification is valid from
- * @property {Date} [endsAt = undefined] endsAt        The date/time that the notificaiton is valid until
+ * @property {String} [startsAt = undefined] startsAt      The date/time that the notification is valid from
+ * @property {String} [endsAt = undefined] endsAt        The date/time that the notificaiton is valid until
  *
  * @typedef {Object} UpdateNotificationParams
  * @property {String} notificationId   ID of the notification to update
@@ -200,8 +200,8 @@ import Service from './Service'
  * @property {Number} [priority = undefined] priority      An integer that indicates the priority of the notification
  * @property {String} [templateName = undefined] templateName  Name of the notification template that will be used on the client app
  * @property {String} [templateOption = undefined] templateOption   The variant (colours etc) of the template to use
- * @property {Date} [startsAt = undefined] startsAt      The date/time that the notification is valid from
- * @property {Date} [endsAt = undefined] endsAt        The date/time that the notificaiton is valid until
+ * @property {String} [startsAt = undefined] startsAt      The date/time that the notification is valid from
+ * @property {String} [endsAt = undefined] endsAt        The date/time that the notificaiton is valid until
  * @property {Status} [status = undefined] status        Status of the notification ('active', 'draft' or 'archived')
  * @property {Boolean} [isPersistent = undefined] isPersistent    Whether the notification is a persistent
  * @property {Boolean} [isTakeover = undefined] isTakeover      Whether the notification is a takeover

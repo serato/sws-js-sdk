@@ -3,9 +3,9 @@ export default class NotificationsService extends Service {
     createCampaign({ name, anonymous, description, startsAt, endsAt }: Notifications.CreateCampaignParams): Promise<Notifications.Campaign>;
     updateCampaign({ campaignId, name, anonymous, description, status, startsAt, endsAt }: Notifications.UpdateCampaignParams): Promise<Notifications.Campaign>;
     getNotifications(): Promise<Notifications.AppNotificationList>;
-    createNotification({ name, campaignId, type, priority, templateName, templateOption, isPersistent, isTakeover, startsAt, endsAt }: Notifications.CreateNotificationParams): Promise<Notification>;
-    updateNotification({ notificationId, name, templateOption, type, priority, templateName, startsAt, endsAt, status, isPersistent, isTakeover, campaignId }: Notifications.UpdateNotificationParams): Promise<Notification>;
-    cloneNotification({ notificationId }: Notifications.CloneNotificationParams): Promise<Notification>;
+    createNotification({ name, campaignId, type, priority, templateName, templateOption, isPersistent, isTakeover, startsAt, endsAt }: Notifications.CreateNotificationParams): Promise<Notifications.Notification>;
+    updateNotification({ notificationId, name, templateOption, type, priority, templateName, startsAt, endsAt, status, isPersistent, isTakeover, campaignId }: Notifications.UpdateNotificationParams): Promise<Notifications.Notification>;
+    cloneNotification({ notificationId }: Notifications.CloneNotificationParams): Promise<Notifications.Notification>;
     createHostSpecification({ notificationId, appName, appVersionMin, appVersionMax, osName, osVersionMin, osVersionMax }: Notifications.CreateHostSpecificationParams): Promise<Notifications.Host>;
     updateHostSpecification({ notificationId, hostId, appName, appVersionMin, appVersionMax, osName, osVersionMin, osVersionMax }: Notifications.UpdateHostSpecificationParams): Promise<Notifications.Host>;
     deleteHostSpecification({ notificationId, hostId }: Notifications.DeleteHostSpecificationParams): Promise<any>;
@@ -25,9 +25,9 @@ export namespace Notifications {
     export type Language = 'en' | 'de' | 'fr' | 'es' | 'pt' | 'it' | 'ja' | 'zh';
     export type TemplateOptions = 'dark' | 'light' | 'dark-orange-button' | 'light-orange-button';
     export type MediaSource = {
-        small: string;
+        small?: string;
         medium: string;
-        large: string;
+        large?: string;
     };
     export type Metadata = {
         [x: string]: any;
@@ -197,12 +197,12 @@ export namespace Notifications {
         campaignId: string;
         type: NotificationType;
         priority: number;
-        templateName: string;
-        templateOption: string;
+        templateName?: string;
+        templateOption?: string;
         isPersistent: boolean;
         isTakeover?: boolean;
-        startsAt?: Date;
-        endsAt?: Date;
+        startsAt?: string;
+        endsAt?: string;
     };
     export type UpdateNotificationParams = {
         notificationId: string;
@@ -211,8 +211,8 @@ export namespace Notifications {
         priority?: number;
         templateName?: string;
         templateOption?: string;
-        startsAt?: Date;
-        endsAt?: Date;
+        startsAt?: string;
+        endsAt?: string;
         status?: Status;
         isPersistent?: boolean;
         isTakeover?: boolean;
