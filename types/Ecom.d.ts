@@ -52,7 +52,6 @@ export default class EcomService extends Service {
         catalogCategory?: string;
     }): Promise<Ecom.RecommendationsList>;
 }
-
 export namespace Ecom {
     export type SubscriptionGroup = 'dj' | 'wailshark' | 'sample' | 'serato_studio';
     export type SubscriptionStatus = 'Active' | 'Canceled' | 'Past Due' | 'Expired' | 'Pending' | 'Expiring';

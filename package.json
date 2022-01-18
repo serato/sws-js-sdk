@@ -9,7 +9,8 @@
     "test": "mocha --require @babel/register --recursive test/spec/*.js",
     "test-integration": "mocha --require @babel/register --recursive test/integration/*.js",
     "test-slow-integration": "mocha --require @babel/register --recursive test/slow/integration/*.js",
-    "docs": "./node_modules/.bin/esdoc"
+    "docs": "./node_modules/.bin/esdoc",
+    "build": "npx -p typescript tsc && node ./tsbuilder.js"
   },
   "repository": {
     "type": "git",
