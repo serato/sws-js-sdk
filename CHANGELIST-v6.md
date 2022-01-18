@@ -76,6 +76,16 @@ The SDK includes a new service client, [NotificationsV1Service](./src/Notificati
 
 This client contains a single method, [NotificationsV1Service.getNotifications](./src/NotificationsV1.js). This method is directly equivalent to `Notifications.getNotifications` in previous SDK versions.
 
+A `NotificationsV1Service` instance is available from a `Sws` instance via the `notificationsV1` property:
+
+```bash
+import Sws from '@serato/sws-sdk'
+// sws is an instance of SwsClient
+const sws = new Sws()
+
+const notifications = sws.notificationsV1.getNotifications()
+```
+
 ### Renamed methods
 
 The `NotificationsService.adminGetNotifications` method has been renamed `NotificationsService.getNotifications`.

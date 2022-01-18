@@ -34,48 +34,6 @@ import Service from './Service'
  * @typedef {Object} CampaignList
  * @property {Campaign[]} items
  *
- * @typedef {Object} AppNotificationTemplate
- * @property {String} name
- * @property {String} [option = undefined] option
- *
- * @typedef {Object} AppNotificationText
- * @property {TextContentType} content_type
- * @property {String} content
- * @property {Metadata} metadata
- *
- * @typedef {Object} AppNotificationAction
- * @property {String} label
- * @property {String} [url = undefined] url
- * @property {Metadata} metadata
- *
- * @typedef {Object} AppNotificationMedia
- * @property {MediaContentType} mime_type
- * @property {MediaSource  } src
- * @property {Metadata} metadata
- *
- * @typedef {Object} AppNotificationHeader
- * @property {String} language
- * @property {NotificationType} type
- * @property {Number} [priority = undefined] priority
- * @property {AppNotificationTemplate} template
- * @property {String} [takeover_id = undefined] takeover_id An identifier used by client apps to replace static notifications with dynamic content.
- * @property {String} [campaign_id = undefined]
- * @property {String} [expires = undefined] expires
- * @property {Object} [client_metadata = undefined] client_metadata Client application-specific meta data. Maximum size is 64KB.
- *
- * @typedef {Object} AppNotificationContent
- * @property {AppNotificationText[]} text
- * @property {AppNotificationAction[]} [actions = undefined] actions A list of actions associated with the notification. Each item will have a unique `metadata`.`id` value.
- * @property {AppNotificationMedia[]} [media = undefined] media A list of media objects associated with the notification. Each item will have a unique `metadata`.`id` value.
- *
- * @typedef {Object} AppNotification
- * @property {String} id
- * @property {AppNotificationHeader} header
- * @property {AppNotificationContent} content
- *
- * @typedef {Object} AppNotificationList
- * @property {AppNotification[]} items
- *
  * @typedef {Object} Host
  * @property {String} id
  * @property {AppName} app_name
@@ -127,6 +85,9 @@ import Service from './Service'
  * @property {String} [ends_at = undefined] ends_at
  * @property {String} created_at
  * @property {String} updated_at
+ *
+ * @typedef {Object} NotificationList
+ * @property {Notification[]} items
  *
  * @typedef {Object} TemplateHost
  * @property {AppName} app_name
@@ -370,7 +331,7 @@ export default class NotificationsService extends Service {
   /**
    * Get notifications.
    *
-   * @return {Promise<AppNotificationList>}
+   * @return {Promise<NotificationList>}
    */
   getNotifications () {
     return this.fetch(

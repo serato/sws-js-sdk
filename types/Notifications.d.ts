@@ -2,7 +2,7 @@ export default class NotificationsService extends Service {
     getCampaigns({ status }?: Notifications.GetCampaignsParams): Promise<Notifications.CampaignList>;
     createCampaign({ name, anonymous, description, startsAt, endsAt }: Notifications.CreateCampaignParams): Promise<Notifications.Campaign>;
     updateCampaign({ campaignId, name, anonymous, description, status, startsAt, endsAt }: Notifications.UpdateCampaignParams): Promise<Notifications.Campaign>;
-    getNotifications(): Promise<Notifications.AppNotificationList>;
+    getNotifications(): Promise<Notifications.NotificationList>;
     createNotification({ name, campaignId, type, priority, templateName, templateOption, isPersistent, isTakeover, startsAt, endsAt }: Notifications.CreateNotificationParams): Promise<Notifications.Notification>;
     updateNotification({ notificationId, name, templateOption, type, priority, templateName, startsAt, endsAt, status, isPersistent, isTakeover, campaignId }: Notifications.UpdateNotificationParams): Promise<Notifications.Notification>;
     cloneNotification({ notificationId }: Notifications.CloneNotificationParams): Promise<Notifications.Notification>;
@@ -46,48 +46,6 @@ export namespace Notifications {
     };
     export type CampaignList = {
         items: Campaign[];
-    };
-    export type AppNotificationTemplate = {
-        name: string;
-        option?: string;
-    };
-    export type AppNotificationText = {
-        content_type: TextContentType;
-        content: string;
-        metadata: Metadata;
-    };
-    export type AppNotificationAction = {
-        label: string;
-        url?: string;
-        metadata: Metadata;
-    };
-    export type AppNotificationMedia = {
-        mime_type: MediaContentType;
-        src: MediaSource;
-        metadata: Metadata;
-    };
-    export type AppNotificationHeader = {
-        language: string;
-        type: NotificationType;
-        priority?: number;
-        template: AppNotificationTemplate;
-        takeover_id?: string;
-        campaign_id?: string;
-        expires?: string;
-        client_metadata?: any;
-    };
-    export type AppNotificationContent = {
-        text: AppNotificationText[];
-        actions?: AppNotificationAction[];
-        media?: AppNotificationMedia[];
-    };
-    export type AppNotification = {
-        id: string;
-        header: AppNotificationHeader;
-        content: AppNotificationContent;
-    };
-    export type AppNotificationList = {
-        items: AppNotification[];
     };
     export type Host = {
         id: string;
@@ -140,6 +98,9 @@ export namespace Notifications {
         ends_at?: string;
         created_at: string;
         updated_at: string;
+    };
+    export type NotificationList = {
+        items: Notification[];
     };
     export type TemplateHost = {
         app_name: AppName;
