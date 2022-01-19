@@ -119,7 +119,7 @@ import Service from './Service'
  * @property {String} updated_at
  *
  * @typedef {Object} TestUserList
- * @property {TestUser[]} items
+ * @property {TestUser[]} users
  *
  * *** Definitions for request parameter objects ***
  *

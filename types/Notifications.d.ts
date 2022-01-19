@@ -132,7 +132,7 @@ export namespace Notifications {
         updated_at: string;
     };
     export type TestUserList = {
-        items: TestUser[];
+        users: TestUser[];
     };
     export type GetCampaignsParams = {
         status?: Status;
