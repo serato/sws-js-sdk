@@ -102,7 +102,7 @@ export default class RewardsService extends Service {
   getReferrerParticipation ({ id }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      this.userId === 0 ? `/api/v1/me/referralcampaign/${id}` : `/user/${this.userId}/referralcampaign/${id}`,
+      this.userId === 0 ? `/api/v1/me/referralcampaign/${id}` : `/api/v1/users/${this.userId}/referralcampaign/${id}`,
       null,
       'GET'
     )

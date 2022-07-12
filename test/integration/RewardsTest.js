@@ -39,5 +39,73 @@ describe('Rewards Tests', function () {
           }
         )
       })
+    
+      it(`confirms URI used in 'getReferalCampaigns()' method by returning a 200 HTTP response`,
+        function () {
+          return swsClient.rewards.getReferalCampaigns().then(
+            response => {
+              expect(response).to.be.a('object')
+            }
+          )
+        }
+      )
+
+    it(`confirms URI used in 'getReferalCampaign()' method with Campaign Id by returning a 200 HTTP response`,
+      function () {
+        return swsClient.rewards.getReferalCampaign({id: 1}).then(
+          response => {
+            expect(response).to.be.a('array')
+          }
+        )
+      }
+    )
+
+    it(`confirms URI used in 'getReferrerParticipation()' method with no user id and campaign id , by returning a non-404 HTTP response`,
+      function () {
+        swsClient.userId = 0
+        return swsClient.rewards.getReferrerParticipation({id: 1}).then(
+          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+          err => {
+            expect(err.httpStatus).not.to.equal(404)
+          }
+        )
+      }
+    )
+
+    it(`confirms URI used in 'getReferrerParticipation()' method with Campaign Id, by returning a non-404 HTTP response`,
+      function () {
+        swsClient.userId = 123
+        return swsClient.rewards.getReferrerParticipation({id: 1}).then(
+          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+          err => {
+            expect(err.httpStatus).not.to.equal(404)
+          }
+        )
+      }
+    )
+
+    it(`confirms URI used in 'getUsageOfReferralCode()' method with Campaign Id, by returning a non-404 HTTP response`,
+      function () {
+        return swsClient.rewards.getUsageOfReferralCode({code: 'testcode', userId: 1}).then(
+          response => {
+            expect(response).to.be.a('object')
+          }
+        )
+      }
+    )
+
+    it(`confirms URI used in 'addReferralCampaignActivityLog()' method with Campaign Id, by returning a non-404 HTTP response`,
+      function () {
+        return swsClient.rewards.addReferralCampaignActivityLog({
+          code: 'testcode',
+          referrerUserId: 123,
+          productId: 123
+        }).then(
+          response => {
+            // console.log(response)
+          }
+        )
+      }
+    )  
   })
 })
