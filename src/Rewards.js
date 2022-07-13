@@ -69,7 +69,7 @@ export default class RewardsService extends Service {
    * Returns information about all Referral Campaigns.
    * @returns {Promise}
    */
-   getReferalCampaigns () {
+   getReferralCampaigns () {
     return this.fetch(
       null,
       '/api/v1/referralcampaigns',
@@ -84,7 +84,7 @@ export default class RewardsService extends Service {
    * @param {Int} params.id - Campaign id
    * @returns {Promise}
    */
-  getReferalCampaign ({ id }) {
+   getReferralCampaign ({ id }) {
     return this.fetch(
       null,
       `/api/v1/referralcampaigns/${id}`,
