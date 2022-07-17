@@ -99,7 +99,7 @@ export default class RewardsService extends Service {
    * @param {Int} params.id - Campaign id
    * @returns {Promise}
    */
-  getReferrerParticipation ({ id }) {
+  getReferrerCampaignDetailsById ({ id }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       this.userId === 0 ? `/api/v1/me/referralcampaign/${id}` : `/api/v1/users/${this.userId}/referralcampaign/${id}`,
@@ -115,7 +115,7 @@ export default class RewardsService extends Service {
    * @param {Int} params.userId  - Referral code
    * @returns {Promise}
    */
-  getUsageOfReferralCode ({ code, userId }) {
+   getRefereeEligibilityByReferralCode ({ code, userId }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       `/referralcode/${code}/referee/${userId}`,
@@ -139,7 +139,9 @@ export default class RewardsService extends Service {
     referrerUserId,
     refereeUserId,
     voucherId,
-    productId
+    productId,
+    voucherTypeId,
+    voucherBatchId
   }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
@@ -148,7 +150,9 @@ export default class RewardsService extends Service {
         referrer_user_id: referrerUserId,
         referee_user_id: refereeUserId,
         voucher_id: voucherId,
-        product_id: productId
+        product_id: productId,
+        voucher_type_id: voucherTypeId,
+        voucher_batch_id: voucherBatchId
       }),
       'POST'
     )
