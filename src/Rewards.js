@@ -125,7 +125,7 @@ export default class RewardsService extends Service {
   }
 
   /**
-   * Returns Logs a Referral Campaign activity
+   * Adds a log for a referral campaign based on referrer and referee activity
    * @param {Object} params             - Input parameter object
    * @param {String} params.code        - Referral code
    * @param {Int} params.referrerUserId - Referral user id
