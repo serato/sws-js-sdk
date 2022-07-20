@@ -118,7 +118,7 @@ export default class RewardsService extends Service {
    getRefereeEligibilityByReferralCode ({ code, userId }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      `/referralcode/${code}/referee/${userId}`,
+      `/api/v1/referralcode/${code}/referee/${userId}`,
       null,
       'GET'
     )
@@ -145,7 +145,7 @@ export default class RewardsService extends Service {
   }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      `/referralcode/${code}/log`,
+      `/api/v1/referralcode/${code}/log`,
       this.toBody({
         referrer_user_id: referrerUserId,
         referee_user_id: refereeUserId,
