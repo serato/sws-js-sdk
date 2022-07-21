@@ -5,10 +5,6 @@ import Service from './Service'
 /**
  * @typedef {'dj' | 'wailshark' | 'sample' | 'serato_studio'} OwnedStatus
  *
- * @typedef {Object} Activity
- * @property {Number} user_id Rerrer or Refree's user id
- * @property {String} voucher_id Voucher id
- * @property {String} timestamp Created date & time
  *
  * @typedef {Object} CampaignGoal
  * @property {Number} voucher_type_id Referral voucher type id
@@ -16,8 +12,8 @@ import Service from './Service'
  * @property {Number} Quantity Number of Goal
  *
  * @typedef {Object} CampaignRule
- * @property {Number} voucher_type_id Referral voucher type id
- * @property {Number} product_type_id Referral product type id
+ * @property {Number} [voucher_type_id = undefined] Referral voucher type id
+ * @property {Number} [product_type_id = undefined] Referral product type id
  * @property {OwnedStatus} owned Status of the voucher or product
  *
  * @typedef {Object} RuleOfEligibility
@@ -59,11 +55,12 @@ import Service from './Service'
  * @property {boolean} eligible Is user eligible?
  * @property {Activity[]} activity List of Activity
  *
- * @typedef {Object} CampaignLog
+ * @typedef {Object} CampaignActivityLog
  * @property {Number} id Campaign id
- * @property {Number} referrer_user_id Referrer user id
- * @property {String} voucher_id Voucher id
- * @property {String} product_id Product id
+ * @property {Number} [referrer_user_id = undefined] Referrer user id
+ * @property {Number} [referee_user_id = undefined] Referee user id
+ * @property {String} [voucher_id = undefined] Voucher id
+ * @property {String} [product_id = undefined] Product id
  * @property {String} referral_campaign_code campaign Code
  *
  * @typedef {Object} ReferrerCampaign
@@ -188,7 +185,7 @@ export default class RewardsService extends Service {
    * @param {Int} params.refereeUserId  - Referee user id
    * @param {String} params.voucherId   - Voucher id
    * @param {String} params.productId   - Product type id
-   * @return {Promise<CampaignLog>}
+   * @return {Promise<CampaignActivityLog>}
    */
   addReferralCampaignActivityLog ({
     code,

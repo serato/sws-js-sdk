@@ -11,7 +11,7 @@ export default class RewardsService extends Service {
         productId,
         voucherTypeId,
         voucherBatchId
-    }: AddCampaignLogParams): Promise<Rewards.CampaignLog>;
+    }: Rewards.AddCampaignLogParams): Promise<Rewards.CampaignActivityLog>;
 }
 export namespace Rewards {
     export type CallToAction = {
@@ -69,37 +69,35 @@ export namespace Rewards {
     export type CampaignList = {
         items: Campaign[];
     }
-    export type Activity = {
-        user_id: number;
-        voucher_id: string;
-        timestamp: string;
-    }
     export type ReferrerCampaignDetail = {
-        id: number;
-        name: string;
-        base_url: string;
-        goals: CampaignGoal[];
-        incentives: CampaignGoal[];
-        eligibility: {
-            referral_incentive: CampaignRule[];
-            referee: CampaignRule[]
+        referral_campaign: {
+            id: number;
+            name: string;
+            base_url: string;
+            goals: CampaignGoal[];
+            incentives: CampaignGoal[];
+            eligibility: {
+                referral_incentive: CampaignRule[];
+                referee: CampaignRule[]
+            }
+            referral_code: string,
+            referee_activity: CampaignActivityLog[],
+            referrer_activity: CampaignActivityLog[],
+            eligible_for_referral_incentive: boolean
         }
-        referral_code: string,
-        referee_activity: Activity[],
-        referrer_activity: Activity[],
-        eligible_for_referral_incentive: boolean
     }
     export type ReferrerCampaign = {
-        items: referral_campaign
+        items: ReferrerCampaignDetail
     }
     export type ReferralCodeActivity = {
         eligible: boolean;
-        activity: Activity[];
+        activity: CampaignActivityLog[];
     }
-    export type CampaignLog = {
+    export type CampaignActivityLog = {
         id: number;
         referral_campaign_code: string;
-        referrer_user_id: number;
+        referrer_user_id?: number;
+        referee_user_id?: number;
         product_id?: number;
         voucher_id?: string;
         timestamp: string
@@ -109,6 +107,8 @@ export namespace Rewards {
         refereeUserId?: number;
         voucherId?: string;
         productId?: number;
+        voucherTypeId?: number;
+        voucherBatchId?: string;
     };
 }
 import Service from "./Service";
