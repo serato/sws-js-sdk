@@ -64,7 +64,7 @@ import Service from './Service'
  * @property {Number} referrer_user_id Referrer user id
  * @property {String} voucher_id Voucher id
  * @property {String} product_id Product id
- * @property {referral_campaign_code}
+ * @property {String} referral_campaign_code campaign Code
  *
  * @typedef {Object} ReferrerCampaign
  * @property {ReferrerCampaignDetail} referral_campaign Detail of a campaign
