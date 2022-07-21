@@ -75,7 +75,7 @@ describe('Rewards Tests', function () {
       }
     )
 
-    it(`confirms URI used in 'getRefereeEligibilityByReferralCode()' method with Campaign Id, by returning a non-404 HTTP response`,
+    it(`confirms URI used in 'getRefereeEligibilityByReferralCode()' method, by returning a non-404 HTTP response`,
       function () {
         return swsClient.rewards.getRefereeEligibilityByReferralCode({code: 'testcode', userId: 123}).then(
           () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
@@ -86,12 +86,29 @@ describe('Rewards Tests', function () {
       }
     )
 
-    it(`confirms URI used in 'addReferralCampaignActivityLog()' method with Campaign Id, by returning a non-404 HTTP response`,
+    it(`confirms URI used in 'addReferralCampaignActivityLog()' method with Referrer id and product, by returning a non-404 HTTP response`,
       function () {
         return swsClient.rewards.addReferralCampaignActivityLog({
           code: 'testcode',
           referrerUserId: 123,
           productId: 123
+        }).then(
+          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+          err => {
+            expect(err.httpStatus).not.to.equal(404)
+          }
+        )
+      }
+    )
+
+    it(`confirms URI used in 'addReferralCampaignActivityLog()' method with Referee id and voucher, by returning a non-404 HTTP response`,
+      function () {
+        return swsClient.rewards.addReferralCampaignActivityLog({
+          code: 'testcode',
+          refereeUserId: 123,
+          voucherId: 'testvoucher',
+          voucherTypeId: 301,
+          voucherBatchId: 'GPRC'
         }).then(
           () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
           err => {
