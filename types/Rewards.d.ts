@@ -1,14 +1,16 @@
 export default class RewardsService extends Service {
     getRewards(): Promise<Rewards.RewardList>;
-    getReferalCampaigns(): Promise<Rewards.CampaignList>;
-    getReferalCampaign({ id: number }): Promise<Rewards.Campaign>;
-    getReferrerParticipation({ id: number }): Promise<Rewards.CampaignParticipation>;
-    getUsageOfReferralCode({code: string, userId: number}): Promise<Rewards.CodeUsage>;
+    getReferralCampaigns(): Promise<Rewards.CampaignList>;
+    getReferralCampaign({ id: number }): Promise<Rewards.Campaign>;
+    getReferrerCampaignDetailsById({ id: number }): Promise<Rewards.ReferrerCampaignDetail>;
+    getRefereeEligibilityByReferralCode({code: string, userId: number}): Promise<Rewards.ReferralCodeActivity>;
     addReferralCampaignActivityLog({
         referrerUserId,
         refereeUserId,
         voucherId,
-        productId
+        productId,
+        voucherTypeId,
+        voucherBatchId
     }: AddCampaignLogParams): Promise<Rewards.CampaignLog>;
 }
 export namespace Rewards {
@@ -72,26 +74,25 @@ export namespace Rewards {
         voucher_id: string;
         timestamp: string;
     }
-    export type CampaignParticipation = {
-        items: {
-            referral_campaign: {
-                id: number;
-                name: string;
-                base_url: string;
-                goals: CampaignGoal[];
-                incentives: CampaignGoal[];
-                eligibility: {
-                    referral_incentive: CampaignRule[];
-                    referee: CampaignRule[]
-                }
-                referral_code: string,
-                referee_activity: Activity[],
-                referrer_activity: Activity[],
-                eligible_for_referral_incentive: boolean
-            }
+    export type ReferrerCampaignDetail = {
+        id: number;
+        name: string;
+        base_url: string;
+        goals: CampaignGoal[];
+        incentives: CampaignGoal[];
+        eligibility: {
+            referral_incentive: CampaignRule[];
+            referee: CampaignRule[]
         }
+        referral_code: string,
+        referee_activity: Activity[],
+        referrer_activity: Activity[],
+        eligible_for_referral_incentive: boolean
     }
-    export type CodeUsage = {
+    export type ReferrerCampaign = {
+        items: referral_campaign
+    }
+    export type ReferralCodeActivity = {
         eligible: boolean;
         activity: Activity[];
     }
@@ -99,7 +100,8 @@ export namespace Rewards {
         id: number;
         referral_campaign_code: string;
         referrer_user_id: number;
-        product_id: number;
+        product_id?: number;
+        voucher_id?: string;
         timestamp: string
     }
     export type AddCampaignLogParams = {

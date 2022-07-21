@@ -3,6 +3,27 @@
 import Service from './Service'
 
 /**
+ * @typedef {'dj' | 'wailshark' | 'sample' | 'serato_studio'} OwnedStatus
+ *
+ * @typedef {Object} Activity
+ * @property {Number} user_id Rerrer or Refree's user id
+ * @property {String} voucher_id Voucher id
+ * @property {String} timestamp Created date & time
+ *
+ * @typedef {Object} CampaignGoal
+ * @property {Number} voucher_type_id Referral voucher type id
+ * @property {String} voucher_batch_id Referral voucher batch id
+ * @property {Number} Quantity Number of Goal
+ *
+ * @typedef {Object} CampaignRule
+ * @property {Number} voucher_type_id Referral voucher type id
+ * @property {Number} product_type_id Referral product type id
+ * @property {OwnedStatus} owned Status of the voucher or product
+ *
+ * @typedef {Object} RuleOfEligibility
+ * @property {CampaignRule[]} referral_incentive Rule for referral incentive
+ * @property {CampaignRule[]} referee Rule for referee.
+ *
  * @typedef {Object} CallToAction
  * @property {String} primary_cta Primary call to action link text
  * @property {String} primary_cta_link Primary call to action link
@@ -33,6 +54,41 @@ import Service from './Service'
  *
  * @typedef {Object} RewardList
  * @property {Reward[]} items List of rewards
+ *
+ * @typedef {Object} ReferralCodeActivity
+ * @property {boolean} eligible Is user eligible?
+ * @property {Activity[]} activity List of Activity
+ *
+ * @typedef {Object} CampaignLog
+ * @property {Number} id Campaign id
+ * @property {Number} referrer_user_id Referrer user id
+ * @property {String} voucher_id Voucher id
+ * @property {String} product_id Product id
+ * @property {referral_campaign_code}
+ *
+ * @typedef {Object} ReferrerCampaign
+ * @property {ReferrerCampaignDetail} referral_campaign Detail of a campaign
+ *
+ * @typedef {Object} ReferrerCampaignDetail
+ * @property {Number} id Campaign id
+ * @property {String} name Campaign name
+ * @property {String} base_url Campaign url
+ * @property {CampaignGoal[]} goals Campaign goal
+ * @property {RuleOfEligibility} eligibility Rules of eligibility
+ * @property {String} referral_code Campaign referral code
+ * @property {Activity[]} referee_activity List of referee's activity
+ * @property {Activity[]} referrer_activity list of referrer's activity
+ * @property {Boolean} eligible_for_referral_incentive Campaign eligibility for referee
+ *
+ * @typedef {Object} Campaign
+ * @property {Number} id Campaign id
+ * @property {String} name Campaign name
+ * @property {CampaignGoal[]} goals Campaign goal
+ * @property {CampaignGoal[]} incentives Referral incentive
+ * @property {RuleOfEligibility} eligibility Rules of eligibility
+ *
+ * @typedef {Object} CampaignList
+ * @property {Campaign[]} items List of rewards
  */
 
 /**
@@ -67,9 +123,9 @@ export default class RewardsService extends Service {
 
   /**
    * Returns information about all Referral Campaigns.
-   * @returns {Promise}
+   * @returns {Promise<CampaignList>}
    */
-   getReferralCampaigns () {
+  getReferralCampaigns () {
     return this.fetch(
       null,
       '/api/v1/referralcampaigns',
@@ -82,9 +138,9 @@ export default class RewardsService extends Service {
    * Returns information about a specific Referral Campaign
    * @param {Object} params - Input parameter object
    * @param {Int} params.id - Campaign id
-   * @returns {Promise}
+   * @returns {Promise<Campaign>}
    */
-   getReferralCampaign ({ id }) {
+  getReferralCampaign ({ id }) {
     return this.fetch(
       null,
       `/api/v1/referralcampaigns/${id}`,
@@ -97,7 +153,7 @@ export default class RewardsService extends Service {
    * Returns information about a Referrer’s participation in a Referral Campaign
    * @param {Object} params - Input parameter object
    * @param {Int} params.id - Campaign id
-   * @returns {Promise}
+   * @returns {Promise<ReferrerCampaign>}
    */
   getReferrerCampaignDetailsById ({ id }) {
     return this.fetch(
@@ -113,9 +169,9 @@ export default class RewardsService extends Service {
    * @param {Object} params       - Input parameter object
    * @param {String} params.code  - Referral code
    * @param {Int} params.userId  - Referral code
-   * @returns {Promise}
+   * @returns {Promise<ReferralCodeActivity>}
    */
-   getRefereeEligibilityByReferralCode ({ code, userId }) {
+  getRefereeEligibilityByReferralCode ({ code, userId }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       `/api/v1/referralcode/${code}/referee/${userId}`,
@@ -132,7 +188,7 @@ export default class RewardsService extends Service {
    * @param {Int} params.refereeUserId  - Referee user id
    * @param {String} params.voucherId   - Voucher id
    * @param {String} params.productId   - Product type id
-   * @return {Promise}
+   * @return {Promise<CampaignLog>}
    */
   addReferralCampaignActivityLog ({
     code,
