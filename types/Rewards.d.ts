@@ -2,7 +2,7 @@ export default class RewardsService extends Service {
     getRewards(): Promise<Rewards.RewardList>;
     getReferralCampaigns(): Promise<Rewards.CampaignList>;
     getReferralCampaign({ id: number }): Promise<Rewards.Campaign>;
-    getReferrerCampaignDetailsById({ id: number }): Promise<Rewards.ReferrerCampaignDetail>;
+    getReferrerCampaignDetailsById({ id: number }): Promise<Rewards.ReferrerCampaign>;
     getRefereeEligibilityByReferralCode({code: string, userId: number}): Promise<Rewards.ReferralCodeActivity>;
     addReferralCampaignActivityLog({
         referrerUserId,
