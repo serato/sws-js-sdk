@@ -12,10 +12,18 @@ describe('Sws', function () {
     let bad = function () {
       return new Sws()
     }
-    expect(bad).to.throw('Cannot read property \'appId\' of undefined')
+    expect(bad).to.throw(/'appId'/)
   })
 
-  it('constructs Sws with app password and default service URIs', function () {
+  it('constructs Sws with app ID default service URIs', function () {
+    let sws = new Sws({ appId: appId })
+    expect(sws.appId).to.equal(appId)
+    expect(sws.appSecret).to.equal('')
+    expect(sws.serviceUri.id).to.equal(serviceUriDefault.id)
+    expect(sws.serviceUri.license).to.equal(serviceUriDefault.license)
+  })
+
+  it('constructs Sws with app ID, password and default service URIs', function () {
     let sws = new Sws({ appId: appId, secret: 'myAppSecret' })
     expect(sws.appId).to.equal(appId)
     expect(sws.appSecret).to.equal('myAppSecret')
