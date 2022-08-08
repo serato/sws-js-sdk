@@ -2,21 +2,23 @@ export default class RewardsService extends Service {
     getRewards(): Promise<Rewards.RewardList>;
     getReferralCampaigns(): Promise<Rewards.CampaignList>;
     getReferralCampaign({ id }: {
-        id: Int;
+        id: number;
     }): Promise<Rewards.Campaign>;
     getReferrerCampaignDetailsById({ id }: {
-        id: Int;
+        id: number;
     }): Promise<Rewards.ReferrerCampaign>;
     getRefereeEligibilityByReferralCode({ code, userId }: {
         code: string;
-        userId: Int;
+        userId: number;
     }): Promise<Rewards.ReferralCodeActivity>;
     addReferralCampaignActivityLog({ code, referrerUserId, refereeUserId, voucherId, productId, voucherTypeId, voucherBatchId }: {
         code: string;
-        referrerUserId: Int;
-        refereeUserId: Int;
+        referrerUserId: number;
+        refereeUserId: number;
         voucherId: string;
-        productId: string;
+        voucherTypeId: string;
+        voucherBatchId: string;
+        productId: number;
     }): Promise<Rewards.CampaignActivityLog>;
 }
 export namespace Rewards {
@@ -68,7 +70,7 @@ export namespace Rewards {
     };
     export type ReferralCodeActivity = {
         eligible: boolean;
-        activity: Activity[];
+        activity: CampaignActivityLog[];
     };
     export type CampaignActivityLog = {
         id: number;
@@ -88,8 +90,8 @@ export namespace Rewards {
         goals: CampaignGoal[];
         eligibility: RuleOfEligibility;
         referral_code: string;
-        referee_activity: Activity[];
-        referrer_activity: Activity[];
+        referee_activity: CampaignActivityLog[];
+        referrer_activity: CampaignActivityLog[];
         eligible_for_referral_incentive: boolean;
     };
     export type Campaign = {
