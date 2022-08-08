@@ -14,7 +14,7 @@ describe('Ecom Tests', function () {
 
   let swsClient
   before(function () {
-    swsClient = new Sws({ appId: 'myClientAppId' })
+    swsClient = new Sws({ appId: 'myClientAppId', timeout: 5000 })
   })
 
   describe('Ecom URI Validation Tests', function () {
