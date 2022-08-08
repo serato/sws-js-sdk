@@ -47,8 +47,8 @@ export default class SwsClient extends Sws {
     this.setAccessDeniedHandler((request, err) => {
       // Could be that we haven't set the access token (ie. on first page load)
       if (this.accessToken === '') {
-        const f = this.fetchNewAccessTokenAndRetryRequest()
-        f(request, err)
+        const fn = this.fetchNewAccessTokenAndRetryRequest()
+        fn(request, err)
       }
     })
   }
