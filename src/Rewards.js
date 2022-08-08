@@ -183,7 +183,7 @@ export default class RewardsService extends Service {
    * @param {String} params.code        - Referral code
    * @param {Number} params.referrerUserId - Referral user id
    * @param {Number} params.refereeUserId  - Referee user id
-   * @param {String} params.voucherId   - Voucher id  
+   * @param {String} params.voucherId   - Voucher id
    * @param {String} params.voucherTypeId
    * @param {String} params.voucherBatchId
    * @param {Number} params.productId   - Product type id
