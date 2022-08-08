@@ -1,4 +1,4 @@
-import Sws from '../../src/index'
+import { Sws } from '../../src/index'
 import { describe, it, before } from 'mocha'
 import { expect } from 'chai'
 
