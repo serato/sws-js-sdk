@@ -1,19 +1,42 @@
 export default class RewardsService extends Service {
     getRewards(): Promise<Rewards.RewardList>;
     getReferralCampaigns(): Promise<Rewards.CampaignList>;
-    getReferralCampaign({ id: number }): Promise<Rewards.Campaign>;
-    getReferrerCampaignDetailsById({ id: number }): Promise<Rewards.ReferrerCampaign>;
-    getRefereeEligibilityByReferralCode({code: string, userId: number}): Promise<Rewards.ReferralCodeActivity>;
-    addReferralCampaignActivityLog({
-        referrerUserId,
-        refereeUserId,
-        voucherId,
-        productId,
-        voucherTypeId,
-        voucherBatchId
-    }: Rewards.AddCampaignLogParams): Promise<Rewards.CampaignActivityLog>;
+    getReferralCampaign({ id }: {
+        id: number;
+    }): Promise<Rewards.Campaign>;
+    getReferrerCampaignDetailsById({ id }: {
+        id: number;
+    }): Promise<Rewards.ReferrerCampaign>;
+    getRefereeEligibilityByReferralCode({ code, userId }: {
+        code: string;
+        userId: number;
+    }): Promise<Rewards.ReferralCodeActivity>;
+    addReferralCampaignActivityLog({ code, referrerUserId, refereeUserId, voucherId, productId, voucherTypeId, voucherBatchId }: {
+        code: string;
+        referrerUserId: number;
+        refereeUserId: number;
+        voucherId: string;
+        voucherTypeId: string;
+        voucherBatchId: string;
+        productId: number;
+    }): Promise<Rewards.CampaignActivityLog>;
 }
 export namespace Rewards {
+    export type OwnedStatus = 'dj' | 'wailshark' | 'sample' | 'serato_studio';
+    export type CampaignGoal = {
+        voucher_type_id: number;
+        voucher_batch_id: string;
+        Quantity: number;
+    };
+    export type CampaignRule = {
+        voucher_type_id?: number;
+        product_type_id?: number;
+        owned: OwnedStatus;
+    };
+    export type RuleOfEligibility = {
+        referral_incentive: CampaignRule[];
+        referee: CampaignRule[];
+    };
     export type CallToAction = {
         primary_cta: string;
         primary_cta_link: string;
@@ -45,70 +68,41 @@ export namespace Rewards {
     export type RewardList = {
         items: Reward[];
     };
-    export type CampaignGoal = {
-        voucher_type_id: number;
-        voucher_batch_id: string;
-        quantity: number;
-    }
-    export type CampaignRule = {
-        voucher_type_id?: number;
-        product_type_id?: number;
-        owned: 'current' | 'not_current' | 'never';
-    }
-    export type Campaign = {
+    export type ReferralCodeActivity = {
+        eligible: boolean;
+        activity: CampaignActivityLog[];
+    };
+    export type CampaignActivityLog = {
+        id: number;
+        referrer_user_id?: number;
+        referee_user_id?: number;
+        voucher_id?: string;
+        product_id?: string;
+        referral_campaign_code: string;
+    };
+    export type ReferrerCampaign = {
+        referral_campaign: ReferrerCampaignDetail;
+    };
+    export type ReferrerCampaignDetail = {
         id: number;
         name: string;
         base_url: string;
         goals: CampaignGoal[];
+        eligibility: RuleOfEligibility;
+        referral_code: string;
+        referee_activity: CampaignActivityLog[];
+        referrer_activity: CampaignActivityLog[];
+        eligible_for_referral_incentive: boolean;
+    };
+    export type Campaign = {
+        id: number;
+        name: string;
+        goals: CampaignGoal[];
         incentives: CampaignGoal[];
-        eligibility: {
-            referral_incentive: CampaignRule[];
-            referee: CampaignRule[]
-        }
-    }
+        eligibility: RuleOfEligibility;
+    };
     export type CampaignList = {
         items: Campaign[];
-    }
-    export type ReferrerCampaignDetail = {
-        referral_campaign: {
-            id: number;
-            name: string;
-            base_url: string;
-            goals: CampaignGoal[];
-            incentives: CampaignGoal[];
-            eligibility: {
-                referral_incentive: CampaignRule[];
-                referee: CampaignRule[]
-            }
-            referral_code: string,
-            referee_activity: CampaignActivityLog[],
-            referrer_activity: CampaignActivityLog[],
-            eligible_for_referral_incentive: boolean
-        }
-    }
-    export type ReferrerCampaign = {
-        items: ReferrerCampaignDetail
-    }
-    export type ReferralCodeActivity = {
-        eligible: boolean;
-        activity: CampaignActivityLog[];
-    }
-    export type CampaignActivityLog = {
-        id: number;
-        referral_campaign_code: string;
-        referrer_user_id?: number;
-        referee_user_id?: number;
-        product_id?: number;
-        voucher_id?: string;
-        timestamp: string
-    }
-    export type AddCampaignLogParams = {
-        referrerUserId?: number;
-        refereeUserId?: number;
-        voucherId?: string;
-        productId?: number;
-        voucherTypeId?: number;
-        voucherBatchId?: string;
     };
 }
 import Service from "./Service";

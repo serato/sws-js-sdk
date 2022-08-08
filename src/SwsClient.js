@@ -42,38 +42,14 @@ export default class SwsClient extends Sws {
     /** @private */
     this._accessTokenUpdatedHandler = () => {}
 
-    this.setInvalidAccessTokenHandler((request, err) => {
-      // `err.client` is the specific client instance that made the inital request
-      // when the `invalid access token` error was received.
-      const client = err.client
+    this.setInvalidAccessTokenHandler(this.fetchNewAccessTokenAndRetryRequest())
 
-      return this.id.tokenRefresh(this.refreshToken)
-        .then(
-          data => {
-            // This token refresh request may have resulted in an error that was
-            // handled by a custom error handler.
-            // If so, call `Promise.resolve` with `data` so that the
-            // outer Promise (ie. the one that failed before refreshing tokens)
-            // has the expected result.
-            if (!data.access) {
-              return Promise.resolve(data)
-            }
-
-            // Update the access token property
-            this.accessToken = data.access.token
-            // Call the callback
-            this.accessTokenUpdatedHandler(
-              this.accessToken,
-              new Date(data.access.expires_at * 1000),
-              data.refresh.token,
-              new Date(data.refresh.expires_at * 1000)
-            )
-            // Set a new Authorization header for the request
-            request.headers.Authorization = client.bearerTokenAuthHeader()
-            // Re-execute the 'last request'
-            return client.fetchRequest(request)
-          }
-        )
+    this.setAccessDeniedHandler((request, err) => {
+      // Could be that we haven't set the access token (ie. on first page load)
+      if (this.accessToken === '') {
+        const fn = this.fetchNewAccessTokenAndRetryRequest()
+        fn(request, err)
+      }
     })
   }
 
@@ -217,5 +193,45 @@ export default class SwsClient extends Sws {
     return hashArray
       .map((bytes) => bytes.toString(16).padStart(2, '0'))
       .join('')
+  }
+
+  /**
+   * @private
+   * @returns {RequestErrorHandler}
+   */
+  fetchNewAccessTokenAndRetryRequest () {
+    return (request, err) => {
+      // `err.client` is the specific client instance that made the inital request
+      // when the `invalid access token` error was received.
+      const client = err.client
+
+      return this.id.tokenRefresh(this.refreshToken)
+        .then(
+          data => {
+            // This token refresh request may have resulted in an error that was
+            // handled by a custom error handler.
+            // If so, call `Promise.resolve` with `data` so that the
+            // outer Promise (ie. the one that failed before refreshing tokens)
+            // has the expected result.
+            if (!data.access) {
+              return Promise.resolve(data)
+            }
+
+            // Update the access token property
+            this.accessToken = data.access.token
+            // Call the callback
+            this.accessTokenUpdatedHandler(
+              this.accessToken,
+              new Date(data.access.expires_at * 1000),
+              data.refresh.token,
+              new Date(data.refresh.expires_at * 1000)
+            )
+            // Set a new Authorization header for the request
+            request.headers.Authorization = client.bearerTokenAuthHeader()
+            // Re-execute the 'last request'
+            return client.fetchRequest(request)
+          }
+        )
+    }
   }
 }

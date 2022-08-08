@@ -1,4 +1,4 @@
-import Sws from '../../src/index'
+import { Sws } from '../../src/index'
 import { describe, it, before } from 'mocha'
 import { expect } from 'chai'
 
@@ -6,7 +6,7 @@ describe('Notifications Tests', function () {
   /** @type {Sws} */
   let swsClient
   before(function () {
-    swsClient = new Sws({ appId: 'myClientAppId' })
+    swsClient = new Sws({ appId: 'myClientAppId', timeout: 5000 })
   })
 
   describe('Notifications URI Validation Tests', function () {

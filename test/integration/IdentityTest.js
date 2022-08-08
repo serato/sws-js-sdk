@@ -1,4 +1,4 @@
-import Sws from '../../src/index'
+import { Sws } from '../../src/index'
 import { describe, it, before } from 'mocha'
 import { expect } from 'chai'
 
@@ -6,7 +6,7 @@ describe('Identity Tests', function () {
   describe('Identity URI Validation Tests', function () {
     let swsClient
     before(function () {
-      swsClient = new Sws({ appId: 'myClientAppId' })
+      swsClient = new Sws({ appId: 'myClientAppId', timeout: 5000 })
     })
     it(`confirms URI used in 'tokenRefresh()' method, by returning a non-404 HTTP response`, function () {
       return swsClient.id.tokenRefresh('token.value').then(

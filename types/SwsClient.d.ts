@@ -10,6 +10,7 @@ export default class SwsClient extends Sws {
     private createRandomString;
     private sha256;
     private bufferToString;
+    private fetchNewAccessTokenAndRetryRequest;
 }
 export type AccessTokenUpdatedHandler = (accessToken: string, accessTokenExpires: Date, refreshToken: string, refreshTokenExpires: Date) => void;
 export type CodeChallengeMethod = 's256';
