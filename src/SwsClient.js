@@ -76,7 +76,8 @@ export default class SwsClient extends Sws {
         urlParams.push('rtid=' + encodeURIComponent(refreshTokenId))
       }
       const codeVerifier = codeChallenge.verifier
-      const url = this.serviceUri.id + '/en/authorize?' + urlParams.join('&')
+      const host = this.serviceUri.id
+      const url = (host.indexOf('://') === -1 ? 'https://' : '') + host + '/en/authorize?' + urlParams.join('&')
       return { state, codeVerifier, url }
     })
   }
