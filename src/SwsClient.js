@@ -42,6 +42,15 @@ export default class SwsClient extends Sws {
     /** @private */
     this._accessTokenUpdatedHandler = () => {}
 
+    /**
+     * @private
+     * @type {(Promise<any|null>|null)}
+     * @description This property stores any access token refresh that is currently in progress that is triggered
+     * from `fetchNewAccessTokenAndRetryRequest`. It will resolve with `null` if refreshed successfully, or with
+     * any value returned by a custom error handler.
+     * */
+    this._accessTokenRefreshPromise = null
+
     this.setInvalidAccessTokenHandler(this.fetchNewAccessTokenAndRetryRequest())
 
     this.setAccessDeniedHandler((request, err) => {
@@ -202,40 +211,69 @@ export default class SwsClient extends Sws {
   /**
    * @private
    * @returns {RequestErrorHandler}
+   *
+   * Returns a request error handler which will reattempt the original request with a refreshed access token.
+   * The handler will also prevent concurrent access token refreshes to occur. Meaning that multiple calls
+   * to this method will only result in one access token refresh. The resulting promise chain is as below:
+   *
+   * Call #1 Token refresh -> Process results -> Reattempt request
+   *                                          \
+   * Call #2                                   -> Reattempt request
    */
   fetchNewAccessTokenAndRetryRequest () {
     return (request, err) => {
-      // `err.client` is the specific client instance that made the inital request
-      // when the `invalid access token` error was received.
-      const client = err.client
+      if (this._accessTokenRefreshPromise === null) {
+        // If no access token refresh is in flight, request a refresh.
+        // The promise stored here is resolved after the refresh has been attempted
+        // and the results processed. Resolves with `null` on success, or with
+        // any data an error handler may have returned as a result of the refresh.
+        this._accessTokenRefreshPromise = this.id.tokenRefresh(this.refreshToken)
+          .then(
+            data => {
+              // This token refresh request may have resulted in an error that was
+              // handled by a custom error handler.
+              // If so, call `Promise.resolve` with `data` so that the
+              // outer Promise (ie. the one that failed before refreshing tokens)
+              // has the expected result.
+              if (!data.access) {
+                return Promise.resolve(data)
+              }
 
-      return this.id.tokenRefresh(this.refreshToken)
-        .then(
-          data => {
-            // This token refresh request may have resulted in an error that was
-            // handled by a custom error handler.
-            // If so, call `Promise.resolve` with `data` so that the
-            // outer Promise (ie. the one that failed before refreshing tokens)
-            // has the expected result.
-            if (!data.access) {
-              return Promise.resolve(data)
+              // Update the access token property
+              this.accessToken = data.access.token
+              // Call the callback
+              this.accessTokenUpdatedHandler(
+                this.accessToken,
+                new Date(data.access.expires_at * 1000),
+                data.refresh.token,
+                new Date(data.refresh.expires_at * 1000)
+              )
+              // Access token refresh has completed
+              this._accessTokenRefreshPromise = null
+
+              // Resolve the promise with `null` if successful
+              return Promise.resolve(null)
             }
+          )
+      }
 
-            // Update the access token property
-            this.accessToken = data.access.token
-            // Call the callback
-            this.accessTokenUpdatedHandler(
-              this.accessToken,
-              new Date(data.access.expires_at * 1000),
-              data.refresh.token,
-              new Date(data.refresh.expires_at * 1000)
-            )
-            // Set a new Authorization header for the request
-            request.headers.Authorization = client.bearerTokenAuthHeader()
-            // Re-execute the 'last request'
-            return client.fetchRequest(request)
-          }
-        )
+      // Retry the request or resolve with error handler data
+      return this._accessTokenRefreshPromise.then(data => {
+        if (data !== null) {
+          // If data is not null, access token refresh was handled by an error handler.
+          // Resolve the promise with this data.
+          return Promise.resolve(data)
+        }
+        // Otherwise reattempt the initial request with a new access token
+
+        // `err.client` is the specific client instance that made the inital request
+        // when the `invalid access token` error was received.
+        const client = err.client
+        // Set a new Authorization header for the request
+        request.headers.Authorization = client.bearerTokenAuthHeader()
+        // Re-execute the 'last request'
+        return client.fetchRequest(request)
+      })
     }
   }
 }
