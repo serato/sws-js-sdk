@@ -40,6 +40,8 @@ export default class Service {
     this._serviceErrorHandler = handleFetchError
     /** @private */
     this._serviceUnavailableHandler = handleFetchError
+    /** @private */
+    this._defaultErrorHandler = handleFetchError
   }
 
   /**
@@ -311,6 +313,14 @@ export default class Service {
    */
   get serviceUnavailableHandler () {
     return this._serviceUnavailableHandler
+  }
+
+  /**
+   * Gets the default error handler callback
+   * @return { import("./Sws").RequestErrorHandler }
+   */
+  get defaultErrorHandler () {
+    return this._defaultErrorHandler
   }
 
   /**

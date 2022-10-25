@@ -10,6 +10,7 @@ export default class Service {
     private _timeoutExceededHandler;
     private _serviceErrorHandler;
     private _serviceUnavailableHandler;
+    private _defaultErrorHandler;
     protected bearerTokenAuthHeader(): string;
     protected basicAuthHeader(): string;
     protected toBody(data: import("./Sws").RequestParams): import("./Sws").RequestParams;
@@ -31,6 +32,7 @@ export default class Service {
     get serviceErrorHandler(): import("./Sws").RequestErrorHandler;
     set serviceUnavailableHandler(arg: import("./Sws").RequestErrorHandler);
     get serviceUnavailableHandler(): import("./Sws").RequestErrorHandler;
+    get defaultErrorHandler(): import("./Sws").RequestErrorHandler;
     get lastRequest(): import("./Sws").Request;
 }
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'OPTIONS';
