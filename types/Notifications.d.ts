@@ -78,7 +78,7 @@ export namespace Notifications {
         language: Language;
         text: Text[];
         media?: Media[];
-        action?: Action[];
+        actions?: Action[];
     };
     export type Notification = {
         id: string;
