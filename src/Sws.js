@@ -8,6 +8,7 @@ import Notifications from './Notifications'
 import NotificationsV1 from './NotificationsV1'
 import DigitalAssets from './DigitalAssets'
 import Rewards from './Rewards'
+import AiProxy from './AiProxy'
 
 /**
  * @typedef {Object<string,string>} RequestHeaders
@@ -35,6 +36,7 @@ import Rewards from './Rewards'
  * @property {String} [profile=undefined] profile Base URI for SWS Profile Service
  * @property {String} [da=undefined] da Base URI for SWS Digital Assets Service
  * @property {String} [rewards=undefined] rewards Base URI for SWS Rewards Service
+ * @property {String} [aiproxy=undefined] ai-proxy Base URI for SWS AI-Proxy Service
  *
  * @typedef {Object} SwsConfiguration
  * @property {String} appId Application ID
@@ -53,7 +55,8 @@ const serviceUriDefault = {
   notifications: 'notifications.serato.com',
   profile: 'profile.serato.com',
   da: 'da.serato.com',
-  rewards: 'rewards.serato.com'
+  rewards: 'rewards.serato.com',
+  aiproxy: 'ai-proxy.serato.com'
 }
 
 export { serviceUriDefault }
@@ -90,7 +93,8 @@ export default class Sws {
       notifications: serviceUri.notifications ? serviceUri.notifications : serviceUriDefault.notifications,
       profile: serviceUri.profile ? serviceUri.profile : serviceUriDefault.profile,
       da: serviceUri.da ? serviceUri.da : serviceUriDefault.da,
-      rewards: serviceUri.rewards ? serviceUri.rewards : serviceUriDefault.rewards
+      rewards: serviceUri.rewards ? serviceUri.rewards : serviceUriDefault.rewards,
+      aiproxy: serviceUri.aiproxy ? serviceUri.aiproxy : serviceUriDefault.aiproxy
     }
     /** @private */
     this._service = {
@@ -101,7 +105,8 @@ export default class Sws {
       notificationsV1: new NotificationsV1(this),
       profile: new Profile(this),
       da: new DigitalAssets(this),
-      rewards: new Rewards(this)
+      rewards: new Rewards(this),
+      aiproxy: new AiProxy(this)
       // Define more clients here,
       // and add a getter method
     }
@@ -364,5 +369,14 @@ export default class Sws {
    */
   get rewards () {
     return this._service.rewards
+  }
+
+  /**
+   * Get the AI-Proxy service client instance
+   *
+   * @return {AiProxy} AI-Proxy service client
+   */
+  get aiproxy () {
+    return this._service.aiproxy
   }
 }
