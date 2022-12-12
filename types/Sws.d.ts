@@ -34,6 +34,7 @@ export default class Sws {
     get notificationsV1(): NotificationsV1;
     get da(): DigitalAssets;
     get rewards(): Rewards;
+    get aiproxy(): AiProxy;
 }
 export type RequestHeaders = {
     [x: string]: string;
@@ -75,3 +76,5 @@ import Notifications from "./Notifications";
 import NotificationsV1 from "./NotificationsV1";
 import DigitalAssets from "./DigitalAssets";
 import Rewards from "./Rewards";
+import AiProxy from "./AiProxy";
+
