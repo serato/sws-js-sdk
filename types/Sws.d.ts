@@ -60,6 +60,7 @@ export type ServiceUri = {
     profile?: string;
     da?: string;
     rewards?: string;
+    aiproxy?: string;
 };
 export type SwsConfiguration = {
     appId: string;
