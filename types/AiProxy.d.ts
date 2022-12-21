@@ -1,5 +1,6 @@
 export default class AiProxyService extends Service {
-  generateImage({ prompt, provider, resolution, responseFormat }:AiProxy.GenerateImageParams): Promise<AiProxy.Image>;
+  generateImage({ prompt, provider, resolution, responseFormat }: AiProxy.GenerateImageParams): Promise<AiProxy.Image>;
+  getProviderStatus({ provider }: { provider: string }): Promise<AiProxy.ProviderStatus>;
 }
 
 export namespace AiProxy {
@@ -12,7 +13,15 @@ export namespace AiProxy {
   export type Image = {
     created: number;
     b64_image?: string;
-    image_url?: string; 
+    image_url?: string;
+  }
+  export type ProviderStatus = {
+    created: number;
+    provider: string;
+    eligibility: EligibilityStatus;
+  }
+  export type EligibilityStatus = {
+    generate_images: boolean;
   }
 }
 import Service from "./Service";
