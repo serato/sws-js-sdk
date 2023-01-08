@@ -9,7 +9,7 @@ import Service from './Service'
  *
  * @typedef {Object} EligibilityStatus
  * @property {boolean} generate_images
- * 
+ *
  * @typedef {Object} ProviderStatus
  * @property {Number} created
  * @property {String} provider
@@ -55,6 +55,7 @@ export default class AiProxy extends Service {
       'POST'
     )
   }
+
   /**
    * Get eligibility status for a user
    * @param  {Object} param
