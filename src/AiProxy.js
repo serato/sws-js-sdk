@@ -6,6 +6,14 @@ import Service from './Service'
  * @property {Number} created
  * @property {String} [b64_image = undefined]
  * @property {String} [image_url = undefined]
+ *
+ * @typedef {Object} EligibilityStatus
+ * @property {boolean} generate_images
+ *
+ * @typedef {Object} ProviderStatus
+ * @property {Number} created
+ * @property {String} provider
+ * @property {EligibilityStatus} eligibility
  */
 
 /**
@@ -45,6 +53,21 @@ export default class AiProxy extends Service {
         response_format: responseFormat
       }),
       'POST'
+    )
+  }
+
+  /**
+   * Get eligibility status for a user
+   * @param  {Object} param
+   * @param  {String} param.provider
+   * @return {Promise<ProviderStatus>}
+   */
+  getProviderStatus ({ provider }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      `/api/v1/provider/${provider}/status`,
+      null,
+      'GET'
     )
   }
 }
