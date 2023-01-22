@@ -197,15 +197,14 @@ export default class SwsClient extends Sws {
   }
 
   /**
+   * Base64 encodes the input buffer
    * @private
    * @param {Number[] | ArrayBuffer} input
    * @returns {String}
    */
   bufferToString (input) {
     const hashArray = Array.from(new Uint8Array(input))
-    return hashArray
-      .map((bytes) => bytes.toString(16).padStart(2, '0'))
-      .join('')
+    return window.btoa(String.fromCharCode(...hashArray))
   }
 
   /**
