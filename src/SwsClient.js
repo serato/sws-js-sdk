@@ -129,7 +129,7 @@ export default class SwsClient extends Sws {
   createCodeChallenge (method = 's256') {
     const verifier = this.createRandomString()
     return this.sha256(verifier).then(challengeBuffer => {
-      return { method, verifier, challenge: this.bufferToString(challengeBuffer) }
+      return { method, verifier, challenge: this.bufferToBase64UrlEncodedString(challengeBuffer) }
     })
   }
 
@@ -197,14 +197,18 @@ export default class SwsClient extends Sws {
   }
 
   /**
-   * Base64 encodes the input buffer
+   * Base64url encodes the input buffer
    * @private
    * @param {Number[] | ArrayBuffer} input
    * @returns {String}
    */
-  bufferToString (input) {
+  bufferToBase64UrlEncodedString (input) {
     const hashArray = Array.from(new Uint8Array(input))
-    return window.btoa(String.fromCharCode(...hashArray))
+    const base64 = window.btoa(String.fromCharCode(...hashArray))
+    return base64
+      .replace(/=/g, '')
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
   }
 
   /**
