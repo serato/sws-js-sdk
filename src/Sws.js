@@ -8,7 +8,7 @@ import Notifications from './Notifications'
 import NotificationsV1 from './NotificationsV1'
 import DigitalAssets from './DigitalAssets'
 import Rewards from './Rewards'
-import CloudLib from './Cloudlib'
+import CloudLib from './CloudLib'
 import AiProxy from './AiProxy'
 
 /**
