@@ -7,6 +7,7 @@ import Profile from './Profile'
 import Notifications from './Notifications'
 import DigitalAssets from './DigitalAssets'
 import Rewards from './Rewards'
+import CloudLib from './Cloudlib'
 
 const serviceUriDefault = {
   id: 'id.serato.com',
@@ -15,7 +16,8 @@ const serviceUriDefault = {
   notifications: 'notifications.serato.com',
   profile: 'profile.serato.com',
   da: 'da.serato.com',
-  rewards: 'rewards.serato.com'
+  rewards: 'rewards.serato.com',
+  cloudlib: 'cloudlib.serato.com'
 }
 
 /**
@@ -57,7 +59,8 @@ export default class Sws {
       notifications: serviceUri.notifications ? serviceUri.notifications : serviceUriDefault.notifications,
       profile: serviceUri.profile ? serviceUri.profile : serviceUriDefault.profile,
       da: serviceUri.da ? serviceUri.da : serviceUriDefault.da,
-      rewards: serviceUri.rewards ? serviceUri.rewards : serviceUriDefault.rewards
+      rewards: serviceUri.rewards ? serviceUri.rewards : serviceUriDefault.rewards,
+      cloudlib: serviceUri.cloudlib ? serviceUri.cloudlib : serviceUriDefault.cloudlib
     }
     // Create service clients
     this._service = {
@@ -67,7 +70,8 @@ export default class Sws {
       notifications: new Notifications(this),
       profile: new Profile(this),
       da: new DigitalAssets(this),
-      rewards: new Rewards(this)
+      rewards: new Rewards(this),
+      cloudlib: new CloudLib(this)
       // Define more clients here,
       // and add a getter method
     }
@@ -321,6 +325,10 @@ export default class Sws {
    */
   get rewards () {
     return this._service.rewards
+  }
+
+  get cloudlib () {
+    return this._service.cloudlib
   }
 }
 
