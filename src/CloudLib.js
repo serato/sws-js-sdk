@@ -22,7 +22,7 @@ export default class CloudLib extends Service {
   /**
    * Get a detail of a file
    * @param  {String} fileId
-   * @return {Promise}
+   * @return {Promise<FileDetail>}
    */
   getFiles ({ fileId } = {}) {
     return this.fetch(
