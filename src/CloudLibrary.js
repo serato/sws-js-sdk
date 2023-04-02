@@ -22,7 +22,7 @@ import Service from './Service'
  *
  * Exposes SWS Cloud Library Service API endpoints via class methods
  */
-export default class CloudLibrary extends Service {
+export default class CloudLibraryService extends Service {
   /**
    * Constructor
    *
