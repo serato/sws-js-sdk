@@ -1,5 +1,5 @@
 export default class CloudLibraryService extends Service {
-  getFile({ fileId }: FileInputParameter): Promise<CloudLibrary.File>;
+  getFile({ fileId }: CloudLibrary.FileInputParameter): Promise<CloudLibrary.File>;
 }
 
 export namespace CloudLibrary {
