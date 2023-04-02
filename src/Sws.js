@@ -8,7 +8,7 @@ import Notifications from './Notifications'
 import NotificationsV1 from './NotificationsV1'
 import DigitalAssets from './DigitalAssets'
 import Rewards from './Rewards'
-import CloudLib from './CloudLib'
+import CloudLibrary from './CloudLibrary'
 import AiProxy from './AiProxy'
 
 /**
@@ -109,7 +109,7 @@ export default class Sws {
       profile: new Profile(this),
       da: new DigitalAssets(this),
       rewards: new Rewards(this),
-      cloudlib: new CloudLib(this),
+      cloudlib: new CloudLibrary(this),
       aiproxy: new AiProxy(this)
       // Define more clients here,
       // and add a getter method

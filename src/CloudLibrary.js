@@ -3,11 +3,26 @@
 import Service from './Service'
 
 /**
+ * @typedef {Object} File
+ * @property {Number} id
+ * @property {String} file_name
+ * @property {String} mime_type
+ * @property {Number} size
+ * @property {String} download.request.method
+ * @property {String} download.request.url
+ * @property {Object.<string, string>} [download.request.headers]
+ * @property {String} download.expiry
+ *
+ * @typedef FileInputParameter
+ * @property {String} fileId
+ */
+
+/**
  * Cloud Library Service class
  *
  * Exposes SWS Cloud Library Service API endpoints via class methods
  */
-export default class CloudLib extends Service {
+export default class CloudLibrary extends Service {
   /**
    * Constructor
    *
@@ -21,10 +36,10 @@ export default class CloudLib extends Service {
 
   /**
    * Get a detail of a file
-   * @param  {String} fileId
-   * @return {Promise<FileDetail>}
+   * @param  {FileInputParameter} fileId
+   * @return {Promise<File>}
    */
-  getFiles ({ fileId } = {}) {
+  getFile ({ fileId }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       this.userId === 0
