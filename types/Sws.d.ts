@@ -53,6 +53,7 @@ export type Request = {
 };
 export type RequestErrorHandler = (request: Request, error: Error) => void;
 export type ServiceUri = {
+    serato?: string;
     id?: string;
     license?: string;
     ecom?: string;
@@ -78,4 +79,3 @@ import NotificationsV1 from "./NotificationsV1";
 import DigitalAssets from "./DigitalAssets";
 import Rewards from "./Rewards";
 import AiProxy from "./AiProxy";
-

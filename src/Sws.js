@@ -29,6 +29,7 @@ import AiProxy from './AiProxy'
  * @returns {void}
  *
  * @typedef {Object} ServiceUri
+ * @property {String} [serato=undefined] serato Base URI
  * @property {String} [id=undefined] id Base URI for SWS ID Service
  * @property {String} [license=undefined] license Base URI for SWS License Service
  * @property {String} [ecom=undefined] ecom Base URI for SWS Ecommerce Service
@@ -49,6 +50,7 @@ import AiProxy from './AiProxy'
  * @type {ServiceUri}
  */
 const serviceUriDefault = {
+  serato: 'serato.com',
   id: 'id.serato.com',
   license: 'license.serato.com',
   ecom: 'ecom.serato.com',
@@ -87,6 +89,7 @@ export default class Sws {
     this._userId = 0
     /** @private */
     this._serviceUri = {
+      serato: serviceUri.serato ? serviceUri.serato : serviceUriDefault.serato,
       id: serviceUri.id ? serviceUri.id : serviceUriDefault.id,
       license: serviceUri.license ? serviceUri.license : serviceUriDefault.license,
       ecom: serviceUri.ecom ? serviceUri.ecom : serviceUriDefault.ecom,
