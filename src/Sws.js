@@ -8,6 +8,7 @@ import Notifications from './Notifications'
 import NotificationsV1 from './NotificationsV1'
 import DigitalAssets from './DigitalAssets'
 import Rewards from './Rewards'
+import CloudLibrary from './CloudLibrary'
 import AiProxy from './AiProxy'
 
 /**
@@ -56,6 +57,7 @@ const serviceUriDefault = {
   profile: 'profile.serato.com',
   da: 'da.serato.com',
   rewards: 'rewards.serato.com',
+  cloudlib: 'cloudlib.serato.com',
   aiproxy: 'ai-proxy.serato.com'
 }
 
@@ -94,6 +96,7 @@ export default class Sws {
       profile: serviceUri.profile ? serviceUri.profile : serviceUriDefault.profile,
       da: serviceUri.da ? serviceUri.da : serviceUriDefault.da,
       rewards: serviceUri.rewards ? serviceUri.rewards : serviceUriDefault.rewards,
+      cloudlib: serviceUri.cloudlib ? serviceUri.cloudlib : serviceUriDefault.cloudlib,
       aiproxy: serviceUri.aiproxy ? serviceUri.aiproxy : serviceUriDefault.aiproxy
     }
     /** @private */
@@ -106,6 +109,7 @@ export default class Sws {
       profile: new Profile(this),
       da: new DigitalAssets(this),
       rewards: new Rewards(this),
+      cloudlib: new CloudLibrary(this),
       aiproxy: new AiProxy(this)
       // Define more clients here,
       // and add a getter method
@@ -369,6 +373,15 @@ export default class Sws {
    */
   get rewards () {
     return this._service.rewards
+  }
+
+  /**
+   * Get the Cloud Library service client instance
+   *
+   * @return {CloudLib} Cloud Library service client
+   */
+  get cloudlib () {
+    return this._service.cloudlib
   }
 
   /**

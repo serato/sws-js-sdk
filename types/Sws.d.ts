@@ -35,6 +35,7 @@ export default class Sws {
     get da(): DigitalAssets;
     get rewards(): Rewards;
     get aiproxy(): AiProxy;
+    get cloudlib(): CloudLibrary;
 }
 export type RequestHeaders = {
     [x: string]: string;
@@ -61,6 +62,7 @@ export type ServiceUri = {
     da?: string;
     rewards?: string;
     aiproxy?: string;
+    cloudlib?: string;
 };
 export type SwsConfiguration = {
     appId: string;
@@ -78,4 +80,4 @@ import NotificationsV1 from "./NotificationsV1";
 import DigitalAssets from "./DigitalAssets";
 import Rewards from "./Rewards";
 import AiProxy from "./AiProxy";
-
+import CloudLibrary from "./CloudLibrary";

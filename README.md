@@ -80,6 +80,7 @@ sws.notificationsV1 // NotificationsV1Service instance
 sws.profile         // ProfileService instance
 sws.da              // DigitalAssetsService instance
 sws.rewards         // RewardsService instance
+sws.cloudlib        // CloudLibraryService instance
 ```
 
 ## Custom Callbacks
