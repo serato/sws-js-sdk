@@ -52,6 +52,7 @@ const sws = new Sws({
   secret: 'myAppSecret', // Only required for SWS endpoints that require `Basic` authentication
   timeout: 3000, // Defaults to 3000 (ms)
   serviceUri: { // Base URIs for SWS services (defaults to production endpoints)
+    serato: 'my.serato.uri',
     id: 'my.id-service.uri',
     license: 'my.license-service.uri',
     ecom: 'my.ecom-service.uri',
