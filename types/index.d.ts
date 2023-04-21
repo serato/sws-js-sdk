@@ -11,4 +11,4 @@ export * from "./Profile";
 export * from "./Rewards";
 export * from "./AiProxy";
 export { default } from "./SwsClient";
-import Sws from "./Sws";
+import Sws from './Sws';

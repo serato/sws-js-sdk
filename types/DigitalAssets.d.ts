@@ -1,4 +1,5 @@
 export default class DigitalAssetsService extends Service {
+    _serviceUri: any;
     get({ hostAppName, hostAppVersion, hostOs, type, releaseType, releaseDate, latestOnly }?: {
         hostAppName?: DigitalAssets.HostApplicationName;
         hostAppVersion?: string;
@@ -59,4 +60,4 @@ export namespace DigitalAssets {
         url_expires: string;
     };
 }
-import Service from "./Service";
+import Service from './Service';

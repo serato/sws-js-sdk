@@ -1,4 +1,5 @@
 export default class RewardsService extends Service {
+    _serviceUri: any;
     getRewards(): Promise<Rewards.RewardList>;
     getReferralCampaigns(): Promise<Rewards.CampaignList>;
     getReferralCampaign({ id }: {
@@ -105,4 +106,4 @@ export namespace Rewards {
         items: Campaign[];
     };
 }
-import Service from "./Service";
+import Service from './Service';

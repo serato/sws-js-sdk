@@ -1,4 +1,5 @@
 export default class EcomService extends Service {
+    _serviceUri: any;
     getSubscriptions(): Promise<Ecom.SubscriptionList>;
     getOrders({ orderStatus }?: {
         orderStatus?: Ecom.OrderStatus;
@@ -248,4 +249,4 @@ export namespace Ecom {
         items: CatalogProduct[];
     };
 }
-import Service from "./Service";
+import Service from './Service';

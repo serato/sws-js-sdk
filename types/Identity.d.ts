@@ -1,4 +1,5 @@
 export default class IdentityService extends Service {
+    _serviceUri: any;
     tokenExchange(code: string, redirectUri: string, codeVerifier: string): Promise<Identity.UserLogin>;
     tokenRefresh(refreshToken: Identity.RawToken): Promise<Identity.UserTokens>;
     getUser(): Promise<Identity.User>;
@@ -63,4 +64,4 @@ export namespace Identity {
         message: string;
     };
 }
-import Service from "./Service";
+import Service from './Service';

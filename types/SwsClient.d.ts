@@ -25,4 +25,4 @@ export type AuthorizationRequest = {
     codeVerifier: string;
     url: string;
 };
-import Sws from "./Sws";
+import Sws from './Sws';

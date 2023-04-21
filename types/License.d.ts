@@ -1,4 +1,5 @@
 export default class LicenseService extends Service {
+    _serviceUri: any;
     getLicenses({ appName, appVersion, term }?: {
         appName?: string;
         appVersion?: string;
@@ -130,4 +131,4 @@ export namespace License {
         refresh_token_id: string[];
     };
 }
-import Service from "./Service";
+import Service from './Service';

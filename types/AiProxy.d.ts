@@ -1,4 +1,5 @@
 export default class AiProxy extends Service {
+    _serviceUri: any;
     generateImage({ prompt, provider, resolution, responseFormat }: {
         prompt: string;
         provider?: string;
@@ -24,4 +25,4 @@ export namespace AiProxy {
         eligibility: EligibilityStatus;
     };
 }
-import Service from "./Service";
+import Service from './Service';

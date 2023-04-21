@@ -1,4 +1,5 @@
 export default class NotificationsV1Service extends Service {
+    _serviceUri: any;
     getNotifications({ hostAppName, hostAppVersion, hostAppOs, locale }?: NotificationsV1.GetNotificationsParams): Promise<NotificationsV1.NotificationList>;
 }
 export namespace NotificationsV1 {
@@ -71,4 +72,4 @@ export namespace NotificationsV1 {
         locale?: string;
     };
 }
-import Service from "./Service";
+import Service from './Service';

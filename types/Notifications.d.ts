@@ -1,4 +1,5 @@
 export default class NotificationsService extends Service {
+    _serviceUri: any;
     getCampaigns({ status }?: Notifications.GetCampaignsParams): Promise<Notifications.CampaignList>;
     createCampaign({ name, anonymous, description, startsAt, endsAt }: Notifications.CreateCampaignParams): Promise<Notifications.Campaign>;
     updateCampaign({ campaignId, name, anonymous, description, status, startsAt, endsAt }: Notifications.UpdateCampaignParams): Promise<Notifications.Campaign>;
@@ -238,4 +239,4 @@ export namespace Notifications {
         content: ContentParam;
     };
 }
-import Service from "./Service";
+import Service from './Service';

@@ -1,4 +1,5 @@
 export default class ProfileService extends Service {
+    _serviceUri: any;
     getProfiles({ emailAddress }: {
         emailAddress: string;
     }): Promise<Profile.ProfileList>;
@@ -138,4 +139,4 @@ export namespace Profile {
         items: PartnerPromotionCode[];
     };
 }
-import Service from "./Service";
+import Service from './Service';
