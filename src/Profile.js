@@ -280,6 +280,20 @@ export default class Profile extends Service {
     )
   }
 
+    /**
+     * Gets whether we can track this user without explicit consent
+     * Based on IP address
+     *
+     * @returns {Promise}
+     */
+    trackingAllowed () {
+      return this.fetch(
+          null,
+          '/api/v1/allowtracking',
+          'GET'
+      )
+    }
+
   /**
    * Gets a list of a user's partner promotions.
    * Requires a valid access token.
