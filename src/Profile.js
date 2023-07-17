@@ -290,6 +290,7 @@ export default class Profile extends Service {
       return this.fetch(
           null,
           '/api/v1/allowtracking',
+          null,
           'GET'
       )
     }
