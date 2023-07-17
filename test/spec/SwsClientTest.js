@@ -1,4 +1,4 @@
-import { SwsClient } from '../../src/index'
+import SwsClient from '../../src/index'
 import { describe, it } from 'mocha'
 import nock from 'nock'
 import { expect } from 'chai'
