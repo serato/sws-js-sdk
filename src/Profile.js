@@ -288,7 +288,7 @@ export default class Profile extends Service {
      */
     trackingAllowed () {
       return this.fetch(
-          null,
+          this.bearerTokenAuthHeader(),
           '/api/v1/allowtracking',
           null,
           'GET'
