@@ -362,6 +362,21 @@ export default class ProfileService extends Service {
   }
 
   /**
+  * Gets whether we can track this user without explicit consent
+  * Based on IP address
+  *
+  * @returns {Promise}
+  */
+  trackingAllowed () {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      '/api/v1/allowtracking',
+      null,
+      'GET'
+    )
+  }
+
+  /**
    * Gets a list of a user's partner promotions.
    *
    * @returns {Promise<PartnerPromotionCodeList>}
