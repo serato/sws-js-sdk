@@ -149,7 +149,7 @@ import Service from './Service'
  * @property {String} [hostOsVersion = undefined] hostOsVersion     Host application OS version
  * @property {String} [locale = undefined] locale    Locale setting of the client application
  * @property {String} deviceId      ID of the device. Expected to be generated on a per device basis
- * 
+ *
  * @typedef {Object} CreateNotificationParams
  * @property {String} name           Name of the campaign message. Must be a non empty string
  * @property {String} campaignId     ID of the campaign to create the notification for
@@ -356,21 +356,21 @@ export default class NotificationsService extends Service {
    * @param {GetMeNotificationsParams}  params
    * @return {Promise<NotificationList>}
    */
-    getMeNotifications ({ hostAppName, hostAppVersion, hostOsName, hostOsVersion, locale, deviceId } = {}) {
-        return this.fetch(
-          this.bearerTokenAuthHeader(),
-          '/api/v2/me/notifications',
-          this.toBody({
-            host_app_name: hostAppName,
-            host_app_version: hostAppVersion,
-            host_os_name: hostOsName,
-            host_os_version: hostOsVersion,
-            locale: locale,
-            device_id: deviceId
-          }),
-          'GET'
-        )
-      }
+  getMeNotifications ({ hostAppName, hostAppVersion, hostOsName, hostOsVersion, locale, deviceId } = {}) {
+    return this.fetch(
+        this.bearerTokenAuthHeader(),
+        '/api/v2/me/notifications',
+        this.toBody({
+        host_app_name: hostAppName,
+        host_app_version: hostAppVersion,
+        host_os_name: hostOsName,
+        host_os_version: hostOsVersion,
+        locale: locale,
+        device_id: deviceId
+      }),
+      'GET'
+    )
+  }
 
   /**
    * Create a notification for a campaign.
