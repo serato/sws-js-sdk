@@ -142,6 +142,14 @@ import Service from './Service'
  * @property {String} [startsAt = undefined] startsAt   The date/time that the campaign is valid from
  * @property {String} [endsAt = undefined] endsAt     The date/time that the campaign is valid until
  *
+ * @typedef {Object} GetMeNotificationsParams
+ * @property {String} hostAppName       Name of the host application
+ * @property {String} [hostAppVersion = undefined] hostAppVersion     Host app version. Must be a string that comprises 1 - 4 dot-separated integer values
+ * @property {String} [hostOsName = undefined] hostOsName    Host application OS. Valid values are `win` or `mac`
+ * @property {String} [hostOsVersion = undefined] hostOsVersion     Host application OS version
+ * @property {String} [locale = undefined] locale    Locale setting of the client application
+ * @property {String} deviceId      ID of the device. Expected to be generated on a per device basis
+ * 
  * @typedef {Object} CreateNotificationParams
  * @property {String} name           Name of the campaign message. Must be a non empty string
  * @property {String} campaignId     ID of the campaign to create the notification for
@@ -341,6 +349,28 @@ export default class NotificationsService extends Service {
       'GET'
     )
   }
+
+  /**
+   * Returns a list of notification messages to a client application.
+   *
+   * @param {GetMeNotificationsParams}  params
+   * @return {Promise<NotificationList>}
+   */
+    getMeNotifications ({ hostAppName, hostAppVersion, hostOsName, hostOsVersion, locale, deviceId } = {}) {
+        return this.fetch(
+          this.bearerTokenAuthHeader(),
+          '/api/v2/me/notifications',
+          this.toBody({
+            host_app_name: hostAppName,
+            host_app_version: hostAppVersion,
+            host_os_name: hostOsName,
+            host_os_version: hostOsVersion,
+            locale: locale,
+            device_id: deviceId
+          }),
+          'GET'
+        )
+      }
 
   /**
    * Create a notification for a campaign.

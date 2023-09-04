@@ -3,6 +3,7 @@ export default class NotificationsService extends Service {
     createCampaign({ name, anonymous, description, startsAt, endsAt }: Notifications.CreateCampaignParams): Promise<Notifications.Campaign>;
     updateCampaign({ campaignId, name, anonymous, description, status, startsAt, endsAt }: Notifications.UpdateCampaignParams): Promise<Notifications.Campaign>;
     getNotifications(): Promise<Notifications.NotificationList>;
+    getMeNotifications({ hostAppName, hostAppVersion, hostOsName, hostOsVersion, locale, deviceId }: Notifications.GetMeNotificationsParams): Promise<Notifications.NotificationList>;
     createNotification({ name, campaignId, type, priority, templateName, templateOption, isPersistent, isTakeover, startsAt, endsAt }: Notifications.CreateNotificationParams): Promise<Notifications.Notification>;
     updateNotification({ notificationId, name, templateOption, type, priority, templateName, startsAt, endsAt, status, isPersistent, isTakeover, campaignId }: Notifications.UpdateNotificationParams): Promise<Notifications.Notification>;
     cloneNotification({ notificationId }: Notifications.CloneNotificationParams): Promise<Notifications.Notification>;
@@ -164,6 +165,14 @@ export namespace Notifications {
         isTakeover?: boolean;
         startsAt?: string;
         endsAt?: string;
+    };
+    export type GetMeNotificationsParams = {
+        hostAppName: string,
+        hostAppVersion?: string,
+        hostOsName?: string,
+        hostOsVersion?: string,
+        locale?: string,
+        deviceId: string
     };
     export type UpdateNotificationParams = {
         notificationId: string;
