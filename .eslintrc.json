@@ -6,5 +6,8 @@
         "ecmaFeatures": {
             "impliedStrict": true
         }
+    },
+    "rules": {
+        "import/export": 0
     }
 }

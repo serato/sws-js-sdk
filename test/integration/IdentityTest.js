@@ -1,4 +1,4 @@
-import Sws from '../../src/index'
+import { Sws } from '../../src/index'
 import { describe, it, before } from 'mocha'
 import { expect } from 'chai'
 
@@ -6,7 +6,7 @@ describe('Identity Tests', function () {
   describe('Identity URI Validation Tests', function () {
     let swsClient
     before(function () {
-      swsClient = new Sws({ appId: 'myClientAppId' })
+      swsClient = new Sws({ appId: 'myClientAppId', timeout: 5000 })
     })
     it(`confirms URI used in 'tokenRefresh()' method, by returning a non-404 HTTP response`, function () {
       return swsClient.id.tokenRefresh('token.value').then(
@@ -38,7 +38,7 @@ describe('Identity Tests', function () {
     // })
 
     it(`confirms URI used in 'login()' method, by returning a non-404 HTTP response`, function () {
-      return swsClient.id.login().then(
+      return swsClient.id.login({ emailAddress: 'email@address', password: 'pass' }).then(
         () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
         err => {
           expect(err.httpStatus).not.to.equal(404)
