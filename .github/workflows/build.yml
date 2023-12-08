@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - WEB-9140
       - "/^v\\d+\\.\\d+(\\.\\d+)?(-\\S*)?$/"
 
 jobs:
