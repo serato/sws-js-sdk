@@ -51,6 +51,9 @@ export default class EcomService extends Service {
         appVersion?: string;
         catalogCategory?: string;
     }): Promise<Ecom.RecommendationsList>;
+    getCart({ cartId }?: {
+        cartId: string;
+    }): Promise<Ecom.Cart>;
 }
 export namespace Ecom {
     export type SubscriptionGroup = 'dj' | 'wailshark' | 'sample' | 'serato_studio';
@@ -246,6 +249,57 @@ export namespace Ecom {
     };
     export type RecommendationsList = {
         items: CatalogProduct[];
+    };
+    export type BillingAddress = {
+        first_name?: string;
+        last_name?: string;
+        company?: string;
+        address?: string;
+        address_extended?: string;
+        city?: string;
+        post_code?: string;
+        region?: string;
+        country_code: string;
+    };
+    export type Promotion = {
+        description: string;
+        discount_fixed_amount?: string;
+        discount_percentage?: number;
+        end_date?: string;
+    };
+    export type ProductType = {
+        id: number;
+        name: string;
+        subscription_start_date?: string;
+        subscription_billing_period?: number;
+        prepaid_credit_in_days?: number;
+    };
+    export type CartItem = {
+        id: number;
+        product_type: ProductType;
+        quantity: number;
+        base_amount: number;
+        total_amount: number;
+        tax_amount: number;
+        tax_rate: number;
+        total_amount_after_promotion?: number;
+        error_code?: number;
+        subscription_start_date?: string;
+        prepaid_credit_in_days?: number;
+        subscription_billing_period?: number;
+        promotion?: Promotion[];
+    };
+    export type Cart = {
+        uuid: string;
+        items: CartItem[];
+        total_amount: number;
+        subtotal_amount: number;
+        tax_amount: number;
+        currency: string;
+        created_at: string;
+        updated_at: string;
+        billing_address?: BillingAddress;
+        coupon_code?: string;
     };
 }
 import Service from "./Service";
