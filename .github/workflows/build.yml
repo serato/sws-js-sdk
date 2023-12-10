@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - WEB-9140
       # The regex pattern here matches branch names that start with 'v' followed by a major and minor version number.
       # It optionally includes a patch version and/or additional metadata (like alpha, beta, etc.) after a hyphen.
       # Examples: v1.0, v2.3.4, v1.0-alpha.
