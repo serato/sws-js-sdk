@@ -51,8 +51,12 @@ export default class EcomService extends Service {
         appVersion?: string;
         catalogCategory?: string;
     }): Promise<Ecom.RecommendationsList>;
-    getCart({ cartId }?: {
+    getCart({ cartId }: {
         cartId: string;
+    }): Promise<Ecom.Cart>;
+    createCart({ products, couponCode }: {
+        products: Ecom.ProductItem[];
+        couponCode?: string;
     }): Promise<Ecom.Cart>;
 }
 export namespace Ecom {
@@ -300,6 +304,10 @@ export namespace Ecom {
         updated_at: string;
         billing_address?: BillingAddress;
         coupon_code?: string;
+    };
+    export type ProductItem = {
+        product_type_id: string;
+        quantity: number;
     };
 }
 import Service from "./Service";

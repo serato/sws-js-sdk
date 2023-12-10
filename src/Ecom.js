@@ -249,6 +249,10 @@ import Service from './Service'
  * @property {String} updated_at The date/time the cart was updated in ISO 8061 format.
  * @property {BillingAddress} [billing_address = undefined]
  * @property {String} [coupon_code = undefined] The coupon code for the promotion.
+ * 
+ * @typedef {Object} ProductItem
+ * @property {String} product_type_id
+ * @property {Number} quantity
  */
 
 /**
@@ -611,6 +615,7 @@ export default class EcomService extends Service {
 
   /**
    * Returns a cart by a given cart uuid.
+   * @param {Object} param Options
    * @param {String} param.cartId
    * @returns {Promise<Cart> }
    */
@@ -619,6 +624,25 @@ export default class EcomService extends Service {
       this._sws.accessToken ? this.bearerTokenAuthHeader() : null,
       '/api/v1/carts/' + cartId,
       null
+    )
+  }
+
+  /**
+   * Creates a cart.
+   * @param {Object} param Options
+   * @param {ProductItem[]} param.products
+   * @param {String} param.couponCode
+   * @returns {Promise<Cart> }
+   */
+  createCart ({ products, couponCode }) {
+    return this.fetch(
+      this._sws.accessToken ? this.bearerTokenAuthHeader() : null,
+      '/api/v1/carts',
+      this.toBody({
+        products: products,
+        coupon_code: couponCode
+      }),
+      'POST'
     )
   }
 }
