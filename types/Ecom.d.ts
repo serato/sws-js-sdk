@@ -311,7 +311,7 @@ export namespace Ecom {
         coupon_code?: string;
     };
     export type ProductItem = {
-        product_type_id: string;
+        product_type_id: number;
         quantity: number;
     };
 }

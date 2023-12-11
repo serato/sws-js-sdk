@@ -251,7 +251,7 @@ import Service from './Service'
  * @property {String} [coupon_code = undefined] The coupon code for the promotion.
  * 
  * @typedef {Object} ProductItem
- * @property {String} product_type_id
+ * @property {Number} product_type_id
  * @property {Number} quantity
  */
 
