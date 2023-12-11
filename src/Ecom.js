@@ -197,7 +197,7 @@ import Service from './Service'
  *
  * @typedef {Object} RecommendationsList
  * @property {CatalogProduct[]} items
- * 
+ *
  * @typedef {Object} BillingAddress
  * @property {String} [first_name = undefined]
  * @property {String} [last_name = undefined]
@@ -208,13 +208,13 @@ import Service from './Service'
  * @property {String} [post_code = undefined]
  * @property {String} [region = undefined]
  * @property {String} country_code
- * 
+ *
  * @typedef {Object} Promotion
  * @property {String} description The description for the promotion that is applied to the cart item.
  * @property {String} [discount_fixed_amount = undefined] The fixed amount discount that is applied to the cart item. It will be presented only if the promotion is `fixed-amount`.
  * @property {Number} [discount_percentage = undefined] The percentage discount that is applied to the cart item. It will be presented only if the promotion is `percentage`.
  * @property {String} [end_date = undefined] The date the promotion ends.
- * 
+ *
  * @typedef {Object} ProductType
  * @property {CatalogProduct[]} items
  * @property {Number} id
@@ -222,7 +222,7 @@ import Service from './Service'
  * @property {String} [subscription_start_date = undefined] The start date/time of the subscription product. It will be presented only if the start date/time is in the future.
  * @property {Number} [subscription_billing_period = undefined] The billing period of the subscription product. It will be presented only if the product is a subscription.
  * @property {Number} [prepaid_credit_in_days = undefined] The number of days that the user has credit for the product they are subscribing to.
- * 
+ *
  * @typedef {Object} CartItem
  * @property {Number} id
  * @property {ProductType} product_type
@@ -237,19 +237,19 @@ import Service from './Service'
  * @property {Number} [prepaid_credit_in_days = undefined] The number of days that the user has credit for the product they are subscribing to.
  * @property {Number} [subscription_billing_period = undefined] The billing period of the subscription product. It will be presented only if the product is a subscription.
  * @property {Promotion[]} [promotion = undefined] The promotion that is applied to the cart item.
-
+ *
  * @typedef {Object} Cart
  * @property {String} uuid The cart universal unique ID.
  * @property {CartItem[]} items
  * @property {Number} total_amount
- * @property {Number} subtotal_amount 
+ * @property {Number} subtotal_amount
  * @property {Number} tax_amount
  * @property {String} currency 3 letter currency code (ISO 4217).
  * @property {String} created_at The date/time the cart was created in ISO 8061 format.
  * @property {String} updated_at The date/time the cart was updated in ISO 8061 format.
  * @property {BillingAddress} [billing_address = undefined]
  * @property {String} [coupon_code = undefined] The coupon code for the promotion.
- * 
+ *
  * @typedef {Object} ProductItem
  * @property {Number} product_type_id
  * @property {Number} quantity
@@ -654,12 +654,12 @@ export default class EcomService extends Service {
    * @param {Omit<BillingAddress, 'country_code'>} param.billingAddress
    * @return {Promise<Cart>}
    */
-  updateCartBillingAddress ({ cartId, billingAddress}) {
+  updateCartBillingAddress ({ cartId, billingAddress }) {
     return this.fetch(
       this._sws.accessToken ? this.bearerTokenAuthHeader() : null,
       '/api/v1/carts/' + cartId,
       this.toBody({
-        billing_address: billingAddress,
+        billing_address: billingAddress
       }),
       'PUT'
     )
@@ -673,12 +673,12 @@ export default class EcomService extends Service {
    * @param {String} param.couponCode
    * @return {Promise<Cart>}
    */
-  updateCartCouponCode ({ cartId, couponCode}) {
+  updateCartCouponCode ({ cartId, couponCode }) {
     return this.fetch(
       this._sws.accessToken ? this.bearerTokenAuthHeader() : null,
       '/api/v1/carts/' + cartId,
       this.toBody({
-        coupon_code: couponCode,
+        coupon_code: couponCode
       }),
       'PUT'
     )
