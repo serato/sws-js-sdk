@@ -58,6 +58,11 @@ export default class EcomService extends Service {
         products: Ecom.ProductItem[];
         couponCode?: string;
     }): Promise<Ecom.Cart>;
+    updateCart({ cartId, couponCode, billingAddress }: {
+        cartId: string;
+        couponCode?: string;
+        billingAddress?: Omit<Ecom.BillingAddress, 'country_code'>;
+    }): Promise<Ecom.Cart>;
 }
 export namespace Ecom {
     export type SubscriptionGroup = 'dj' | 'wailshark' | 'sample' | 'serato_studio';
