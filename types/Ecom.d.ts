@@ -58,10 +58,13 @@ export default class EcomService extends Service {
         products: Ecom.ProductItem[];
         couponCode?: string;
     }): Promise<Ecom.Cart>;
-    updateCart({ cartId, couponCode, billingAddress }: {
+    updateCartBillingAddress({ cartId, billingAddress }: {
+        cartId: string;
+        billingAddress?: Omit<Ecom.BillingAddress, 'country_code'>;
+    }): Promise<Ecom.Cart>;
+    updateCartCouponCode({ cartId, couponCode }: {
         cartId: string;
         couponCode?: string;
-        billingAddress?: Omit<Ecom.BillingAddress, 'country_code'>;
     }): Promise<Ecom.Cart>;
 }
 export namespace Ecom {

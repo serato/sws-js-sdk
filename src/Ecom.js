@@ -647,34 +647,40 @@ export default class EcomService extends Service {
   }
 
   /**
-   * Updates cart by a given cart id.
-   * One of coupon_code or billing_address must be provided in the body, but not both.
+   * Updates a cart billing address by a given cart id.
    *
    * @param {Object} param Options
    * @param {String} param.cartId
    * @param {Omit<BillingAddress, 'country_code'>} param.billingAddress
-   * @param {String} param.couponCode
-   * @return {Promise}
+   * @return {Promise<Cart>}
    */
-  updateCart ({ cartId, billingAddress, couponCode} = {}) {
-    if (billingAddress) {
-      return this.fetch(
-        this._sws.accessToken ? this.bearerTokenAuthHeader() : null,
-        '/api/v1/carts/' + cartId,
-        this.toBody({
-          billing_address: billingAddress,
-        }),
-        'PUT'
-      )
-    } else if (couponCode) {
-      return this.fetch(
-        this._sws.accessToken ? this.bearerTokenAuthHeader() : null,
-        '/api/v1/carts/' + cartId,
-        this.toBody({
-          coupon_code: couponCode,
-        }),
-        'PUT'
-      )
-    }
+  updateCartBillingAddress ({ cartId, billingAddress}) {
+    return this.fetch(
+      this._sws.accessToken ? this.bearerTokenAuthHeader() : null,
+      '/api/v1/carts/' + cartId,
+      this.toBody({
+        billing_address: billingAddress,
+      }),
+      'PUT'
+    )
+  }
+
+  /**
+   * Updates a carts coupon code by a given cart id.
+   *
+   * @param {Object} param Options
+   * @param {String} param.cartId
+   * @param {String} param.couponCode
+   * @return {Promise<Cart>}
+   */
+  updateCartCouponCode ({ cartId, couponCode}) {
+    return this.fetch(
+      this._sws.accessToken ? this.bearerTokenAuthHeader() : null,
+      '/api/v1/carts/' + cartId,
+      this.toBody({
+        coupon_code: couponCode,
+      }),
+      'PUT'
+    )
   }
 }
