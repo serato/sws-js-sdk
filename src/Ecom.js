@@ -657,7 +657,7 @@ export default class EcomService extends Service {
    * @return {Promise}
    */
   updateCart ({ cartId, billingAddress, couponCode} = {}) {
-    if (billing_address) {
+    if (billingAddress) {
       return this.fetch(
         this._sws.accessToken ? this.bearerTokenAuthHeader() : null,
         '/api/v1/carts/' + cartId,
@@ -666,7 +666,7 @@ export default class EcomService extends Service {
         }),
         'PUT'
       )
-    } else if (coupon_code) {
+    } else if (couponCode) {
       return this.fetch(
         this._sws.accessToken ? this.bearerTokenAuthHeader() : null,
         '/api/v1/carts/' + cartId,
