@@ -198,7 +198,7 @@ import Service from './Service'
  * @typedef {Object} RecommendationsList
  * @property {CatalogProduct[]} items
  *
- * @typedef {Object} BillingAddress
+ * @typedef {Object} CartBillingAddress
  * @property {String} [first_name = undefined]
  * @property {String} [last_name = undefined]
  * @property {String} [company = undefined]
@@ -216,7 +216,6 @@ import Service from './Service'
  * @property {String} [end_date = undefined] The date the promotion ends.
  *
  * @typedef {Object} ProductType
- * @property {CatalogProduct[]} items
  * @property {Number} id
  * @property {String} name
  * @property {String} [subscription_start_date = undefined] The start date/time of the subscription product. It will be presented only if the start date/time is in the future.
@@ -231,7 +230,6 @@ import Service from './Service'
  * @property {Number} total_amount
  * @property {Number} tax_amount
  * @property {Number} tax_rate
- * @property {Number} [total_amount_after_promotion = undefined] The total amount of the cart item after the promotion is applied. It will be presented only if there is a promotion applied to the cart item.
  * @property {Number} [error_code = undefined] If present, proceeding with the purchase will not be possible with the item in the cart.
  * @property {String} [subscription_start_date = undefined] The start date/time of the subscription product. It will be presented only if the start date/time is in the future.
  * @property {Number} [prepaid_credit_in_days = undefined] The number of days that the user has credit for the product they are subscribing to.
@@ -247,7 +245,7 @@ import Service from './Service'
  * @property {String} currency 3 letter currency code (ISO 4217).
  * @property {String} created_at The date/time the cart was created in ISO 8061 format.
  * @property {String} updated_at The date/time the cart was updated in ISO 8061 format.
- * @property {BillingAddress} [billing_address = undefined]
+ * @property {CartBillingAddress} [billing_address = undefined]
  * @property {String} [coupon_code = undefined] The coupon code for the promotion.
  *
  * @typedef {Object} ProductItem
@@ -651,7 +649,7 @@ export default class EcomService extends Service {
    *
    * @param {Object} param Options
    * @param {String} param.cartId
-   * @param {Omit<BillingAddress, 'country_code'>} param.billingAddress
+   * @param {Omit<CartBillingAddress, 'country_code'>} param.billingAddress
    * @return {Promise<Cart>}
    */
   updateCartBillingAddress ({ cartId, billingAddress }) {

@@ -60,7 +60,7 @@ export default class EcomService extends Service {
     }): Promise<Ecom.Cart>;
     updateCartBillingAddress({ cartId, billingAddress }: {
         cartId: string;
-        billingAddress?: Omit<Ecom.BillingAddress, 'country_code'>;
+        billingAddress?: Omit<Ecom.CartBillingAddress, 'country_code'>;
     }): Promise<Ecom.Cart>;
     updateCartCouponCode({ cartId, couponCode }: {
         cartId: string;
@@ -262,7 +262,7 @@ export namespace Ecom {
     export type RecommendationsList = {
         items: CatalogProduct[];
     };
-    export type BillingAddress = {
+    export type CartBillingAddress = {
         first_name?: string;
         last_name?: string;
         company?: string;
@@ -294,7 +294,6 @@ export namespace Ecom {
         total_amount: number;
         tax_amount: number;
         tax_rate: number;
-        total_amount_after_promotion?: number;
         error_code?: number;
         subscription_start_date?: string;
         prepaid_credit_in_days?: number;
@@ -310,7 +309,7 @@ export namespace Ecom {
         currency: string;
         created_at: string;
         updated_at: string;
-        billing_address?: BillingAddress;
+        billing_address?: CartBillingAddress;
         coupon_code?: string;
     };
     export type ProductItem = {
