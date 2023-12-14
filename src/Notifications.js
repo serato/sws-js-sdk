@@ -3,11 +3,268 @@
 import Service from './Service'
 
 /**
- * Notifications Service class
+ * @typedef {'active' | 'draft' | 'archived' | 'testing'} Status
+ * @typedef {'licensing' | 'system' | 'promotion' | 'streaming' | 'device_connection'} NotificationType
+ * @typedef {'text/plain' | 'text/html' | 'text/markdown'} TextContentType
+ * @typedef {'image/jpeg' | 'image/gif' | 'image/png' | 'image/webp'} MediaContentType
+ * @typedef {'mac' | 'win'} OsName
+ * @typedef {'serato_dj_pro' | 'serato_dj_lite' | 'serato_sample' | 'serato_studio' | 'my_account' | 'express_checkout' | 'serato_com' | 'mega_nav'} AppName
+ * @typedef {'en' | 'de' | 'fr' | 'es' | 'pt' | 'it' | 'ja' | 'zh'} Language
+ * @typedef {'dark' | 'light' | 'dark-orange-button' | 'light-orange-button'} TemplateOptions
  *
- * Exposes SWS Notifications Service API endpoints via class methods
+ * @typedef {Object} MediaSource
+ * @property {String} [small = undefined] small
+ * @property {String} medium
+ * @property {String} [large = undefined] large
+ *
+ * @typedef {Object<string, any>} Metadata
+ *
+ * @typedef {Object} Campaign
+ * @property {String} id
+ * @property {String} name
+ * @property {String} [description = undefined] description
+ * @property {String} uuid
+ * @property {Boolean} anonymous
+ * @property {Status} status
+ * @property {String} [starts_at = undefined] starts_at
+ * @property {String} [ends_at = undefined] ends_at
+ * @property {String} created_at
+ * @property {String} updated_at
+ *
+ * @typedef {Object} CampaignList
+ * @property {Campaign[]} items
+ *
+ * @typedef {Object} Host
+ * @property {String} id
+ * @property {AppName} app_name
+ * @property {String} app_version_min The minimum version of the host application which the notification is compatible with. This is an inclusive bound. Must be a string that comprises 1 - 4 dot-separated integer values. `0` means any version.
+ * @property {String} app_version_max The maximum version of the host application which the notification is compatible with. This is an inclusive bound. Must be a string that comprises 1 - 4 dot-separated integer values. `0` means any version.
+ * @property {OsName} os_name
+ * @property {String} os_version_min A string that comprises 1 - 4 dot-separated integer values in the format `major.minor.patch.build` where `major` => no range, `minor` => 0-99, `patch` => 0-999, `build` => 0-999999.
+ * @property {String} os_version_max A string that comprises 1 - 4 dot-separated integer values in the format `major.minor.patch.build` where `major` => no range, `minor` => 0-99, `patch` => 0-999, `build` => 0-999999.
+ *
+ * @typedef {Object} Text
+ * @property {String} id
+ * @property {TextContentType} mime_type
+ * @property {String} content
+ * @property {Metadata} metadata
+ *
+ * @typedef {Object} Media
+ * @property {String} id
+ * @property {MediaContentType} mime_type
+ * @property {MediaSource} src
+ * @property {Metadata} metadata
+ *
+ * @typedef {Object} Action
+ * @property {String} id
+ * @property {String} label
+ * @property {String} url
+ * @property {Metadata} metadata
+ *
+ * @typedef {Object} Content
+ * @property {Language} language
+ * @property {Text[]} text
+ * @property {Media[]} [media = undefined] media
+ * @property {Action[]} [action = undefined] action
+ *
+ * @typedef {Object} Notification
+ * @property {String} id
+ * @property {String} name
+ * @property {Campaign} campaign
+ * @property {Host[]} compatible_hosts
+ * @property {Language[]} languages
+ * @property {NotificationType} [type = undefined] type
+ * @property {Number} priority Indicates that the priority of a notification within a campaign.
+ * @property {String} [template_name = undefined] template_name
+ * @property {String} [template_option = undefined] template_option The template option for displaying the notification in the client application.
+ * @property {Boolean} is_takeover Indicates that the template referenced by `template_name` is a takeover template.
+ * @property {Content[]} content
+ * @property {Boolean} is_persistent Persistent notifications cannot be deleted.
+ * @property {Status} status
+ * @property {String} [starts_at = undefined] starts_at
+ * @property {String} [ends_at = undefined] ends_at
+ * @property {String} created_at
+ * @property {String} updated_at
+ *
+ * @typedef {Object} NotificationList
+ * @property {Notification[]} items
+ *
+ * @typedef {Object} TemplateHost
+ * @property {AppName} app_name
+ * @property {String} app_version_min The minimum version of the host application which the notification is compatible with. This is an inclusive bound. Must be a string that comprises 1 - 4 dot-separated integer values. `0` means any version.
+ * @property {String} app_version_max The maximum version of the host application which the notification is compatible with. This is an inclusive bound. Must be a string that comprises 1 - 4 dot-separated integer values. `0` means any version.
+ *
+ * @typedef {Object} TemplateMetaData
+ * @property {String} metadata_id The unique ID for the item. Used for mapping the item to a UI text element.
+ * @property {Boolean} required
+ * @property {Number} order The display order of items in the template.
+ *
+ * @typedef {Object} Template
+ * @property {String} name
+ * @property {String} description
+ * @property {Boolean} is_takeover
+ * @property {TemplateHost[]} compatible_hosts
+ * @property {TemplateOptions[]} options
+ * @property {TemplateMetaData[]} [text_items = undefined] text_items
+ * @property {TemplateMetaData[]} [action_items = undefined] action_items
+ * @property {TemplateMetaData[]} [media_items = undefined] media_items
+ *
+ * @typedef {Object} TemplateList
+ * @property {Template[]} items
+ *
+ * @typedef {Object} TestUser
+ * @property {Number} user_id
+ * @property {Boolean} enabled
+ * @property {String} created_at
+ * @property {String} updated_at
+ *
+ * @typedef {Object} TestUserList
+ * @property {TestUser[]} users
+ *
+ * *** Definitions for request parameter objects ***
+ *
+ * @typedef {Object} GetCampaignsParams
+ * @property {Status} [status = undefined] status
+ *
+ * @typedef {Object} CreateCampaignParams
+ * @property {String} name          Name of the campaign. Must be a non empty string
+ * @property {Boolean} anonymous     Whether the notifications for the campaign are anonymous or not
+ * @property {String} [description = undefined] description  Description of the campaign
+ * @property {String} [startsAt = undefined] startsAt   The date/time that the campaign is valid from
+ * @property {String} [endsAt = undefined] endsAt     The date/time that the campaign is valid until
+ *
+ * @typedef {Object} UpdateCampaignParams
+ * @property {String} campaignId           ID of the campaign to update
+ * @property {String} [name = undefined] name       Name of the campaign. Must be a non empty string if provided
+ * @property {Boolean} [anonymous = undefined] anonymous  Whether the notifications for the campaign are anonymous or not
+ * @property {String} [description = undefined] description   Description of the campaign
+ * @property {Status} [status = undefined] status     Status of the campaign. Must be one of 'active', 'draft' or 'archived'
+ * @property {String} [startsAt = undefined] startsAt   The date/time that the campaign is valid from
+ * @property {String} [endsAt = undefined] endsAt     The date/time that the campaign is valid until
+ *
+ * @typedef {Object} GetMeNotificationsParams
+ * @property {String} hostAppName       Name of the host application
+ * @property {String} [hostAppVersion = undefined] hostAppVersion     Host app version. Must be a string that comprises 1 - 4 dot-separated integer values
+ * @property {String} [hostOsName = undefined] hostOsName    Host application OS. Valid values are `win` or `mac`
+ * @property {String} [hostOsVersion = undefined] hostOsVersion     Host application OS version
+ * @property {String} [locale = undefined] locale    Locale setting of the client application
+ * @property {String} deviceId      ID of the device. Expected to be generated on a per device basis
+ *
+ * @typedef {Object} CreateNotificationParams
+ * @property {String} name           Name of the campaign message. Must be a non empty string
+ * @property {String} campaignId     ID of the campaign to create the notification for
+ * @property {NotificationType} [type = undefined]           The type (category) of the notification.
+ * @property {Number} [priority = undefined]       An integer that indicates the priority of the notification
+ * @property {String} [templateName = undefined] templateName   Name of the notification template that will be used on the client app
+ * @property {String} [templateOption = undefined] templateOption The variant (colours etc) of the template to use
+ * @property {Boolean} isPersistent   Whether the notification is persistent
+ * @property {Boolean} [isTakeover = undefined] isTakeover    Whether the notification is a takeover
+ * @property {String} [startsAt = undefined] startsAt      The date/time that the notification is valid from
+ * @property {String} [endsAt = undefined] endsAt        The date/time that the notificaiton is valid until
+ *
+ * @typedef {Object} UpdateNotificationParams
+ * @property {String} notificationId   ID of the notification to update
+ * @property {String} [name = undefined] name           Name of the campaign message. Must be a non empty string if provided
+ * @property {NotificationType} [type = undefined] type          The type (category) of the notification.
+ * @property {Number} [priority = undefined] priority      An integer that indicates the priority of the notification
+ * @property {String} [templateName = undefined] templateName  Name of the notification template that will be used on the client app
+ * @property {String} [templateOption = undefined] templateOption   The variant (colours etc) of the template to use
+ * @property {String} [startsAt = undefined] startsAt      The date/time that the notification is valid from
+ * @property {String} [endsAt = undefined] endsAt        The date/time that the notificaiton is valid until
+ * @property {Status} [status = undefined] status        Status of the notification ('active', 'draft' or 'archived')
+ * @property {Boolean} [isPersistent = undefined] isPersistent    Whether the notification is a persistent
+ * @property {Boolean} [isTakeover = undefined] isTakeover      Whether the notification is a takeover
+ * @property {String} [campaignId = undefined] campaignId      Campaign ID
+ *
+ * @typedef {Object} CloneNotificationParams
+ * @property {String} notificationId   ID of the notification to update
+ *
+ * @typedef {Object} CreateHostSpecificationParams
+ * @property {String} notificationId     ID of the notification to create the host specification for.
+ * @property {AppName} appName            Name of the host app.
+ * @property {String} [appVersionMin = undefined] appVersionMin    The minimum version of the host application which the notification is
+ *                                           compatible with. Must be a string that comprises 1 - 4 dot-separated
+ *                                           integer values. 0 means any version.
+ * @property {String} [appVersionMax = undefined] appVersionMax   The exclusive maximum version of the host application which the
+ *                                           notification is compatible with. Must be a string that comprises 1 - 4
+ *                                           dot-separated integer values. 0 means any version.
+ * @property {OsName} [osName = undefined] osName       The name of the host operating system.
+ *                                           and (empty means all operating systems).
+ * @property {String} [osVersionMin = undefined] osVersionMin     The minimum version of the host operating system which the notification
+ *                                           is compatible with. Must be a string that comprises 1 - 4 dot-separated
+ *                                           integer values in the format major.minor.patch.build where major =>
+ *                                           no range, minor => 0-99, patch => 0-999, build => 0-999999. 0 means any
+ *                                           version.
+ * @property {String} [osVersionMax = undefined] osVersionMax     The exlusive maximum version of the host operating system which the
+ *                                          notification is compatible with. Must be a string that comprises 1 - 4
+ *                                          dot-separated integer values in the format major.minor.patch.build where
+ *                                          major => no range, minor => 0-99, patch => 0-999, build => 0-999999.
+ *                                          0 means any version.
+ *
+ * @typedef {Object} UpdateHostSpecificationParams
+ * @property {String} notificationId     ID of the notification to create the host specification for.
+ * @property {String} hostId   ID of the host specification to update.
+ * @property {AppName} appName            Name of the host app.
+ * @property {String} [appVersionMin = undefined] appVersionMin    The minimum version of the host application which the notification is
+ *                                           compatible with. Must be a string that comprises 1 - 4 dot-separated
+ *                                           integer values. 0 means any version.
+ * @property {String} [appVersionMax = undefined] appVersionMax   The exclusive maximum version of the host application which the
+ *                                           notification is compatible with. Must be a string that comprises 1 - 4
+ *                                           dot-separated integer values. 0 means any version.
+ * @property {OsName} [osName = undefined] osName       The name of the host operating system.
+ *                                           and (empty means all operating systems).
+ * @property {String} [osVersionMin = undefined] osVersionMin     The minimum version of the host operating system which the notification
+ *                                           is compatible with. Must be a string that comprises 1 - 4 dot-separated
+ *                                           integer values in the format major.minor.patch.build where major =>
+ *                                           no range, minor => 0-99, patch => 0-999, build => 0-999999. 0 means any
+ *                                           version.
+ * @property {String} [osVersionMax = undefined] osVersionMax     The exlusive maximum version of the host operating system which the
+ *                                          notification is compatible with. Must be a string that comprises 1 - 4
+ *                                          dot-separated integer values in the format major.minor.patch.build where
+ *                                          major => no range, minor => 0-99, patch => 0-999, build => 0-999999.
+ *                                          0 means any version.
+ *
+ * @typedef {Object} DeleteHostSpecificationParams
+ * @property {String} notificationId
+ * @property {String} hostId
+ *
+ * @typedef {Object} CreateTestUserParams
+ * @property {Number} userId
+ * @property {Boolean} [enabled = undefined] enabled
+ *
+ * @typedef {Object} DeleteTestUserParams
+ * @property {Number} userId
+ *
+ * @typedef {Object} TextParam
+ * @property {TextContentType} mime_type
+ * @property {String} content
+ * @property {Metadata} metadata
+ *
+ * @typedef {Object} MediaParam
+ * @property {MediaContentType} mime_type
+ * @property {MediaSource} src
+ * @property {Metadata} metadata
+ *
+ * @typedef {Object} ActionParam
+ * @property {String} label
+ * @property {String} [url = undefined] url
+ * @property {Metadata} metadata
+ *
+ * @typedef {Object} ContentParam
+ * @property {TextParam[]} [text = undefined] text
+ * @property {MediaParam[]} [media = undefined] media
+ * @property {ActionParam[]} [actions = undefined] actions
+ *
+ * @typedef {Object} CreateUpdateContentParams
+ * @property {String} notificationId
+ * @property {Language} language
+ * @property {ContentParam} content
  */
-export default class Notifications extends Service {
+
+/**
+ * Notifications Service V2 class
+ */
+export default class NotificationsService extends Service {
   /**
    * Constructor
    *
@@ -20,42 +277,12 @@ export default class Notifications extends Service {
   }
 
   /**
-   * Retrieve a list of notifcations to a client application.
-   * Does not require authorization.
-   *
-   * NOTE: This is the client app variant of the method. For the management variant, see `adminGetNotifications`.
-   *
-   * @param  {Object} params - Input parameter object
-   * @param  {?String} [params.hostAppName = null]    - Host app name to filter the results by
-   * @param  {?String} [params.hostAppVersion = null] - Host app version to filter by
-   * @param  {?String} [params.hostAppOs = null]      - Host app operating system to filter by
-   * @param  {?String} [params.locale = null]         - Locale of the client to indicate content language preference
-   * @return {Promise}
-   */
-  getNotifications ({ hostAppName = null, hostAppVersion = null, hostAppOs = null, locale = null }) {
-    return this.fetch(
-      this.bearerTokenAuthHeader(),
-      '/api/v1/notifications',
-      this.toBody({
-        host_app_name: hostAppName,
-        host_app_version: hostAppVersion,
-        host_app_os: hostAppOs,
-        locale: locale
-      }),
-      'GET'
-    )
-  }
-
-  /**
    * Retrieve a list of campaigns.
-   * Requires a valid access token.
    *
-   * @param {Object} params - Input parameter object
-   * @param {?String} [params.status] - Status of the campaign to filter by. Must be one of 'active', 'draft' or
-   *                                           'archived' if set
-   * @return {Promise}
+   * @param {GetCampaignsParams} [params = undefined] params
+   * @return {Promise<CampaignList>}
    */
-  getCampaigns ({ status = null }) {
+  getCampaigns ({ status } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       '/api/v2/campaigns',
@@ -68,18 +295,11 @@ export default class Notifications extends Service {
 
   /**
    * Creates a campaign.
-   * Requires a valid access token.
    *
-   * @param {Object}  params - Input parameter object
-   * @param {String}  params.name          - Name of the campaign. Must be a non empty string
-   * @param {Boolean} params.anonymous     - Whether the notifications for the campaign are anonymous or not
-   * @param {?String} [params.description] - Description of the campaign
-   * @param {?Date}   [params.startsAt]    - The date/time that the campaign is valid from
-   * @param {?Date}   [params.endsAt]      - The date/time that the campaign is valid until
-   *
-   * @return {Promise}
+   * @param {CreateCampaignParams}  params
+   * @return {Promise<Campaign>}
    */
-  createCampaign ({ name, anonymous, description = null, startsAt = null, endsAt = null }) {
+  createCampaign ({ name, anonymous, description, startsAt, endsAt }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       '/api/v2/campaigns',
@@ -96,29 +316,11 @@ export default class Notifications extends Service {
 
   /**
    * Updates attributes of a campaign.
-   * Requires a valid access token.
    *
-   * @param {Object}   params - Input parameter object
-   * @param {String}   params.campaignId           - ID of the campaign to update
-   * @param {?String}  [params.name]        - Name of the campaign. Must be a non empty string if provided
-   * @param {?Boolean} [params.anonymous]   - Whether the notifications for the campaign are anonymous or not
-   * @param {?String}  [params.description] - Description of the campaign
-   * @param {?String}  [params.status]      - Status of the campaign. Must be one of 'active',
-   *                                                'draft' or 'archived'
-   * @param {?Date}   [params.startsAt]    - The date/time that the campaign is valid from
-   * @param {?Date}   [params.endsAt]      - The date/time that the campaign is valid until
-   *
-   * @return {Promise}
+   * @param {UpdateCampaignParams}   params
+   * @return {Promise<Campaign>}
    */
-  updateCampaign ({
-    campaignId,
-    name = null,
-    anonymous = null,
-    description = null,
-    status = null,
-    startsAt = null,
-    endsAt = null
-  }) {
+  updateCampaign ({ campaignId, name, anonymous, description, status, startsAt, endsAt }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       `/api/v2/campaigns/${campaignId}`,
@@ -135,14 +337,11 @@ export default class Notifications extends Service {
   }
 
   /**
-   * Lists all notifications.
-   * Requires a valid access token.
+   * Get notifications.
    *
-   * NOTE: This is the management variant of the method. The use-case and schema are different to `getNotifications`
-   *
-   * @return {Promise}
+   * @return {Promise<NotificationList>}
    */
-  adminGetNotifications () {
+  getNotifications () {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       '/api/v2/notifications',
@@ -152,23 +351,32 @@ export default class Notifications extends Service {
   }
 
   /**
+   * Returns a list of notification messages to a client application.
+   *
+   * @param {GetMeNotificationsParams}  params
+   * @return {Promise<NotificationList>}
+   */
+  getMeNotifications ({ hostAppName, hostAppVersion, hostOsName, hostOsVersion, locale, deviceId } = {}) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      '/api/v2/me/notifications',
+      this.toBody({
+        host_app_name: hostAppName,
+        host_app_version: hostAppVersion,
+        host_os_name: hostOsName,
+        host_os_version: hostOsVersion,
+        locale: locale,
+        device_id: deviceId
+      }),
+      'GET'
+    )
+  }
+
+  /**
    * Create a notification for a campaign.
-   * Requires a valid access token.
    *
-   * @param {Object}  params                - Input parameter object
-   * @param {String}  params.name           - Name of the campaign message. Must be a non empty string
-   * @param {String}  params.campaignId     - ID of the campaign to create the notification for
-   * @param {String}  params.type           - The type (category) of the notification. Must be one of 'licensing',
-   *                                          'system', 'promotion', 'streaming' or 'device_connection'
-   * @param {Number}  params.priority       - An integer that indicates the priority of the notification
-   * @param {String}  params.templateName   - Name of the notification template that will be used on the client app
-   * @param {String}  params.templateOption - The variant (colours etc) of the template to use
-   * @param {Boolean} params.isPersistent   - Whether the notification is persistent
-   * @param {Boolean} params.isTakeover     - Whether the notification is a takeover
-   * @param {?Date}   params.startsAt       - The date/time that the notification is valid from
-   * @param {?Date}   params.endsAt         - The date/time that the notificaiton is valid until
-   *
-   * @return {Promise}
+   * @param {CreateNotificationParams}  params
+   * @return {Promise<Notification>}
    */
   createNotification ({
     name,
@@ -178,9 +386,9 @@ export default class Notifications extends Service {
     templateName,
     templateOption,
     isPersistent,
-    isTakeover = null,
-    startsAt = null,
-    endsAt = null
+    isTakeover,
+    startsAt,
+    endsAt
   }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
@@ -203,38 +411,23 @@ export default class Notifications extends Service {
 
   /**
    * Updates attributes of a notification.
-   * Requires a valid access token.
    *
-   * @param {Object}  params                  - Input parameter object
-   * @param {?String}  params.name            - Name of the campaign message. Must be a non empty string if provided
-   * @param {String}  params.notificationId   - ID of the notification to update
-   * @param {String}  [params.type]           - The type (category) of the notification. Must be one of 'licensing',
-   *                                          'system', 'promotion', 'streaming' or 'device_connection'
-   * @param {Number}  [params.priority]       - An integer that indicates the priority of the notification
-   * @param {String}  [params.templateName]   - Name of the notification template that will be used on the client app
-   * @param {String}  [params.templateOption] - The variant (colours etc) of the template to use
-   * @param {?Date}   [params.startsAt]       - The date/time that the notification is valid from
-   * @param {?Date}   [params.endsAt]         - The date/time that the notificaiton is valid until
-   * @param {?String} [params.status]         - Status of the notification ('active', 'draft' or 'archived')
-   * @param {Boolean} params.isPersistent     - Whether the notification is a persistent
-   * @param {Boolean} params.isTakeover       - Whether the notification is a takeover
-   * @param {?Number} params.campaignId       - Campaign ID
-   *
-   * @return {Promise}
+   * @param {UpdateNotificationParams}  params
+   * @return {Promise<Notification>}
    */
   updateNotification ({
-    name = null,
     notificationId,
-    templateOption = null,
-    type = null,
-    priority = null,
-    templateName = null,
-    startsAt = null,
-    endsAt = null,
-    status = null,
-    isPersistent = null,
-    isTakeover = null,
-    campaignId = null
+    name,
+    templateOption,
+    type,
+    priority,
+    templateName,
+    startsAt,
+    endsAt,
+    status,
+    isPersistent,
+    isTakeover,
+    campaignId
   }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
@@ -258,12 +451,9 @@ export default class Notifications extends Service {
 
   /**
    * Creates a clone of the notification whose ID is supplied in the URL.
-   * Requires a valid access token.
    *
-   * @param {Object} params                - Input parameter object
-   * @param {String} params.notificationId - ID of the notification to clone
-   *
-   * @return {Promise}
+   * @param {CloneNotificationParams} params
+   * @return {Promise<Notification>}
    */
   cloneNotification ({ notificationId }) {
     return this.fetch(
@@ -275,61 +465,19 @@ export default class Notifications extends Service {
   }
 
   /**
-   * Gets the host specifications for a notification.
-   * Requires a valid access token.
-   *
-   * @param {Object} params                - Input parameter object
-   * @param {String} params.notificationId - ID of the notification to get the hosts app specifications for
-   *
-   * @return {Promise}
-   */
-  getHostSpecifications ({ notificationId }) {
-    return this.fetch(
-      this.bearerTokenAuthHeader(),
-      `/api/v2/notifications/${notificationId}/hosts`,
-      null,
-      'GET'
-    )
-  }
-
-  /**
    * Creates a host specification for a notification.
-   * Requires a valid access token.
    *
-   * @param {Object} params                  - Input parameter object
-   * @param {String} params.notificationId   - ID of the notification to create the host specification for
-   * @param {String} params.appName          - Name of the host app. Must be one of 'serato_dj_pro', 'serato_dj_lite',
-   *                                           'serato_sample', 'serato_studio', 'my_account', 'express_checkout',
-   *                                           'serato_com' or 'mega_nav'
-   * @param {?String} [params.appVersionMin] - The minimum version of the host application which the notification is
-   *                                           compatible with. Must be a string that comprises 1 - 4 dot-separated
-   *                                           integer values. 0 means any version.
-   * @param {?String} [params.appVersionMax] - The exclusive maximum version of the host application which the
-   *                                           notification is compatible with. Must be a string that comprises 1 - 4
-   *                                           dot-separated integer values. 0 means any version.
-   * @param {?String} [params.osName]        - The name of the host operating system. Possible values are 'mac', 'win'
-   *                                           and (empty means all operating systems).
-   * @param {?String} [params.osVersionMin]  - The minimum version of the host operating system which the notification
-   *                                           is compatible with. Must be a string that comprises 1 - 4 dot-separated
-   *                                           integer values in the format major.minor.patch.build where major =>
-   *                                           no range, minor => 0-99, patch => 0-999, build => 0-999999. 0 means any
-   *                                           version.
-   * @param {?String} [params.osVersionMax] - The exlusive maximum version of the host operating system which the
-   *                                          notification is compatible with. Must be a string that comprises 1 - 4
-   *                                          dot-separated integer values in the format major.minor.patch.build where
-   *                                          major => no range, minor => 0-99, patch => 0-999, build => 0-999999.
-   *                                          0 means any version.
-   *
-   * @return {Promise}
+   * @param {CreateHostSpecificationParams} params
+   * @return {Promise<Host>}
    */
   createHostSpecification ({
     notificationId,
     appName,
-    appVersionMin = null,
-    appVersionMax = null,
-    osName = null,
-    osVersionMin = null,
-    osVersionMax = null
+    appVersionMin,
+    appVersionMax,
+    osName,
+    osVersionMin,
+    osVersionMax
   }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
@@ -348,44 +496,19 @@ export default class Notifications extends Service {
 
   /**
    * Update attributes of a host specification for a notification.
-   * Requires a valid access token.
    *
-   * @param {Object} params                  - Input parameter object
-   * @param {String} params.notificationId   - ID of the notification that the host specification belongs to
-   * @param {String} params.hostId           - ID of the host specification to update
-   * @param {?String} [params.appName]       - Name of the host app. Must be one of 'serato_dj_pro', 'serato_dj_lite',
-   *                                           'serato_sample', 'serato_studio', 'my_account', 'express_checkout',
-   *                                           'serato_com' or 'mega_nav'
-   * @param {?String} [params.appVersionMin] - The minimum version of the host application which the notification is
-   *                                           compatible with. Must be a string that comprises 1 - 4 dot-separated
-   *                                           integer values. 0 means any version.
-   * @param {?String} [params.appVersionMax] - The exclusive maximum version of the host application which the
-   *                                           notification is compatible with. Must be a string that comprises 1 - 4
-   *                                           dot-separated integer values. 0 means any version.
-   * @param {?String} [params.osName]        - The name of the host operating system. Possible values are 'mac', 'win'
-   *                                           and (empty means all operating systems).
-   * @param {?String} [params.osVersionMin]  - The minimum version of the host operating system which the notification
-   *                                           is compatible with. Must be a string that comprises 1 - 4 dot-separated
-   *                                           integer values in the format major.minor.patch.build where major =>
-   *                                           no range, minor => 0-99, patch => 0-999, build => 0-999999. 0 means any
-   *                                           version.
-   * @param {?String} [params.osVersionMax] - The exlusive maximum version of the host operating system which the
-   *                                          notification is compatible with. Must be a string that comprises 1 - 4
-   *                                          dot-separated integer values in the format major.minor.patch.build where
-   *                                          major => no range, minor => 0-99, patch => 0-999, build => 0-999999.
-   *                                          0 means any version.
-   *
-   * @return {Promise}
+   * @param {UpdateHostSpecificationParams} params
+   * @return {Promise<Host>}
    */
   updateHostSpecification ({
     notificationId,
     hostId,
-    appName = null,
-    appVersionMin = null,
-    appVersionMax = null,
-    osName = null,
-    osVersionMin = null,
-    osVersionMax = null
+    appName,
+    appVersionMin,
+    appVersionMax,
+    osName,
+    osVersionMin,
+    osVersionMax
   }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
@@ -404,18 +527,11 @@ export default class Notifications extends Service {
 
   /**
    * Delete a host specification for a notification.
-   * Requires a valid access token.
    *
-   * @param {Object} params                - Input parameter object
-   * @param {String} params.notificationId - Id of the notification that the host specification belongs to
-   * @param {String} params.hostId         - ID of the host specification to delete
-   *
+   * @param {DeleteHostSpecificationParams} params
    * @return {Promise}
    */
-  deleteHostSpecification ({
-    notificationId,
-    hostId
-  }) {
+  deleteHostSpecification ({ notificationId, hostId }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       `/api/v2/notifications/${notificationId}/hosts/${hostId}`,
@@ -428,16 +544,8 @@ export default class Notifications extends Service {
    * Creates or update content for a notification. Creation occurs if no existing content. Content will be overwritten
    * if exists already and specified in the payload for this method.
    *
-   * @param {Object} params                - Input parameter object
-   * @param {String} params.notificationId - Notification to create/update content for
-   * @param {String} params.language       - A two letter ISO 639-1 language code
-   * @param {Object} params.content        - Object containing the content to create or update. For the full object
-   * structure refer to: https://notifications.serato.com/api/v2/schema/json/content_create_update.json
-   * @param {Array} [params.content.text]    - Array of text to create/update. Empty to remove existing text
-   * @param {Array} [params.content.media]   - Array of media to create/update. Empty to remove existing media
-   * @param {Array} [params.content.actions] - Array of actions to create/update. Empty to remove existing actions
-   *
-   * @return {Promise}
+   * @param {CreateUpdateContentParams} params
+   * @return {Promise<Content>}
    */
   createOrUpdateNotificationContent ({
     notificationId,
@@ -456,7 +564,7 @@ export default class Notifications extends Service {
    * Lists all the available notification templates.
    * Does not require authorization.
    *
-   * @return {Promise}
+   * @return {Promise<TemplateList>}
    */
   getNotificationTemplates () {
     return this.fetch(
@@ -470,15 +578,13 @@ export default class Notifications extends Service {
   /**
    * Creates a test user.
    *
-   * @param {Int} userId - User ID
-   * @param {Boolean} enabled - defaults to true, which means a user is enabled by default
-   *
-   * @return {Promise}
+   * @param {CreateTestUserParams} params
+   * @return {Promise<TestUser>}
    */
-  createTestUser ({
-    userId,
-    enabled = true
-  }) {
+  createTestUser ({ userId, enabled }) {
+    if (enabled === undefined) {
+      enabled = true
+    }
     return this.fetch(
       this.bearerTokenAuthHeader(),
       '/api/v2/testusers',
@@ -493,7 +599,7 @@ export default class Notifications extends Service {
   /**
    * Lists all the test users.
    *
-   * @return {Promise}
+   * @return {Promise<TestUserList>}
    */
   getTestUsers () {
     return this.fetch(
@@ -507,8 +613,7 @@ export default class Notifications extends Service {
   /**
    * Remove a user from the list of test users.
    *
-   * @param {String} userId - User ID
-   *
+   * @param {DeleteTestUserParams} params
    * @return {Promise}
    */
   deleteTestUser ({ userId }) {

@@ -5,9 +5,50 @@ import Identity from './Identity'
 import Ecom from './Ecom'
 import Profile from './Profile'
 import Notifications from './Notifications'
+import NotificationsV1 from './NotificationsV1'
 import DigitalAssets from './DigitalAssets'
 import Rewards from './Rewards'
+import CloudLibrary from './CloudLibrary'
+import AiProxy from './AiProxy'
 
+/**
+ * @typedef {Object<string,string>} RequestHeaders
+ * @typedef {Object<string,string>} RequestParams
+ *
+ * @typedef {Object} Request
+ * @property {Number} timeout Request timeout (ms)
+ * @property {String} url Request URI
+ * @property {String} method HTTP method
+ * @property {String} responseType Response type for the request (e.g. json)
+ * @property {RequestHeaders} headers HTTP request headers
+ * @property {RequestParams} [params = undefined] params URL params
+ * @property {RequestParams} [data = undefined] data Request body
+ *
+ * @callback RequestErrorHandler
+ * @param {Request} request
+ * @param {Error} error
+ * @returns {void}
+ *
+ * @typedef {Object} ServiceUri
+ * @property {String} [id=undefined] id Base URI for SWS ID Service
+ * @property {String} [license=undefined] license Base URI for SWS License Service
+ * @property {String} [ecom=undefined] ecom Base URI for SWS Ecommerce Service
+ * @property {String} [notifications=undefined] notifications Base URI for SWS Notifications Service
+ * @property {String} [profile=undefined] profile Base URI for SWS Profile Service
+ * @property {String} [da=undefined] da Base URI for SWS Digital Assets Service
+ * @property {String} [rewards=undefined] rewards Base URI for SWS Rewards Service
+ * @property {String} [aiproxy=undefined] ai-proxy Base URI for SWS AI-Proxy Service
+ *
+ * @typedef {Object} SwsConfiguration
+ * @property {String} appId Application ID
+ * @property {String} [secret=''] secret Application secret
+ * @property {Number} [timeout=3000] timeout Request timeout
+ * @property {ServiceUri} [serviceUri={}] serviceUri Base URIs for SWS services
+ */
+
+/**
+ * @type {ServiceUri}
+ */
 const serviceUriDefault = {
   id: 'id.serato.com',
   license: 'license.serato.com',
@@ -15,41 +56,38 @@ const serviceUriDefault = {
   notifications: 'notifications.serato.com',
   profile: 'profile.serato.com',
   da: 'da.serato.com',
-  rewards: 'rewards.serato.com'
+  rewards: 'rewards.serato.com',
+  cloudlib: 'cloudlib.serato.com',
+  aiproxy: 'ai-proxy.serato.com'
 }
 
+export { serviceUriDefault }
+
 /**
- * Sws class.
- *
- * Provides single point of configuration and access to service clients.
+ * @classdesc Provides single point of configuration and access to service clients.
+ * @class
  */
 export default class Sws {
   /**
    * Constructor
    *
-   * @param {Object} config Configuration options
-   * @param {String} config.appId Application ID
-   * @param {String} config.secret Application secret
-   * @param {String} config.userId End user ID
-   * @param {Number} config.timeout Request timeout
-   * @param {Object} config.serviceUri Base URIs for SWS services
-   * @param {String} config.serviceUri.id Base URI for SWS ID Service
-   * @param {String} config.serviceUri.license Base URI for SWS License Service
-   * @param {String} config.serviceUri.ecom Base URI for SWS Ecommerce Service
-   * @param {String} config.serviceUri.notifications Base URI for SWS Notifications Service
-   * @param {String} config.serviceUri.profile Base URI for SWS Profile Service
-   * @param {String} config.serviceUri.da Base URI for SWS Digital Assets Service
-   * @param {String} config.serviceUri.rewards Base URI for SWS Rewards Service
+   * @param {SwsConfiguration} config Configuration options
    * @return {void}
    */
-  constructor ({ appId, secret = '', userId = 0, timeout = 3000, serviceUri = {} }) {
+  constructor ({ appId, secret = '', timeout = 3000, serviceUri = {} }) {
+    /** @private */
     this._appId = appId
+    /** @private */
     this._secret = secret
-    this._userId = userId
+    /** @private */
     this._timeout = timeout
+    /** @private */
     this._accessToken = ''
+    /** @private */
     this._refreshToken = ''
-    // Set custom service URIs if provided
+    /** @private */
+    this._userId = 0
+    /** @private */
     this._serviceUri = {
       id: serviceUri.id ? serviceUri.id : serviceUriDefault.id,
       license: serviceUri.license ? serviceUri.license : serviceUriDefault.license,
@@ -57,17 +95,22 @@ export default class Sws {
       notifications: serviceUri.notifications ? serviceUri.notifications : serviceUriDefault.notifications,
       profile: serviceUri.profile ? serviceUri.profile : serviceUriDefault.profile,
       da: serviceUri.da ? serviceUri.da : serviceUriDefault.da,
-      rewards: serviceUri.rewards ? serviceUri.rewards : serviceUriDefault.rewards
+      rewards: serviceUri.rewards ? serviceUri.rewards : serviceUriDefault.rewards,
+      cloudlib: serviceUri.cloudlib ? serviceUri.cloudlib : serviceUriDefault.cloudlib,
+      aiproxy: serviceUri.aiproxy ? serviceUri.aiproxy : serviceUriDefault.aiproxy
     }
-    // Create service clients
+    /** @private */
     this._service = {
       license: new License(this),
       id: new Identity(this),
       ecom: new Ecom(this),
       notifications: new Notifications(this),
+      notificationsV1: new NotificationsV1(this),
       profile: new Profile(this),
       da: new DigitalAssets(this),
-      rewards: new Rewards(this)
+      rewards: new Rewards(this),
+      cloudlib: new CloudLibrary(this),
+      aiproxy: new AiProxy(this)
       // Define more clients here,
       // and add a getter method
     }
@@ -76,7 +119,7 @@ export default class Sws {
   /**
    * Sets the invalid access token callback for all clients
    *
-   * @param {Function} f Callback function
+   * @param {RequestErrorHandler} f Callback function
    * @return {Void}
    */
   setInvalidAccessTokenHandler (f) {
@@ -88,7 +131,7 @@ export default class Sws {
   /**
    * Sets the invalid refresh token callback for all clients
    *
-   * @param {Function} f Callback function
+   * @param {RequestErrorHandler} f Callback function
    * @return {Void}
    */
   setInvalidRefreshTokenHandler (f) {
@@ -100,7 +143,7 @@ export default class Sws {
   /**
    * Sets the password re-entry required callback for all clients
    *
-   * @param {Function} f Callback function
+   * @param {RequestErrorHandler} f Callback function
    * @return {Void}
    */
   setPasswordReEntryRequiredHandler (f) {
@@ -112,7 +155,7 @@ export default class Sws {
   /**
    * Sets the access denied callback for all clients
    *
-   * @param {Function} f Callback function
+   * @param {RequestErrorHandler} f Callback function
    * @return {Void}
    */
   setAccessDeniedHandler (f) {
@@ -124,7 +167,7 @@ export default class Sws {
   /**
    * Sets the service error callback for all clients
    *
-   * @param {Function} f Callback function
+   * @param {RequestErrorHandler} f Callback function
    * @return {Void}
    */
   setServiceErrorHandler (f) {
@@ -136,7 +179,7 @@ export default class Sws {
   /**
    * Sets the service unavailable callback for all clients
    *
-   * @param {Function} f Callback function
+   * @param {RequestErrorHandler} f Callback function
    * @return {Void}
    */
   setServiceUnavailableHandler (f) {
@@ -148,7 +191,7 @@ export default class Sws {
   /**
    * Sets the timeout exceeded callback for all clients
    *
-   * @param {Function} f Callback function
+   * @param {RequestErrorHandler} f Callback function
    * @return {Void}
    */
   setTimesoutExceededHandler (f) {
@@ -178,7 +221,7 @@ export default class Sws {
   /**
    * Get the service URI endpoints for SWS services
    *
-   * @return {Object} Service URIs
+   * @return {ServiceUri} Service URIs
    */
   get serviceUri () {
     return this._serviceUri
@@ -306,6 +349,15 @@ export default class Sws {
   }
 
   /**
+   * Get the notifications service client instance
+   *
+   * @return {NotificationsV1} Notifications V1 service client
+   */
+  get notificationsV1 () {
+    return this._service.notificationsV1
+  }
+
+  /**
    * Get the DigitalAssets service client instance
    *
    * @return {DigitalAssets} DigitalAssets service client
@@ -322,8 +374,22 @@ export default class Sws {
   get rewards () {
     return this._service.rewards
   }
-}
 
-export {
-  serviceUriDefault
+  /**
+   * Get the Cloud Library service client instance
+   *
+   * @return {CloudLib} Cloud Library service client
+   */
+  get cloudlib () {
+    return this._service.cloudlib
+  }
+
+  /**
+   * Get the AI-Proxy service client instance
+   *
+   * @return {AiProxy} AI-Proxy service client
+   */
+  get aiproxy () {
+    return this._service.aiproxy
+  }
 }
