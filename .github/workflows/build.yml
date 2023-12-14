@@ -1,0 +1,43 @@
+name: Build and test sws-js-sdk
+
+on:
+  push:
+    branches:
+      - master
+      # The regex pattern here matches branch names that start with 'v' followed by a major and minor version number.
+      # It optionally includes a patch version and/or additional metadata (like alpha, beta, etc.) after a hyphen.
+      # Examples: v1.0, v2.3.4, v1.0-alpha.
+      - "/^v\\d+\\.\\d+(\\.\\d+)?(-\\S*)?$/"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v3
+
+      - name: Use Node.js from .nvmrc
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: ${{ runner.os }}-node-
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Lint
+        run: npm run lint
+
+      - name: Run Tests
+        run: npm run test
+
+      - name: Run Integration Tests
+        run: npm run test-integration
