@@ -620,7 +620,7 @@ export default class EcomService extends Service {
   getCart ({ cartId }) {
     return this.fetch(
       this._sws.accessToken ? this.bearerTokenAuthHeader() : null,
-      '/api/v1/carts/' + cartId,
+      `/api/v1/carts/${cartId}`,
       null
     )
   }
@@ -655,7 +655,7 @@ export default class EcomService extends Service {
   updateCartBillingAddress ({ cartId, billingAddress }) {
     return this.fetch(
       this._sws.accessToken ? this.bearerTokenAuthHeader() : null,
-      '/api/v1/carts/' + cartId,
+      `/api/v1/carts/${cartId}`,
       this.toBody({
         billing_address: billingAddress
       }),
@@ -674,7 +674,7 @@ export default class EcomService extends Service {
   updateCartCouponCode ({ cartId, couponCode }) {
     return this.fetch(
       this._sws.accessToken ? this.bearerTokenAuthHeader() : null,
-      '/api/v1/carts/' + cartId,
+      `/api/v1/carts/${cartId}`,
       this.toBody({
         coupon_code: couponCode
       }),
