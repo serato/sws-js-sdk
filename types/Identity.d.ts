@@ -54,6 +54,7 @@ export namespace Identity {
         last_name?: string;
         date_created: string;
         locale: string;
+        password_last_updated?: string;
     };
     export type UserLogin = {
         user: User;

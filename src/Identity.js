@@ -28,6 +28,7 @@ import Service from './Service'
  * @property {String} [last_name = undefined] last_name
  * @property {String} date_created Date of account creation expressed in ISO 8061 format
  * @property {String} locale ISO 15897 locale string
+ * @property {String} [password_last_updated = undefined]  Date user last updated their password in ISO 8061 format, not returned if null
  *
  * @typedef {Object} UserLogin
  * @property {User} user
