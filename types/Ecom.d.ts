@@ -285,14 +285,15 @@ export namespace Ecom {
         subscription_start_date?: string;
         subscription_billing_period?: number;
         prepaid_credit_in_days?: number;
+        billing_frequency: string;
     };
     export type CartItem = {
         id: number;
         product_type: ProductType;
         quantity: number;
-        base_amount: number;
-        total_amount: number;
-        tax_amount: number;
+        base_amount: string;
+        total_amount: string;
+        tax_amount: string;
         tax_rate: number;
         error_code?: number;
         subscription_start_date?: string;
@@ -303,9 +304,9 @@ export namespace Ecom {
     export type Cart = {
         uuid: string;
         items: CartItem[];
-        total_amount: number;
-        subtotal_amount: number;
-        tax_amount: number;
+        total_amount: string;
+        subtotal_amount: string;
+        tax_amount: string;
         currency: string;
         created_at: string;
         updated_at: string;
