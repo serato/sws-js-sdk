@@ -291,9 +291,9 @@ export namespace Ecom {
         id: number;
         product_type: ProductType;
         quantity: number;
-        base_amount: string;
-        total_amount: string;
-        tax_amount: string;
+        base_amount: number;
+        total_amount: number;
+        tax_amount: number;
         tax_rate: number;
         error_code?: number;
         subscription_start_date?: string;
@@ -304,9 +304,9 @@ export namespace Ecom {
     export type Cart = {
         uuid: string;
         items: CartItem[];
-        total_amount: string;
-        subtotal_amount: string;
-        tax_amount: string;
+        total_amount: number;
+        subtotal_amount: number;
+        tax_amount: number;
         currency: string;
         created_at: string;
         updated_at: string;
