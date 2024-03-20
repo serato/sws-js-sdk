@@ -668,7 +668,7 @@ export default class EcomService extends Service {
    *
    * @param {Object} param Options
    * @param {String} param.cartId
-   * @param {String} param.couponCode
+   * @param {String} [param.couponCode=null] Coupon code (can be null)
    * @return {Promise<Cart>}
    */
   updateCartCouponCode ({ cartId, couponCode }) {
@@ -677,7 +677,7 @@ export default class EcomService extends Service {
       `/api/v1/carts/${cartId}`,
       this.toBody({
         coupon_code: couponCode
-      }),
+      }, true), // Set allowNullValues to true
       'PUT'
     )
   }
