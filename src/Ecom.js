@@ -668,7 +668,7 @@ export default class EcomService extends Service {
    *
    * @param {Object} param Options
    * @param {String} param.cartId
-   * @param {String} [param.couponCode=null] Coupon code (can be null)
+   * @param {String | null} param.couponCode
    * @return {Promise<Cart>}
    */
   updateCartCouponCode ({ cartId, couponCode }) {
