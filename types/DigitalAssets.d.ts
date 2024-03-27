@@ -12,6 +12,9 @@ export default class DigitalAssetsService extends Service {
         assetId: number;
         resourceId: number;
     }): Promise<DigitalAssets.AssetDownload>;
+    getResourceDownload({ resourceId }: {
+      resourceId: number;
+    }): Promise<DigitalAssets.ResourceDownload>;
 }
 export namespace DigitalAssets {
     export type HostApplicationName = 'serato_dj_pro' | 'serato_dj_lite' | 'serato_sample' | 'serato_studio' | 'scratch_live' | 'pitchntime_le' | 'pitchntime_pro';
@@ -56,6 +59,15 @@ export namespace DigitalAssets {
         mime_type: string;
         file_size: string;
         url: string;
+        url_expires: string;
+    };
+    export type ResourceDownload = {
+        id: number;
+        file_name: string;
+        mime_type: string;
+        file_size: string;
+        url: string;
+        url_created: string;
         url_expires: string;
     };
 }
