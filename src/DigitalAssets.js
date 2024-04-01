@@ -45,7 +45,7 @@ import Service from './Service'
  * @property {String} file_size
  * @property {String} url Download URL
  * @property {String} url_expires Expiry time of the download URL expressed in ISO ISO 8061 date format.
- * 
+ *
  * @typedef {Object} ResourceDownload
  * @property {Number} id
  * @property {String} file_name
