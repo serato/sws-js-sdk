@@ -16,7 +16,7 @@ export default class DigitalAssetsService extends Service {
         soundpackName: string;
         downloadLink: string;
         imagePath: string;
-    }): Promise<DigitalAssets.AssetDownload>;
+    }): Promise<void>;
 }
 export namespace DigitalAssets {
     export type HostApplicationName = 'serato_dj_pro' | 'serato_dj_lite' | 'serato_sample' | 'serato_studio' | 'scratch_live' | 'pitchntime_le' | 'pitchntime_pro';
