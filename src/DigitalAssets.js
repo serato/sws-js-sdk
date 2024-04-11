@@ -124,7 +124,7 @@ export default class DigitalAssetsService extends Service {
    * @param  {Number} param.resourceId
    * @return {Promise<ResourceDownload>}
    */
-  getResourceDownload({ resourceId }) {
+  getResourceDownload ({ resourceId }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       '/api/v1/resources/' + resourceId + '/download',
