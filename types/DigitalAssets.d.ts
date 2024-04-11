@@ -12,6 +12,11 @@ export default class DigitalAssetsService extends Service {
         assetId: number;
         resourceId: number;
     }): Promise<DigitalAssets.AssetDownload>;
+    sendSoundpackDownloadLink({ soundpackName, downloadLink, imagePath }: {
+        soundpackName: string;
+        downloadLink: string;
+        imagePath: string;
+    }): Promise<DigitalAssets.AssetDownload>;
 }
 export namespace DigitalAssets {
     export type HostApplicationName = 'serato_dj_pro' | 'serato_dj_lite' | 'serato_sample' | 'serato_studio' | 'scratch_live' | 'pitchntime_le' | 'pitchntime_pro';

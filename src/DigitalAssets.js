@@ -108,4 +108,25 @@ export default class DigitalAssetsService extends Service {
       'POST'
     )
   }
+
+  /**
+   * Send an email for soundpack download
+   * @param  {Object} param
+   * @param  {String} param.soundpackName
+   * @param  {String} param.downloadLink
+   * @param  {String} param.imagePath
+   * @return {Promise<AssetDownload>}
+   */
+  sendSoundpackDownloadLink ({ soundpackName, downloadLink, imagePath }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      '/api/v1/download-email/soundpacks',
+      this.toBody({
+        soundpack_name: soundpackName,
+        download_link: downloadLink,
+        image_path: imagePath
+      }),
+      'POST'
+    )
+  }
 }
