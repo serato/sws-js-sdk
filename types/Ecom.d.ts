@@ -275,7 +275,7 @@ export namespace Ecom {
     };
     export type Promotion = {
         description: string;
-        discount_fixed_amount?: string;
+        discount_fixed_amount?: number;
         discount_percentage?: number;
         end_date?: string;
     };
