@@ -45,6 +45,15 @@ import Service from './Service'
  * @property {String} file_size
  * @property {String} url Download URL
  * @property {String} url_expires Expiry time of the download URL expressed in ISO ISO 8061 date format.
+ *
+ * @typedef {Object} ResourceDownload
+ * @property {Number} id
+ * @property {String} file_name
+ * @property {String} mime_type Media type as defined in IETF's RFC 6838.
+ * @property {String} file_size
+ * @property {String} url Download URL
+ * @property {String} url_created Creation time of the download URL expressed in ISO ISO 8061 date format.
+ * @property {String} url_expires Expiry time of the download URL expressed in ISO ISO 8061 date format.
  */
 
 /**
@@ -104,6 +113,21 @@ export default class DigitalAssetsService extends Service {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       '/api/v1/assets/' + assetId + '/resources/' + resourceId + '/download',
+      null,
+      'POST'
+    )
+  }
+
+  /**
+   * Create a download URL for a resource
+   * @param  {Object} param
+   * @param  {Number} param.resourceId
+   * @return {Promise<ResourceDownload>}
+   */
+  getResourceDownload ({ resourceId }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      '/api/v1/resources/' + resourceId + '/download',
       null,
       'POST'
     )
