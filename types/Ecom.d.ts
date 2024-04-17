@@ -277,7 +277,7 @@ export namespace Ecom {
         description: string;
         discount_fixed_amount?: number;
         discount_percentage?: number;
-        end_date?: string;
+        billing_cycle_duration?: number;
     };
     export type ProductType = {
         id: number;

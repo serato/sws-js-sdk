@@ -213,7 +213,7 @@ import Service from './Service'
  * @property {String} description The description for the promotion that is applied to the cart item.
  * @property {Number} [discount_fixed_amount = undefined] The fixed amount discount that is applied to the cart item. It will be presented only if the promotion is `fixed-amount`.
  * @property {Number} [discount_percentage = undefined] The percentage discount that is applied to the cart item. It will be presented only if the promotion is `percentage`.
- * @property {String} [end_date = undefined] The date the promotion ends.
+ * @property {Number} [billing_cycle_duration = undefined] The number of billing cycles the promotion is applied for.
  *
  * @typedef {Object} ProductType
  * @property {Number} id
