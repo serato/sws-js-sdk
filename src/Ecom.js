@@ -226,8 +226,8 @@ import Service from './Service'
  * @property {Number} id
  * @property {ProductType} product_type
  * @property {Number} quantity
- * @property {Number} base_amount
- * @property {Number} total_amount
+ * @property {Number} base_price
+ * @property {Number} price The price of the cart item which includes any promotions but excludes tax. 
  * @property {Number} tax_amount
  * @property {Number} tax_rate
  * @property {Number} [error_code = undefined] If present, proceeding with the purchase will not be possible with the item in the cart.
