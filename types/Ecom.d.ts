@@ -290,8 +290,8 @@ export namespace Ecom {
         id: number;
         product_type: ProductType;
         quantity: number;
-        base_amount: number;
-        total_amount: number;
+        base_price: number;
+        price: number;
         tax_amount: number;
         tax_rate: number;
         error_code?: number;
