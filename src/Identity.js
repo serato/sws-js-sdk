@@ -222,4 +222,20 @@ export default class IdentityService extends Service {
       'POST'
     )
   }
+
+  /**
+   * Endpoint used to update email address of user and then add an entry of the email change to email_address_change_log table
+   *
+   * @param {Object} param Options
+   * @param {String} param.emailAddress Email address to change to
+   * @returns {Promise<User>}
+   * **/
+  updateEmailAddress ({ emailAddress }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      this.userId === 0 ? '/api/v1/me' : '/api/v1/users/' + this.userId,
+      this.toBody({ email_address: emailAddress }),
+      'PUT'
+    )
+  }
 }
