@@ -26,6 +26,9 @@ export default class IdentityService extends Service {
         emailAddress: string;
         redirectUri?: string;
     }): Promise<any>;
+    updateUser({ emailAddress }: {
+        emailAddress: string;
+    }): Promise<any>;
 }
 export namespace Identity {
     export type RawToken = string;

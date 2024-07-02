@@ -224,13 +224,14 @@ export default class IdentityService extends Service {
   }
 
   /**
-   * Endpoint used to update email address of user and then add an entry of the email change to email_address_change_log table
+   * Endpoint used to update a user. Initially, email is the only updatable field. It then adds an entry of the email change to email_address_change_log table
+   * This can be extended to update more user's details in the future
    *
    * @param {Object} param Options
    * @param {String} param.emailAddress Email address to change to
    * @returns {Promise<User>}
    * **/
-  updateEmailAddress ({ emailAddress }) {
+  updateUser ({ emailAddress }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       this.userId === 0 ? '/api/v1/me' : '/api/v1/users/' + this.userId,
