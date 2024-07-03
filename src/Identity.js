@@ -222,4 +222,38 @@ export default class IdentityService extends Service {
       'POST'
     )
   }
+
+  /**
+   * Updates user's details (email address)
+   *
+   * @param {Object} param Options
+   * @param {String} param.emailAddress Email address to change to
+   * @returns {Promise<User>}
+   * **/
+  updateUser ({ emailAddress }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      this.userId === 0 ? '/api/v1/me' : '/api/v1/users/' + this.userId,
+      this.toBody({ email_address: emailAddress }),
+      'PUT'
+    )
+  }
+
+  /**
+   * Returns a list of users.
+   *
+   * @param {Object} param
+   * @param {String} param.emailAddress
+   * @returns {Promise<UserList>}
+   */
+  getUsers ({ emailAddress }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      '/api/v1/users',
+      this.toBody({
+        email_address: emailAddress
+      }),
+     'GET'
+    )
+  }
 }
