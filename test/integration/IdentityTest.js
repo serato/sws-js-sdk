@@ -105,5 +105,23 @@ describe('Identity Tests', function () {
           }
       )
     })
+    it(`confirms URI in 'getUsers()' method without user ID, by returning a non-404 response`, function () {
+      swsClient.userId = 0
+      return swsClient.id.getUsers({ emailAddress: '123@serato.com' }).then(
+          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+          err => {
+            expect(err.httpStatus).not.to.equal(404)
+          }
+      )
+    })
+    it(`confirms URI in 'getUsers()' method with a user ID, by returning a non-404 response`, function () {
+      swsClient.userId = 123
+      return swsClient.id.getUsers({ emailAddress: '123@serato.com' }).then(
+          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+          err => {
+            expect(err.httpStatus).not.to.equal(404)
+          }
+      )
+    })
   })
 })

@@ -2,6 +2,9 @@ export default class IdentityService extends Service {
     tokenExchange(code: string, redirectUri: string, codeVerifier: string): Promise<Identity.UserLogin>;
     tokenRefresh(refreshToken: Identity.RawToken): Promise<Identity.UserTokens>;
     getUser(): Promise<Identity.User>;
+    getUsers({ emailAddress }: {
+        emailAddress: string;
+    }): Promise<Identity.UserList>;
     login({ emailAddress, password, deviceId, deviceName }: {
         emailAddress: string;
         password: string;
@@ -67,5 +70,12 @@ export namespace Identity {
     export type OkMessage = {
         message: string;
     };
+    export type UserUpdateParams = {
+        id: number;
+        email_address: string;
+    }
+    export type UserList = {
+        items: User[];
+    }
 }
 import Service from "./Service";

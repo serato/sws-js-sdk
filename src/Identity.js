@@ -239,4 +239,22 @@ export default class IdentityService extends Service {
       'PUT'
     )
   }
+
+  /**
+   * Returns a list of users.
+   *
+   * @param {Object} param
+   * @param {String} param.emailAddress
+   * @returns {Promise<UserList>}
+   */
+  getUsers ({ emailAddress }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      '/api/v1/users',
+      this.toBody({
+        email_address: emailAddress
+      }),
+     'GET'
+    )
+  }
 }
