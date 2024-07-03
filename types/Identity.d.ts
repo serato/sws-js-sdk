@@ -70,10 +70,6 @@ export namespace Identity {
     export type OkMessage = {
         message: string;
     };
-    export type UserUpdateParams = {
-        id: number;
-        email_address: string;
-    }
     export type UserList = {
         items: User[];
     }
