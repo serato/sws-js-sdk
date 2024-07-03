@@ -233,7 +233,7 @@ export default class IdentityService extends Service {
   updateUser ({ emailAddress }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      this.userId === 0 ? '/api/v1/me' : '/api/v1/users/' + this.userId,
+      '/api/v1/users/' + this.userId,
       this.toBody({ email_address: emailAddress }),
       'PUT'
     )
