@@ -253,7 +253,7 @@ export default class IdentityService extends Service {
       this.toBody({
         email_address: emailAddress
       }),
-     'GET'
+      'GET'
     )
   }
 }
