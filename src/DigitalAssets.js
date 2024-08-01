@@ -153,4 +153,21 @@ export default class DigitalAssetsService extends Service {
       'POST'
     )
   }
+
+  /**
+   * Get user application installer download history
+   * @param  {Object} [param = undefined] param
+   * @param  {HostApplicationName} [param.hostAppName = undefined] param.hostAppName
+   * @return {Promise<AssetDownload>}
+   */
+  getApplicationInstallerDownloads ({ hostAppName }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      '/api/v1/me/log/downloads/applicationinstaller',
+      this.toBody({
+        host_app_name: hostAppName
+      }),
+      'GET'
+    )
+  }
 }
