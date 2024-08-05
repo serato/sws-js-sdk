@@ -54,6 +54,21 @@ import Service from './Service'
  * @property {String} url Download URL
  * @property {String} url_created Creation time of the download URL expressed in ISO ISO 8061 date format.
  * @property {String} url_expires Expiry time of the download URL expressed in ISO ISO 8061 date format.
+ *
+ * @typedef {Object} AssetWithoutResources
+ * @property {Number} id
+ * @property {String} name
+ * @property {'application_installer' | 'content_pack'} type
+ * @property {ReleaseType} release_type
+ * @property {String} version
+ * @property {HostApplication[]} host_app_compatibility A list of compatible host applications
+ * @property {String} release_date Release date in ISO 8061 format
+ * @property {String} [webpage_url = undefined] Canonical URL for a webpage associated with the asset
+ * @property {Object<string, any>} [meta = undefined] Meta data associated with the asset
+ *
+ * @typedef {Object} DownloadHistory
+ * @property {AssetWithoutResources} asset
+ * @property {Resource} resource
  */
 
 /**
@@ -151,6 +166,23 @@ export default class DigitalAssetsService extends Service {
         image_path: imagePath
       }),
       'POST'
+    )
+  }
+
+  /**
+   * Get user application installer download history
+   * @param  {Object} [param = undefined] param
+   * @param  {HostApplicationName} [param.hostAppName = undefined] param.hostAppName
+   * @return {Promise<DownloadHistory>}
+   */
+  getApplicationInstallerDownloads ({ hostAppName }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      '/api/v1/me/log/downloads/applicationinstaller',
+      this.toBody({
+        host_app_name: hostAppName
+      }),
+      'GET'
     )
   }
 }
