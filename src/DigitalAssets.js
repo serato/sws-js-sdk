@@ -17,6 +17,7 @@ import Service from './Service'
  * @property {Number} [id = undefined] id Indentifier for a protected resource. One of `url` or `id` will be present.
  * @property {String} name
  * @property {ResourceType | 'manual' | 'quick_start_guide'} type
+ * @property {InstallerType} installer_type
  * @property {('win' | 'mac' | 'cc1')[]} host_os_compatibility List of compatible host operating systems.
  * @property {String} file_name Name of file resource
  * @property {String} mime_type Media type as defined in IETF's RFC 6838.
