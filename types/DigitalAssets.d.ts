@@ -26,6 +26,8 @@ export namespace DigitalAssets {
     export type ReleaseType = 'release' | 'publicbeta' | 'privatebeta';
     export type HostOs = 'win' | 'mac';
     export type ResourceType = 'application_installer' | 'content_pack';
+    export type InstallerType = 'win-installer' | 'mac-installer' | 'mac-32-installer' | 'mac-installer-no-corepack' | 'win-32-installer' | 'win-installer-no-corepack' | 'cc1'
+        | 'venue' | 'logic-limited-demo';
     export type HostApplication = {
         name: HostApplicationName;
         min_version?: string;
@@ -35,6 +37,7 @@ export namespace DigitalAssets {
         id?: number;
         name: string;
         type: ResourceType | 'manual' | 'quick_start_guide';
+        installer_type?: InstallerType;
         host_os_compatibility: ('win' | 'mac' | 'cc1')[];
         file_name: string;
         mime_type: string;
