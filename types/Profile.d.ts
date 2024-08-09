@@ -25,6 +25,7 @@ export default class ProfileService extends Service {
         language?: string;
         displayName?: string;
         company?: string;
+        daw?: string;
     }): Promise<Profile.Profile>;
     createUploadUrl({ uploadType, contentType }: {
         uploadType: string;

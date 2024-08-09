@@ -188,7 +188,8 @@ export default class ProfileService extends Service {
     threadsPerPage,
     language,
     displayName,
-    company
+    company,
+    daw
   }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
@@ -212,7 +213,8 @@ export default class ProfileService extends Service {
         threads_per_page: threadsPerPage,
         language: language,
         display_name: displayName,
-        company: company
+        company: company,
+        daw: daw
       }),
       'PUT'
     )
