@@ -167,6 +167,7 @@ export default class ProfileService extends Service {
    * @param   {String} [param.language = undefined] param.language
    * @param   {String} [param.displayName = undefined] param.displayName
    * @param   {String} [param.company = undefined] param.company
+   * @param   {String} [param.daw = undefined] param.daw
    * @returns {Promise<Profile>}
    */
   updateProfile ({

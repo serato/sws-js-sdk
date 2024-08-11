@@ -5,7 +5,7 @@ export default class ProfileService extends Service {
     getProfile({ useMe }?: {
         useMe?: boolean;
     }): Promise<Profile.Profile>;
-    updateProfile({ globalContactStatus, firstName, lastName, djName, locale, address1, address2, city, region, postcode, countryCode, notifyTracked, notifyPrivate, autoRead, autoSubscribe, threadsPerPage, language, displayName, company }: {
+    updateProfile({ globalContactStatus, firstName, lastName, djName, locale, address1, address2, city, region, postcode, countryCode, notifyTracked, notifyPrivate, autoRead, autoSubscribe, threadsPerPage, language, displayName, company, daw }: {
         globalContactStatus?: number;
         firstName?: string;
         lastName?: string;
