@@ -5,7 +5,7 @@ export default class ProfileService extends Service {
     getProfile({ useMe }?: {
         useMe?: boolean;
     }): Promise<Profile.Profile>;
-    updateProfile({ globalContactStatus, firstName, lastName, djName, locale, address1, address2, city, region, postcode, countryCode, notifyTracked, notifyPrivate, autoRead, autoSubscribe, threadsPerPage, language, displayName, company, daw }: {
+    updateProfile({ globalContactStatus, firstName, lastName, djName, locale, address1, address2, city, region, postcode, countryCode, notifyTracked, notifyPrivate, autoRead, autoSubscribe, threadsPerPage, language, displayName, company, daw, product }: {
         globalContactStatus?: number;
         firstName?: string;
         lastName?: string;
@@ -26,6 +26,7 @@ export default class ProfileService extends Service {
         displayName?: string;
         company?: string;
         daw?: string;
+        product?: string;
     }): Promise<Profile.Profile>;
     createUploadUrl({ uploadType, contentType }: {
         uploadType: string;

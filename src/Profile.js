@@ -168,6 +168,7 @@ export default class ProfileService extends Service {
    * @param   {String} [param.displayName = undefined] param.displayName
    * @param   {String} [param.company = undefined] param.company
    * @param   {String} [param.daw = undefined] param.daw
+   * @param   {String} [param.product = undefined] param.product
    * @returns {Promise<Profile>}
    */
   updateProfile ({
@@ -190,7 +191,8 @@ export default class ProfileService extends Service {
     language,
     displayName,
     company,
-    daw
+    daw,
+    product
   }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
@@ -215,7 +217,8 @@ export default class ProfileService extends Service {
         language: language,
         display_name: displayName,
         company: company,
-        daw: daw
+        daw: daw,
+        product: product
       }),
       'PUT'
     )
