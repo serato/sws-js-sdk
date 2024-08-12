@@ -246,12 +246,13 @@ export default class IdentityService extends Service {
    * @param {String} param.emailAddress
    * @returns {Promise<UserList>}
    */
-  getUsers ({ emailAddress }) {
+  getUsers ({ emailAddress, includeEmailAddressHistory }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       '/api/v1/users',
       this.toBody({
-        email_address: emailAddress
+        email_address: emailAddress,
+        include_email_address_history: includeEmailAddressHistory
       }),
       'GET'
     )
