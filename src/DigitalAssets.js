@@ -190,18 +190,13 @@ export default class DigitalAssetsService extends Service {
   /**
    * Send an email for resource download
    * @param  {Object} param
-   * @param  {String} param.soundpackName
-   * @param  {String} param.downloadLink
-   * @param  {String} param.imagePath
+   * @param  {String} param.resourceId
    * @return {Promise<AssetDownload>}
    */
   sendResourceDownloadLink ({ resourceId }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      '/api/v1/download-email',
-      this.toBody({
-        resource_id: resourceId
-      }),
+      `/api/v1/${resourceId}/download-email`,
       'POST'
     )
   }
