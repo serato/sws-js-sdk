@@ -70,6 +70,10 @@ import Service from './Service'
  * @typedef {Object} DownloadHistory
  * @property {AssetWithoutResources} asset
  * @property {Resource} resource
+ *
+ * @typedef {Object} DownloadEmail
+ * @property {String} email_address Email address of the user
+ * @property {String} language User preferred language
  */
 
 /**
@@ -138,7 +142,7 @@ export default class DigitalAssetsService extends Service {
    * Create a download URL for a resource
    * @param  {Object} param
    * @param  {Number} param.resourceId
-   * @return {Promise<ResourceDownload>}
+   * @return {Promise<DownloadEmail>}
    */
   getResourceDownload ({ resourceId }) {
     return this.fetch(
@@ -196,7 +200,7 @@ export default class DigitalAssetsService extends Service {
   sendResourceDownloadLink ({ resourceId }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      `/api/v1/${resourceId}/download-email`,
+      `/api/v1/resources/${resourceId}/download-email`,
       'POST'
     )
   }
