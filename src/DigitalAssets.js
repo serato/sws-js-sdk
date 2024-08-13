@@ -142,7 +142,7 @@ export default class DigitalAssetsService extends Service {
    * Create a download URL for a resource
    * @param  {Object} param
    * @param  {Number} param.resourceId
-   * @return {Promise<DownloadEmail>}
+   * @return {Promise<ResourceDownload>}
    */
   getResourceDownload ({ resourceId }) {
     return this.fetch(
@@ -195,7 +195,7 @@ export default class DigitalAssetsService extends Service {
    * Send an email for resource download
    * @param  {Object} param
    * @param  {String} param.resourceId
-   * @return {Promise<AssetDownload>}
+   * @return {Promise<DownloadEmail>}
    */
   sendResourceDownloadLink ({ resourceId }) {
     return this.fetch(
