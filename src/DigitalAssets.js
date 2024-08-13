@@ -113,7 +113,7 @@ export default class DigitalAssetsService extends Service {
         host_app_name: hostAppName,
         host_app_version: hostAppVersion,
         host_app_os: hostOs,
-        type,
+        type: type,
         release_type: releaseType,
         release_date: releaseDate,
         latest_only: latestOnly
