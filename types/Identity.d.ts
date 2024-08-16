@@ -4,7 +4,7 @@ export default class IdentityService extends Service {
     getUser(): Promise<Identity.User>;
     getUsers({ emailAddress, includeEmailAddressHistory }: {
         emailAddress: string;
-        includeEmailAddressHistory: boolean;
+        includeEmailAddressHistory?: boolean;
     }): Promise<Identity.UserList>;
     login({ emailAddress, password, deviceId, deviceName }: {
         emailAddress: string;
