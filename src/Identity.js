@@ -244,7 +244,7 @@ export default class IdentityService extends Service {
    *
    * @param {Object} param
    * @param {String} param.emailAddress
-   * @param {Boolean} param.includeEmailAddressHistory
+   * @param {String} [param.includeEmailAddressHistory = undefined]
    * @returns {Promise<UserList>}
    */
   getUsers ({ emailAddress, includeEmailAddressHistory }) {
