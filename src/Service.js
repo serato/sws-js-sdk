@@ -80,7 +80,7 @@ export default class Service {
   bearerTokenOrBasicAuthHeader () {
     if(this._sws.accessToken) {
       return bearerTokenAuthHeader()
-    } else if (this._sws.appId && this._sws.appSecret) {
+    } else {
       return basicAuthHeader()
     }
   }
