@@ -69,6 +69,23 @@ export default class Service {
   }
 
   /**
+   * Returns an `Authorisation` header value comprised of
+   * either a bearer token or an application ID and secret
+   * depending which is available
+   *
+   * @protected
+   *
+   * @return {String} Auth header value
+   */
+  bearerTokenOrBasicAuthHeader () {
+    if(this._sws.accessToken) {
+      return bearerTokenAuthHeader()
+    } else if (this._sws.appId && this._sws.appSecret) {
+      return basicAuthHeader()
+    }
+  }
+
+  /**
    * Filters out empty and invalid values and returns a object
    * containing parameters for a request
    *
