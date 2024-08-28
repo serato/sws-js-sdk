@@ -78,11 +78,13 @@ export default class Service {
    * @return {String} Auth header value
    */
   bearerTokenOrBasicAuthHeader () {
+    let header = ''
     if (this._sws.accessToken !== undefined) {
-      return bearerTokenAuthHeader()
+      header = this.bearerTokenAuthHeader()
     } else {
-      return basicAuthHeader()
+      header = this.basicAuthHeader()
     }
+    return header
   }
 
   /**
