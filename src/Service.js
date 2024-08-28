@@ -79,9 +79,10 @@ export default class Service {
    */
   bearerTokenOrBasicAuthHeader () {
     let header = ''
-    if (this._sws.accessToken !== undefined) {
+    // If an access token is present, return a bearer token
+    if (!!this._sws.accessToken) {
       header = this.bearerTokenAuthHeader()
-    } else {
+    } else { // If no access token, return a basic auth header
       header = this.basicAuthHeader()
     }
     return header
