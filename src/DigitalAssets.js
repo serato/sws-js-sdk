@@ -102,7 +102,7 @@ export default class DigitalAssetsService extends Service {
    */
   get ({ hostAppName, hostAppVersion, hostOs, type, releaseType, releaseDate, latestOnly } = {}) {
     return this.fetch(
-      this.bearerTokenOrBasicAuthHeader(),
+      this.basicAuthHeader(),
       '/api/v1/assets',
       this.toBody({
         host_app_name: hostAppName,

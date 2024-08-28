@@ -78,7 +78,7 @@ export default class Service {
    * @return {String} Auth header value
    */
   bearerTokenOrBasicAuthHeader () {
-    if(this._sws.accessToken) {
+    if (this._sws.accessToken !== undefined) {
       return bearerTokenAuthHeader()
     } else {
       return basicAuthHeader()
