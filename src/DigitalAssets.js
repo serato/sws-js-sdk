@@ -17,6 +17,7 @@ import Service from './Service'
  * @property {Number} [id = undefined] id Indentifier for a protected resource. One of `url` or `id` will be present.
  * @property {String} name
  * @property {ResourceType | 'manual' | 'quick_start_guide'} type
+ * @property {InstallerType} installer_type
  * @property {('win' | 'mac' | 'cc1')[]} host_os_compatibility List of compatible host operating systems.
  * @property {String} file_name Name of file resource
  * @property {String} mime_type Media type as defined in IETF's RFC 6838.
@@ -69,6 +70,10 @@ import Service from './Service'
  * @typedef {Object} DownloadHistory
  * @property {AssetWithoutResources} asset
  * @property {Resource} resource
+ *
+ * @typedef {Object} DownloadEmail
+ * @property {String} email_address Email address of the user
+ * @property {String} language User preferred language
  */
 
 /**
@@ -183,6 +188,21 @@ export default class DigitalAssetsService extends Service {
         host_app_name: hostAppName
       }),
       'GET'
+    )
+  }
+
+  /**
+   * Send an email for resource download
+   * @param  {Object} param
+   * @param  {String} param.resourceId
+   * @return {Promise<DownloadEmail>}
+   */
+  sendResourceDownloadLink ({ resourceId }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      `/api/v1/resources/${resourceId}/download-email`,
+      null,
+      'POST'
     )
   }
 }
