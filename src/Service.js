@@ -56,6 +56,10 @@ export default class Service {
     return 'Bearer ' + this._sws.accessToken
   }
 
+  xSeratoCdnAuthHeader () {
+    return Base64.encode(this._sws.appId + ':' + this._sws.appSecret)
+  }
+
   /**
    * Returns an `Authorisation` header value comprised of
    * an application ID and secret
@@ -66,26 +70,6 @@ export default class Service {
    */
   basicAuthHeader () {
     return 'Basic ' + Base64.encode(this._sws.appId + ':' + this._sws.appSecret)
-  }
-
-  /**
-   * Returns an `Authorisation` header value comprised of
-   * either a bearer token or an application ID and secret
-   * depending which is available
-   *
-   * @protected
-   *
-   * @return {String} Auth header value
-   */
-  bearerTokenOrBasicAuthHeader () {
-    let header = ''
-    // If an access token is present, return a bearer token
-    if (!!this._sws.accessToken) {
-      header = this.bearerTokenAuthHeader()
-    } else { // If no access token, return a basic auth header
-      header = this.basicAuthHeader()
-    }
-    return header
   }
 
   /**
