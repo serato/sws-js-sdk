@@ -1,5 +1,5 @@
 export default class Sws {
-    constructor({ appId, secret, timeout, serviceUri }: SwsConfiguration);
+    constructor({ appId, secret, timeout, serviceUri, isServerSide }: SwsConfiguration);
     private _appId;
     private _secret;
     private _timeout;
@@ -19,6 +19,7 @@ export default class Sws {
     get appId(): string;
     get appSecret(): string;
     get serviceUri(): ServiceUri;
+    get isServerSide(): boolean;
     set userId(arg: number);
     get userId(): number;
     set accessToken(arg: string);
