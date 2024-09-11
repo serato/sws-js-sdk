@@ -8,6 +8,7 @@ export default class Sws {
     private _userId;
     private _serviceUri;
     private _service;
+    private _isServerSide;
     setInvalidAccessTokenHandler(f: RequestErrorHandler): void;
     setInvalidRefreshTokenHandler(f: RequestErrorHandler): void;
     setPasswordReEntryRequiredHandler(f: RequestErrorHandler): void;
@@ -69,6 +70,7 @@ export type SwsConfiguration = {
     secret?: string;
     timeout?: number;
     serviceUri?: ServiceUri;
+    isServerSide?: boolean
 };
 export const serviceUriDefault: ServiceUri;
 import License from "./License";

@@ -36,8 +36,8 @@ export default class SwsClient extends Sws {
    * @param { import("./Sws").SwsConfiguration } config Configuration options
    * @return {void}
    */
-  constructor ({ appId, secret = '', timeout = 3000, serviceUri = {} }) {
-    super({ appId: appId, secret: secret, timeout: timeout, serviceUri: serviceUri })
+  constructor ({ appId, secret = '', timeout = 3000, serviceUri = {}, isServerSide }) {
+    super({ appId, secret, timeout, serviceUri, isServerSide })
 
     /** @private */
     this._accessTokenUpdatedHandler = () => {}

@@ -374,14 +374,17 @@ function handleFetchError (request, err) {
  */
 function buildRequest (auth, endpoint, body, method, timeout, responseType, headers) {
   const request = {
-    timeout: timeout,
+    timeout,
     url: endpoint,
-    method: method,
-    responseType: responseType,
-    headers: headers
+    method,
+    responseType,
+    headers
   }
 
-  if (auth !== null) {
+  if (this._sws.isServerSide) {
+    request.headers['x-serato-cdn-auth'] = this.xSeratoCdnAuthHeader()
+    request.headers.Authorization = this.basicAuthHeader()
+  } else if (auth !== null) {
     request.headers.Authorization = auth
   }
 

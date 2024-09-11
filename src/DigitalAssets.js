@@ -106,18 +106,9 @@ export default class DigitalAssetsService extends Service {
    * @return {Promise<AssetList>}
    */
   get ({ hostAppName, hostAppVersion, hostOs, type, releaseType, releaseDate, latestOnly } = {}) {
-    const headers = {
-      Accept: 'application/json',
-      'Content-Type': 'application/json'
-    }
-
-    if (!this._sws.accessToken) {
-      headers['x-serato-cdn-auth'] = this.xSeratoCdnAuthHeader()
-    }
-
     // If an access token is present, use bearer token. If no access token, return use basic auth header
     return this.fetch(
-      this._sws.accessToken ? this.bearerTokenAuthHeader() : this.basicAuthHeader(),
+      this.bearerTokenAuthHeader(),
       '/api/v1/assets',
       this.toBody({
         host_app_name: hostAppName,
@@ -128,10 +119,7 @@ export default class DigitalAssetsService extends Service {
         release_date: releaseDate,
         latest_only: latestOnly
       }),
-      'GET',
-      null,
-      'json',
-      headers
+      'GET'
     )
   }
 
