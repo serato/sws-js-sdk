@@ -119,7 +119,7 @@ export default class Service {
     }
   ) {
     this._lastRequest = buildRequest(
-      this._sws,
+      this,
       auth,
       (this.serviceUri.indexOf('://') === -1 ? 'https://' : '') + this.serviceUri + endpoint,
       body,
@@ -363,7 +363,7 @@ function handleFetchError (request, err) {
 
 /**
  * Constructs a Request object
- * @param  {String} sws sws Service object.
+ * @param  {String} service Service object.
  * @param  {String} auth Authorisation header value
  * @param  {String} endpoint API endpoint
  * @param  { import("./Sws").RequestParams } body Object to send in the body
@@ -373,7 +373,7 @@ function handleFetchError (request, err) {
  * @param  { import("./Sws").RequestHeaders } headers Custom headers (defaults to Accept/Content-Type json)
  * @return { import("./Sws").Request }
  */
-function buildRequest (sws, auth, endpoint, body, method, timeout, responseType, headers) {
+function buildRequest (service, auth, endpoint, body, method, timeout, responseType, headers) {
   const request = {
     timeout,
     url: endpoint,
@@ -382,9 +382,9 @@ function buildRequest (sws, auth, endpoint, body, method, timeout, responseType,
     headers
   }
 
-  if (sws.isServerSide) {
-    request.headers['x-serato-cdn-auth'] = sws.xSeratoCdnAuthHeader()
-    request.headers.Authorization = sws.basicAuthHeader()
+  if (service._sws.isServerSide) {
+    request.headers['x-serato-cdn-auth'] = service.xSeratoCdnAuthHeader()
+    request.headers.Authorization = service.basicAuthHeader()
   } else if (auth !== null) {
     request.headers.Authorization = auth
   }
