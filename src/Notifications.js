@@ -149,6 +149,7 @@ import Service from './Service'
  * @property {String} [hostOsVersion = undefined] hostOsVersion     Host application OS version
  * @property {String} [locale = undefined] locale    Locale setting of the client application
  * @property {String} deviceId      ID of the device. Expected to be generated on a per device basis
+ * @property {Boolean} [useAuth = true]     Whether to use an auth header for this request
  *
  * @typedef {Object} CreateNotificationParams
  * @property {String} name           Name of the campaign message. Must be a non empty string
@@ -356,9 +357,9 @@ export default class NotificationsService extends Service {
    * @param {GetMeNotificationsParams}  params
    * @return {Promise<NotificationList>}
    */
-  getMeNotifications ({ hostAppName, hostAppVersion, hostOsName, hostOsVersion, locale, deviceId } = {}) {
+  getMeNotifications ({ hostAppName, hostAppVersion, hostOsName, hostOsVersion, locale, deviceId, useAuth = true } = {}) {
     return this.fetch(
-      this.bearerTokenAuthHeader(),
+      useAuth ? this.bearerTokenAuthHeader() : null,
       '/api/v2/me/notifications',
       this.toBody({
         host_app_name: hostAppName,

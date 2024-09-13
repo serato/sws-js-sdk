@@ -71,6 +71,7 @@ import Service from './Service'
  * @property {String} [hostAppVersion = undefined] hostAppVersion
  * @property { import("./Notifications").OsName } [hostAppOs = undefined] hostAppOs
  * @property {String} [locale = undefined] locale
+ * @property {Boolean} [useAuth = true] useAuth
  */
 
 /**
@@ -95,9 +96,9 @@ export default class NotificationsV1Service extends Service {
    * @param  {GetNotificationsParams} [params = undefined] params
    * @return {Promise<NotificationList>}
    */
-  getNotifications ({ hostAppName, hostAppVersion, hostAppOs, locale } = {}) {
+  getNotifications ({ hostAppName, hostAppVersion, hostAppOs, locale, useAuth = true } = {}) {
     return this.fetch(
-      this.bearerTokenAuthHeader(),
+      useAuth ? this.bearerTokenAuthHeader() : null,
       '/api/v1/notifications',
       this.toBody({
         host_app_name: hostAppName,
