@@ -2,8 +2,9 @@ export default class IdentityService extends Service {
     tokenExchange(code: string, redirectUri: string, codeVerifier: string): Promise<Identity.UserLogin>;
     tokenRefresh(refreshToken: Identity.RawToken): Promise<Identity.UserTokens>;
     getUser(): Promise<Identity.User>;
-    getUsers({ emailAddress }: {
+    getUsers({ emailAddress, includeEmailAddressHistory }: {
         emailAddress: string;
+        includeEmailAddressHistory?: boolean;
     }): Promise<Identity.UserList>;
     login({ emailAddress, password, deviceId, deviceName }: {
         emailAddress: string;
