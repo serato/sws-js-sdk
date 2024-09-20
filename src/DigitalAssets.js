@@ -106,6 +106,7 @@ export default class DigitalAssetsService extends Service {
    * @return {Promise<AssetList>}
    */
   get ({ hostAppName, hostAppVersion, hostOs, type, releaseType, releaseDate, latestOnly } = {}) {
+    // If an access token is present, use bearer token. If no access token, return use basic auth header
     return this.fetch(
       this.bearerTokenAuthHeader(),
       '/api/v1/assets',
@@ -113,7 +114,7 @@ export default class DigitalAssetsService extends Service {
         host_app_name: hostAppName,
         host_app_version: hostAppVersion,
         host_app_os: hostOs,
-        type: type,
+        type,
         release_type: releaseType,
         release_date: releaseDate,
         latest_only: latestOnly
