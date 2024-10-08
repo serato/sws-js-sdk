@@ -3,7 +3,7 @@
 import Service from './Service'
 
 /**
- * @typedef {'serato_dj_pro' | 'serato_dj_lite' | 'serato_sample' | 'serato_studio' | 'scratch_live' | 'pitchntime_le' | 'pitchntime_pro'} HostApplicationName
+ * @typedef {'serato_dj_pro' | 'serato_dj_lite' | 'serato_sample' | 'serato_studio' | 'scratch_live' | 'pitchntime_le' | 'pitchntime_pro' | 'serato_hex_fx'} HostApplicationName
  * @typedef {'release' | 'publicbeta' | 'privatebeta'} ReleaseType
  * @typedef {'win' | 'mac'} HostOs
  * @typedef {'application_installer' | 'content_pack'} ResourceType
