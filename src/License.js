@@ -122,7 +122,7 @@ export default class LicenseService extends Service {
    * @param {'true' | 'false'} [param.includeExpired = undefined] param.includeExpired returns expired subscription license
    * @return {Promise<LicenseList>}
    */
-  getLicenses ({ appName, appVersion, term } = {}) {
+  getLicenses ({ appName, appVersion, term, includeExpired } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       this.userId === 0 ? '/api/v1/me/licenses' : '/api/v1/users/' + this.userId + '/licenses',
@@ -174,7 +174,7 @@ export default class LicenseService extends Service {
    * @param {'true' | 'false'} [param.includeExpired = undefined] param.includeExpired returns expired subscription license
    * @return {Promise<ProductList>}
    */
-  getProducts ({ appName, appVersion, term, showLicenceActivations } = {}) {
+  getProducts ({ appName, appVersion, term, showLicenceActivations, includeExpired } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       this.userId === 0 ? '/api/v1/me/products' : '/api/v1/users/' + this.userId + '/products',
