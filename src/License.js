@@ -119,13 +119,14 @@ export default class LicenseService extends Service {
    * @param {String} [param.appName = undefined] param.appName Only return licenses compatible with app
    * @param {String} [param.appVersion = undefined] param.appVersion Only return licenses compatible with app version `Major.minor.point`
    * @param {String} [param.term = undefined] param.term Only return licenses of specified term
+   * @param {'true' | 'false'} [param.includeExpired = undefined] param.includeExpired returns expired subscription license
    * @return {Promise<LicenseList>}
    */
   getLicenses ({ appName, appVersion, term } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       this.userId === 0 ? '/api/v1/me/licenses' : '/api/v1/users/' + this.userId + '/licenses',
-      this.toBody({ app_name: appName, app_version: appVersion, term })
+      this.toBody({ app_name: appName, app_version: appVersion, term, include_expired: includeExpired })
     )
   }
 
@@ -170,13 +171,14 @@ export default class LicenseService extends Service {
    * @param {String} [param.appVersion = undefined] param.appVersion Only return products compatible with app version `Major.minor.point`
    * @param {String} [param.term = undefined] param.term Only return product of specified term
    * @param {'true' | 'false'} [param.showLicenceActivations = undefined] param.showLicenceActivations Include activations for licenses
+   * @param {'true' | 'false'} [param.includeExpired = undefined] param.includeExpired returns expired subscription license
    * @return {Promise<ProductList>}
    */
   getProducts ({ appName, appVersion, term, showLicenceActivations } = {}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       this.userId === 0 ? '/api/v1/me/products' : '/api/v1/users/' + this.userId + '/products',
-      this.toBody({ app_name: appName, app_version: appVersion, term: term, show_license_activations: showLicenceActivations })
+      this.toBody({ app_name: appName, app_version: appVersion, term: term, show_license_activations: showLicenceActivations, include_expired: includeExpired })
     )
   }
 
