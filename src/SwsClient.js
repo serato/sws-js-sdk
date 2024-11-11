@@ -230,7 +230,7 @@ export default class SwsClient extends Sws {
         // The promise stored here is resolved after the refresh has been attempted
         // and the results processed. Resolves with `null` on success, or with
         // any data an error handler may have returned as a result of the refresh.
-        this._accessTokenRefreshPromise = this.id.tokenRefresh(this.refreshToken)
+        this._accessTokenRefreshPromise = this.id.tokenRefresh(this.refreshToken, false)
           .then(
             data => {
               // This token refresh request may have resulted in an error that was
