@@ -88,7 +88,7 @@ export default class IdentityService extends Service {
    * @returns {Promise<UserTokens>}
    */
   tokenRefresh (refreshToken, useRotation = true) {
-    const endpoint = useRotation ? '/api/v2/tokens/refresh' : '/api/v1/tokens/refresh';
+    const endpoint = useRotation ? '/api/v2/tokens/refresh' : '/api/v1/tokens/refresh'
     return this.fetch(
       null,
       endpoint,
