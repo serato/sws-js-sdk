@@ -84,12 +84,14 @@ export default class IdentityService extends Service {
    * Request a new access token
    *
    * @param {RawToken} refreshToken Refresh token
+   * @param {boolean} useRotation Flag to choose the endpoint; true for V2 with refresh token rotation, false for V1 without rotation
    * @returns {Promise<UserTokens>}
    */
-  tokenRefresh (refreshToken) {
+  tokenRefresh (refreshToken, useRotation = true) {
+    const endpoint = useRotation ? '/api/v2/tokens/refresh' : '/api/v1/tokens/refresh';
     return this.fetch(
       null,
-      '/api/v1/tokens/refresh',
+      endpoint,
       this.toBody({ refresh_token: refreshToken }),
       'POST'
     )
