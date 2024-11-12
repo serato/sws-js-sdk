@@ -25,7 +25,7 @@ describe('Slow Licenses Tests', function () {
 
   before(function () {
     // Initialise the client with parameters for the environment defined in `environment.json`
-    swsClient = new SwsClient({ appId, secret: appSecret, serviceUri, timeout })
+    swsClient = new SwsClient({ appId, secret: appSecret, serviceUri, timeout }, false)
   })
 
   /**

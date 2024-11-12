@@ -47,7 +47,7 @@ describe('SwsClient', function () {
           .get(getLicensesUri, '')
           .reply(200, successBody)
 
-        let sws = new SwsClient({ appId: appId })
+        let sws = new SwsClient({ appId: appId }, false)
 
         return sws.license.getLicenses().then(
           data => {
@@ -83,7 +83,7 @@ describe('SwsClient', function () {
           .get(getLicensesUri, '')
           .reply(secondErrorHttpStatus, { 'code': secondErrorCode, 'error': secondErrorText })
 
-        let sws = new SwsClient({ appId: appId })
+        let sws = new SwsClient({ appId: appId }, false)
 
         return sws.license.getLicenses().then(
           // Shouldn't hit the `resolve` callback
@@ -120,7 +120,7 @@ describe('SwsClient', function () {
           .get(getLicensesUri, '')
           .reply(500, { 'message': 'Application error' })
 
-        let sws = new SwsClient({ appId: appId })
+        let sws = new SwsClient({ appId: appId }, false)
 
         return sws.license.getLicenses().then(
           // Shouldn't hit the `resolve` callback
@@ -160,7 +160,7 @@ describe('SwsClient', function () {
           .get(getLicensesUri, '')
           .reply(500, { 'message': 'Application error' })
 
-        let sws = new SwsClient({ appId: appId })
+        let sws = new SwsClient({ appId: appId }, false)
 
         sws.setServiceErrorHandler(customErrorHandler)
 
@@ -187,7 +187,7 @@ describe('SwsClient', function () {
           .post('/api/v1/tokens/refresh')
           .reply(500, { 'message': 'Application Error' })
 
-        let sws = new SwsClient({ appId: appId })
+        let sws = new SwsClient({ appId: appId }, false)
 
         return sws.license.getLicenses().then(
           // Shouldn't hit the `resolve` callback
@@ -214,7 +214,7 @@ describe('SwsClient', function () {
           .post('/api/v1/tokens/refresh')
           .reply(500, { 'message': 'Application Error' })
 
-        let sws = new SwsClient({ appId: appId })
+        let sws = new SwsClient({ appId: appId }, false)
 
         // Attach the custom handler
         sws.setServiceErrorHandler(customErrorHandler)
@@ -242,7 +242,7 @@ describe('SwsClient', function () {
           .post('/api/v1/tokens/refresh')
           .reply(400, { 'code': 1007, 'error': 'Refresh token expired' })
 
-        let sws = new SwsClient({ appId: appId })
+        let sws = new SwsClient({ appId: appId }, false)
 
         return sws.license.getLicenses().then(
           // Shouldn't hit the `resolve` callback
@@ -270,7 +270,7 @@ describe('SwsClient', function () {
           .post('/api/v1/tokens/refresh')
           .reply(400, { 'code': 1007, 'error': 'Refresh token expired' })
 
-        let sws = new SwsClient({ appId: appId })
+        let sws = new SwsClient({ appId: appId }, false)
 
         // Attach the custom handler
         sws.setInvalidRefreshTokenHandler(customErrorHandler)
@@ -325,7 +325,7 @@ describe('SwsClient', function () {
         expect(refreshTokenExpires.valueOf()).to.equal(refreshTokenExpiresAt.valueOf())
       }
 
-      let sws = new SwsClient({ appId: appId })
+      let sws = new SwsClient({ appId: appId }, false)
       sws.accessTokenUpdatedHandler = accessTokenUpdatedHandler
 
       return sws.license.getLicenses().then(
