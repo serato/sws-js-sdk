@@ -1,5 +1,5 @@
 export default class Sws {
-    constructor({ appId, secret, timeout, serviceUri, isServerSide }: SwsConfiguration, useTokenRotation: boolean);
+    constructor({ appId, secret, timeout, serviceUri, isServerSide }: SwsConfiguration);
     private _appId;
     private _secret;
     private _timeout;
