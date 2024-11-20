@@ -294,53 +294,60 @@ describe('SwsClient', function () {
   })
 
   describe('successfully updates expired access token', function () {
-    it(`Calls 'accessTokenUpdatedHandler' handler after successfully updating access token`, function () {
-      // FYI, JS timestamps use milliseconds but our web service returns timestamps in seconds
-      // The SwsClient under test has code that coverts a server timestamp into a JavaScript date.
-      // So this test includes some maths that takes that into account
-      let accessTokenExpiresAt = new Date(Date.now() + 3600000) // Add 1 hour (in milliseconds)
-      let refreshTokenExpiresAt = new Date(Date.now() + (24 * 3600000))
-
-      let scope = nock(/serato/)
-        .get(getLicensesUri, '')
-        .reply(403, { 'code': 2001, 'error': 'Invalid Access token' })
-        .post('/api/v1/tokens/refresh')
-        .reply(200, {
-          'access': {
-            'token': newAccessTokenValue,
-            'expires_at': (accessTokenExpiresAt.valueOf() / 1000) // Conver to second-based unix timestamp
-          },
-          'refresh': {
-            'token': newRefreshTokenValue,
-            'expires_at': (refreshTokenExpiresAt.valueOf() / 1000)
-          }
-        })
-        .get(getLicensesUri, '')
-        .reply(200, { 'some': 'response' })
-
-      let accessTokenUpdatedHandler = (accessToken, accessTokenExpires, refreshToken, refreshTokenExpires) => {
-        expect(accessToken).to.equal(newAccessTokenValue)
-        expect(accessTokenExpires.valueOf()).to.eql(accessTokenExpiresAt.valueOf())
-        expect(refreshToken).to.equal(newRefreshTokenValue)
-        expect(refreshTokenExpires.valueOf()).to.equal(refreshTokenExpiresAt.valueOf())
-      }
-
-      let sws = new SwsClient({ appId: appId }, false)
-      sws.accessTokenUpdatedHandler = accessTokenUpdatedHandler
-
-      return sws.license.getLicenses().then(
-        // Should always hit the `resolve` callback because we're using our custom handler
-        data => {
-          expect(sws.accessToken).to.equal(newAccessTokenValue)
-          expect(scope.isDone()).to.equal(true)
-        },
-        // Should never hit the `reject` callback
-        err => {
-          let error = new Error(`Expected error to be handled by custom serviceErrorHandler callback`)
-          error.error = err
-          Promise.reject(error)
+    const testCases = [
+      { useTokenRotation: true, description: 'with useTokenRotation = true' },
+      { useTokenRotation: false, description: 'with useTokenRotation = false' }
+    ]
+  
+    testCases.forEach(({ useTokenRotation, description }) => {
+      it(`Calls 'accessTokenUpdatedHandler' handler after successfully updating access token ${description}`, function () {
+        // FYI, JS timestamps use milliseconds but our web service returns timestamps in seconds
+        // The SwsClient under test has code that coverts a server timestamp into a JavaScript date.
+        // So this test includes some maths that takes that into account
+        let accessTokenExpiresAt = new Date(Date.now() + 3600000) // Add 1 hour (in milliseconds)
+        let refreshTokenExpiresAt = new Date(Date.now() + 24 * 3600000)
+        let refreshTokenUri = useTokenRotation ? '/api/v2/tokens/refresh' : '/api/v1/tokens/refresh'
+        let scope = nock(/serato/)
+          .get(getLicensesUri, '')
+          .reply(403, { 'code': 2001, 'error': 'Invalid Access token' })
+          .post(refreshTokenUri)
+          .reply(200, {
+            access: {
+              token: newAccessTokenValue,
+              expires_at: accessTokenExpiresAt.valueOf() / 1000 // Convert to second-based unix timestamp
+            },
+            refresh: {
+              token: newRefreshTokenValue,
+              expires_at: refreshTokenExpiresAt.valueOf() / 1000
+            }
+          })
+          .get(getLicensesUri, '')
+          .reply(200, { some: 'response' })
+  
+        let accessTokenUpdatedHandler = (accessToken, accessTokenExpires, refreshToken, refreshTokenExpires) => {
+          expect(accessToken).to.equal(newAccessTokenValue)
+          expect(accessTokenExpires.valueOf()).to.eql(accessTokenExpiresAt.valueOf())
+          expect(refreshToken).to.equal(newRefreshTokenValue)
+          expect(refreshTokenExpires.valueOf()).to.equal(refreshTokenExpiresAt.valueOf())
         }
-      )
+  
+        let sws = new SwsClient({ appId: appId }, useTokenRotation)
+        sws.accessTokenUpdatedHandler = accessTokenUpdatedHandler
+  
+        return sws.license.getLicenses().then(
+          // Should always hit the `resolve` callback because we're using our custom handler
+          data => {
+            expect(sws.accessToken).to.equal(newAccessTokenValue)
+            expect(scope.isDone()).to.equal(true)
+          },
+          // Should never hit the `reject` callback
+          err => {
+            let error = new Error(`Expected error to be handled by custom serviceErrorHandler callback`)
+            error.error = err
+            return Promise.reject(error)
+          }
+        )
+      })
     })
   })
 })
