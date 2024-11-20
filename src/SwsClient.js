@@ -34,9 +34,10 @@ export default class SwsClient extends Sws {
    * Constructor
    *
    * @param { import("./Sws").SwsConfiguration } config Configuration options
+   * @param {boolean} useTokenRotation Option to use refresh token rotation or not
    * @return {void}
    */
-  constructor ({ appId, secret = '', timeout = 3000, serviceUri = {}, isServerSide }) {
+  constructor ({ appId, secret = '', timeout = 3000, serviceUri = {}, isServerSide }, useTokenRotation = true) {
     super({ appId, secret, timeout, serviceUri, isServerSide })
 
     /** @private */
@@ -51,6 +52,8 @@ export default class SwsClient extends Sws {
      * */
     this._accessTokenRefreshPromise = null
 
+    /** @private */
+    this._useTokenRotation = useTokenRotation
     this.setInvalidAccessTokenHandler(this.fetchNewAccessTokenAndRetryRequest())
 
     this.setAccessDeniedHandler((request, err) => {
@@ -230,7 +233,7 @@ export default class SwsClient extends Sws {
         // The promise stored here is resolved after the refresh has been attempted
         // and the results processed. Resolves with `null` on success, or with
         // any data an error handler may have returned as a result of the refresh.
-        this._accessTokenRefreshPromise = this.id.tokenRefresh(this.refreshToken)
+        this._accessTokenRefreshPromise = this.id.tokenRefresh(this.refreshToken, this._useTokenRotation)
           .then(
             data => {
               // This token refresh request may have resulted in an error that was
