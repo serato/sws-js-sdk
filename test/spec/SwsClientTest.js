@@ -14,17 +14,33 @@ describe('SwsClient', function () {
       {
         httpStatus: 403,
         code: 2001,
-        errorText: 'Invalid Access token'
+        errorText: 'Invalid Access token',
+        useTokenRotation: true
+      },
+      {
+        httpStatus: 403,
+        code: 2001,
+        errorText: 'Invalid Access token',
+        useTokenRotation: false
       },
       // Access token has expired
       {
         httpStatus: 401,
         code: 2002,
-        errorText: 'Expired Access token'
+        errorText: 'Expired Access token',
+        useTokenRotation: true
+      },
+      {
+        httpStatus: 401,
+        code: 2002,
+        errorText: 'Expired Access token',
+        useTokenRotation: false
       }
     ]
 
-    invalidAccessTokenErrors.forEach(({ httpStatus, code, errorText }) => {
+    invalidAccessTokenErrors.forEach(({ httpStatus, code, errorText, useTokenRotation }) => {
+      let refreshTokenUri = useTokenRotation ? '/api/v2/tokens/refresh' : '/api/v1/tokens/refresh'
+
       it(`'${errorText}' error then successfully fetches a new access token and successfully retries original request`, function () {
         let successBody = { 'some': 'body content', 'more': ['body', 'content'] }
         let accessTokenExpiresAt = new Date(Date.now() + 3600000)
@@ -33,7 +49,7 @@ describe('SwsClient', function () {
         let scope = nock(/serato/)
           .get(getLicensesUri, '')
           .reply(httpStatus, { 'code': code, 'error': errorText })
-          .post('/api/v1/tokens/refresh')
+          .post(refreshTokenUri)
           .reply(200, {
             'access': {
               'token': newAccessTokenValue,
@@ -47,7 +63,7 @@ describe('SwsClient', function () {
           .get(getLicensesUri, '')
           .reply(200, successBody)
 
-        let sws = new SwsClient({ appId: appId }, false)
+        let sws = new SwsClient({ appId: appId }, useTokenRotation)
 
         return sws.license.getLicenses().then(
           data => {
@@ -69,7 +85,7 @@ describe('SwsClient', function () {
         let scope = nock(/serato/)
           .get(getLicensesUri, '')
           .reply(httpStatus, { 'code': code, 'error': errorText })
-          .post('/api/v1/tokens/refresh')
+          .post(refreshTokenUri)
           .reply(200, {
             'access': {
               'token': newAccessTokenValue,
@@ -83,7 +99,7 @@ describe('SwsClient', function () {
           .get(getLicensesUri, '')
           .reply(secondErrorHttpStatus, { 'code': secondErrorCode, 'error': secondErrorText })
 
-        let sws = new SwsClient({ appId: appId }, false)
+        let sws = new SwsClient({ appId: appId }, useTokenRotation)
 
         return sws.license.getLicenses().then(
           // Shouldn't hit the `resolve` callback
@@ -106,7 +122,7 @@ describe('SwsClient', function () {
         let scope = nock(/serato/)
           .get(getLicensesUri, '')
           .reply(httpStatus, { 'code': code, 'error': errorText })
-          .post('/api/v1/tokens/refresh')
+          .post(refreshTokenUri)
           .reply(200, {
             'access': {
               'token': newAccessTokenValue,
@@ -120,7 +136,7 @@ describe('SwsClient', function () {
           .get(getLicensesUri, '')
           .reply(500, { 'message': 'Application error' })
 
-        let sws = new SwsClient({ appId: appId }, false)
+        let sws = new SwsClient({ appId: appId }, useTokenRotation)
 
         return sws.license.getLicenses().then(
           // Shouldn't hit the `resolve` callback
@@ -146,7 +162,7 @@ describe('SwsClient', function () {
         let scope = nock(/serato/)
           .get(getLicensesUri, '')
           .reply(httpStatus, { 'code': code, 'error': errorText })
-          .post('/api/v1/tokens/refresh')
+          .post(refreshTokenUri)
           .reply(200, {
             'access': {
               'token': newAccessTokenValue,
@@ -160,7 +176,7 @@ describe('SwsClient', function () {
           .get(getLicensesUri, '')
           .reply(500, { 'message': 'Application error' })
 
-        let sws = new SwsClient({ appId: appId }, false)
+        let sws = new SwsClient({ appId: appId }, useTokenRotation)
 
         sws.setServiceErrorHandler(customErrorHandler)
 
@@ -184,10 +200,10 @@ describe('SwsClient', function () {
         let scope = nock(/serato/)
           .get(getLicensesUri, '')
           .reply(httpStatus, { 'code': code, 'error': errorText })
-          .post('/api/v1/tokens/refresh')
+          .post(refreshTokenUri)
           .reply(500, { 'message': 'Application Error' })
 
-        let sws = new SwsClient({ appId: appId }, false)
+        let sws = new SwsClient({ appId: appId }, useTokenRotation)
 
         return sws.license.getLicenses().then(
           // Shouldn't hit the `resolve` callback
@@ -211,10 +227,10 @@ describe('SwsClient', function () {
         let scope = nock(/serato/)
           .get(getLicensesUri, '')
           .reply(httpStatus, { 'code': code, 'error': errorText })
-          .post('/api/v1/tokens/refresh')
+          .post(refreshTokenUri)
           .reply(500, { 'message': 'Application Error' })
 
-        let sws = new SwsClient({ appId: appId }, false)
+        let sws = new SwsClient({ appId: appId }, useTokenRotation)
 
         // Attach the custom handler
         sws.setServiceErrorHandler(customErrorHandler)
@@ -239,10 +255,10 @@ describe('SwsClient', function () {
         let scope = nock(/serato/)
           .get(getLicensesUri, '')
           .reply(httpStatus, { 'code': code, 'error': errorText })
-          .post('/api/v1/tokens/refresh')
+          .post(refreshTokenUri)
           .reply(400, { 'code': 1007, 'error': 'Refresh token expired' })
 
-        let sws = new SwsClient({ appId: appId }, false)
+        let sws = new SwsClient({ appId: appId }, useTokenRotation)
 
         return sws.license.getLicenses().then(
           // Shouldn't hit the `resolve` callback
@@ -267,10 +283,10 @@ describe('SwsClient', function () {
         let scope = nock(/serato/)
           .get(getLicensesUri, '')
           .reply(httpStatus, { 'code': code, 'error': errorText })
-          .post('/api/v1/tokens/refresh')
+          .post(refreshTokenUri)
           .reply(400, { 'code': 1007, 'error': 'Refresh token expired' })
 
-        let sws = new SwsClient({ appId: appId }, false)
+        let sws = new SwsClient({ appId: appId }, useTokenRotation)
 
         // Attach the custom handler
         sws.setInvalidRefreshTokenHandler(customErrorHandler)
