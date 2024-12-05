@@ -1,4 +1,4 @@
-import axios, {AxiosResponse} from 'axios'
+import {AxiosResponse} from 'axios'
 export default class Service {
     constructor(Sws: any);
     private _sws;
@@ -38,8 +38,7 @@ export default class Service {
 }
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'OPTIONS';
 export type ResponseType = 'json' | 'blob';
-
-export class SwsError extends Error {
+export interface SwsError extends Error {
     httpStatus: number
     code?: number
     response: AxiosResponse
