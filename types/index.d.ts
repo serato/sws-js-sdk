@@ -10,5 +10,6 @@ export * from "./NotificationsV1";
 export * from "./Profile";
 export * from "./Rewards";
 export * from "./AiProxy";
+export * from "./SwsError";
 export { default } from "./SwsClient";
 import Sws from "./Sws";
