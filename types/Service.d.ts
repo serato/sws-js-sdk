@@ -38,8 +38,3 @@ export default class Service {
 }
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'OPTIONS';
 export type ResponseType = 'json' | 'blob';
-export interface SwsError extends Error {
-    httpStatus: number
-    code?: number
-    response: AxiosResponse
-}
