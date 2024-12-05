@@ -84,3 +84,4 @@ import DigitalAssets from "./DigitalAssets";
 import Rewards from "./Rewards";
 import AiProxy from "./AiProxy";
 import CloudLibrary from "./CloudLibrary";
+import SwsError from "./SwsError";
