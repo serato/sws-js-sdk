@@ -79,14 +79,18 @@ export default class Service {
    * @protected
    *
    * @param { import("./Sws").RequestParams } data Request params
+   * @param { boolean } [allowNullValues=false] Flag to allow null values
    * @return { import("./Sws").RequestParams } Params
    */
-  toBody (data) {
+  toBody (data, allowNullValues = false) {
     const requestData = {}
     for (const p in data) {
-      const val = data[p]
-      if (Object.prototype.hasOwnProperty.call(data, p) && typeof val !== 'undefined' && val !== null) {
-        requestData[p] = val
+      if (Object.prototype.hasOwnProperty.call(data, p)) {
+        const val = data[p]
+        // Check if allowNullValues is true or if the value is defined and not null
+        if (allowNullValues || (typeof val !== 'undefined' && val !== null)) {
+          requestData[p] = val
+        }
       }
     }
     return requestData
