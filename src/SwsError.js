@@ -8,10 +8,17 @@ export default class SwsError extends Error {
    * @return {void}
    */
   
-    constructor(httpStatus, response, code) {
-        super()
+    constructor(message, httpStatus, response, code) {
+        super(message)
         this.httpStatus = httpStatus
         this.response = response
         this.code = code
+    }
+
+    constructor(message, httpStatus, response) {
+        super(message)
+        this.httpStatus = httpStatus
+        this.response = response
+        this.code = undefined
     }
 }
