@@ -1,3 +1,8 @@
+/**
+ *  @classdesc Extends Error class to allow for additional properties.
+ * @class
+ * @extends Error
+ */
 export default class SwsError extends Error {
     /**
    * Constructor
