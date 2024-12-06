@@ -12,11 +12,11 @@ export default class SwsError extends Error {
    * @param {import("axios").AxiosResponse} response
    * @return {void}
    */
-  
     constructor(message, httpStatus, response, code = undefined) {
         super(message)
         this.httpStatus = httpStatus
         this.response = response
         this.code = code
+        Object.setPrototypeOf(this, SwsError.prototype);
     }
 }
