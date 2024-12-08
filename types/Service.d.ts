@@ -1,4 +1,3 @@
-import {AxiosResponse} from 'axios'
 export default class Service {
     constructor(Sws: any);
     private _sws;

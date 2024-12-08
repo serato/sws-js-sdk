@@ -353,11 +353,7 @@ export default class Service {
 function handleFetchError (request, err) {
   if (err.response) {
     const errText = err.response.data.error ? err.response.data.error : err.response.data.message
-    const error = err.response.data.code ?
-      new SwsError(errText, err.response.status, err.response, err.response.data.code) :
-      new SwsError(errText, err.response.status, err.response)
-      console.log("Error: " + typeof(error) + error)
-    throw error
+    throw new SwsError(errText, err.response.status, err.response, err.response.data.code)
   } else {
     // If response is undefined, re-throw the exception
     throw err

@@ -1,7 +1,7 @@
 'use strict'
 
 /**
- *  @classdesc Extends Error class to allow for additional properties.
+ * @classdesc Extends Error class to allow for additional properties.
  * @class
  * @extends Error
  */
