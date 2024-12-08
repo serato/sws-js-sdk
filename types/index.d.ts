@@ -1,4 +1,3 @@
-export { Sws };
 export * from "./Sws";
 export * from "./SwsClient";
 export * from "./DigitalAssets";
@@ -13,3 +12,5 @@ export * from "./AiProxy";
 export * from "./SwsError";
 export { default } from "./SwsClient";
 import Sws from "./Sws";
+import SwsError from "./SwsError";
+export { Sws, SwsError };
