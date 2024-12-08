@@ -51,6 +51,21 @@ export default class EcomService extends Service {
         appVersion?: string;
         catalogCategory?: string;
     }): Promise<Ecom.RecommendationsList>;
+    getCart({ cartId }: {
+        cartId: string;
+    }): Promise<Ecom.Cart>;
+    createCart({ products, couponCode }: {
+        products: Ecom.ProductItem[];
+        couponCode?: string;
+    }): Promise<Ecom.Cart>;
+    updateCartBillingAddress({ cartId, billingAddress }: {
+        cartId: string;
+        billingAddress?: Omit<Ecom.CartBillingAddress, 'country_code'>;
+    }): Promise<Ecom.Cart>;
+    updateCartCouponCode({ cartId, couponCode }: {
+        cartId: string;
+        couponCode?: string | null;
+    }): Promise<Ecom.Cart>;
 }
 export namespace Ecom {
     export type SubscriptionGroup = 'dj' | 'wailshark' | 'sample' | 'serato_studio';
@@ -246,6 +261,60 @@ export namespace Ecom {
     };
     export type RecommendationsList = {
         items: CatalogProduct[];
+    };
+    export type CartBillingAddress = {
+        first_name?: string;
+        last_name?: string;
+        company?: string;
+        address?: string;
+        address_extended?: string;
+        city?: string;
+        post_code?: string;
+        region?: string;
+        country_code: string;
+    };
+    export type Promotion = {
+        description: string;
+        discount_fixed_amount?: number;
+        discount_percentage?: number;
+        billing_cycle_duration?: number;
+    };
+    export type ProductType = {
+        id: number;
+        name: string;
+        subscription_start_date?: string;
+        subscription_billing_period?: number;
+        prepaid_credit_in_days?: number;
+    };
+    export type CartItem = {
+        id: number;
+        product_type: ProductType;
+        quantity: number;
+        base_price: number;
+        price: number;
+        tax_amount: number;
+        tax_rate: number;
+        error_code?: number;
+        subscription_start_date?: string;
+        prepaid_credit_in_days?: number;
+        subscription_billing_period?: number;
+        promotion?: Promotion[];
+    };
+    export type Cart = {
+        uuid: string;
+        items: CartItem[];
+        total_amount: number;
+        subtotal_amount: number;
+        tax_amount: number;
+        currency: string;
+        created_at: string;
+        updated_at: string;
+        billing_address?: CartBillingAddress;
+        coupon_code?: string;
+    };
+    export type ProductItem = {
+        product_type_id: number;
+        quantity: number;
     };
 }
 import Service from "./Service";
