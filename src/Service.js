@@ -356,6 +356,7 @@ function handleFetchError (request, err) {
     const error = err.response.data.code ?
       new SwsError(errText, err.response.status, err.response, err.response.data.code) :
       new SwsError(errText, err.response.status, err.response)
+      console.log("Error: " + typeof(error) + error)
     throw error
   } else {
     // If response is undefined, re-throw the exception
