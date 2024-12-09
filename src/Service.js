@@ -2,6 +2,7 @@
 
 import { Base64 } from 'js-base64'
 import axios from 'axios'
+import SwsError from './SwsError'
 
 /**
  * @typedef {'GET' | 'POST' | 'PUT' | 'DELETE' | 'OPTIONS'} HttpMethod
@@ -348,13 +349,7 @@ export default class Service {
 function handleFetchError (request, err) {
   if (err.response) {
     const errText = err.response.data.error ? err.response.data.error : err.response.data.message
-    const error = new Error(errText)
-    error.httpStatus = err.response.status
-    if (err.response.data.code) {
-      error.code = err.response.data.code
-    }
-    error.response = err.response
-    throw error
+    throw new SwsError(errText, err.response.status, err.response, err.response.data.code)
   } else {
     // If response is undefined, re-throw the exception
     throw err
