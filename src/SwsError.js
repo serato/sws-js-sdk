@@ -16,7 +16,6 @@ export default class SwsError extends Error {
    */
     constructor(message, httpStatus, response, code = undefined) {
         super(message)
-        // append additional properties to SwsError object for cleaner error handling in TS
         this.httpStatus = httpStatus
         this.response = response
         this.code = code
