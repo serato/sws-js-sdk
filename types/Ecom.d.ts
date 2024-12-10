@@ -53,7 +53,7 @@ export default class EcomService extends Service {
     }): Promise<Ecom.RecommendationsList>;
 }
 export namespace Ecom {
-    export type SubscriptionGroup = 'dj' | 'wailshark' | 'sample' | 'serato_studio';
+    export type SubscriptionGroup = 'dj' | 'serato_producer_suite';
     export type SubscriptionStatus = 'Active' | 'Canceled' | 'Past Due' | 'Expired' | 'Pending' | 'Expiring';
     export type DiscountSource = 'order_promotion' | 'voucher_promotion' | 'voucher_retail' | 'voucher_offer';
     export type OrderStatus = 'complete' | 'pending_payment' | 'cancel' | 'fraud';
