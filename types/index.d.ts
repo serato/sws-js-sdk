@@ -1,4 +1,3 @@
-export { Sws };
 export * from "./Sws";
 export * from "./SwsClient";
 export * from "./DigitalAssets";
@@ -10,5 +9,8 @@ export * from "./NotificationsV1";
 export * from "./Profile";
 export * from "./Rewards";
 export * from "./AiProxy";
+export * from "./SwsError";
 export { default } from "./SwsClient";
 import Sws from "./Sws";
+import SwsError from "./SwsError";
+export { Sws, SwsError };
