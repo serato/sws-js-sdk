@@ -19,6 +19,5 @@ export default class SwsError extends Error {
         this.httpStatus = httpStatus
         this.response = response
         this.code = code
-        Object.setPrototypeOf(this, SwsError.prototype);
     }
 }
