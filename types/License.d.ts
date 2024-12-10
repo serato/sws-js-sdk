@@ -42,7 +42,7 @@ export default class LicenseService extends Service {
 export namespace License {
     export type RlmLicenseFileContents = string;
     export type LicenseTerm = 'permanent' | 'subscription' | 'trial' | 'timelimited';
-    export type HostApplicationId = 'dj' | 'dj_lite' | 'serato_sample' | 'wailshark' | 'serato_studio';
+    export type HostApplicationId = 'dj' | 'dj_lite' | 'serato_sample' | 'wailshark' | 'serato_studio' | 'serato_hex_fx';
     export type HostApplication = {
         id: HostApplicationId;
         version: string;
