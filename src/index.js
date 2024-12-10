@@ -9,7 +9,7 @@ export { Sws }
 export * from './Sws'
 export { default } from './SwsClient'
 export * from './SwsClient'
-export {SwsError}
+export { SwsError }
 export * from './DigitalAssets'
 export * from './Ecom'
 export * from './Identity'
