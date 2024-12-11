@@ -5,11 +5,10 @@ import 'fast-text-encoding'
 import Sws from './Sws'
 import SwsError from './SwsError'
 
-export { Sws }
+export { Sws, SwsError }
 export * from './Sws'
 export { default } from './SwsClient'
 export * from './SwsClient'
-export { SwsError }
 export * from './DigitalAssets'
 export * from './Ecom'
 export * from './Identity'
