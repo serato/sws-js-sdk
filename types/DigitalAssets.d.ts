@@ -17,10 +17,12 @@ export default class DigitalAssetsService extends Service {
     }): Promise<DigitalAssets.ResourceDownload>;
 }
 export namespace DigitalAssets {
-    export type HostApplicationName = 'serato_dj_pro' | 'serato_dj_lite' | 'serato_sample' | 'serato_studio' | 'scratch_live' | 'pitchntime_le' | 'pitchntime_pro';
+    export type HostApplicationName = 'serato_dj_pro' | 'serato_dj_lite' | 'serato_sample' | 'serato_studio' | 'scratch_live' | 'pitchntime_le' | 'pitchntime_pro' | 'serato_hex_fx';
     export type ReleaseType = 'release' | 'publicbeta' | 'privatebeta';
     export type HostOs = 'win' | 'mac';
     export type ResourceType = 'application_installer' | 'content_pack';
+    export type InstallerType = 'win-installer' | 'mac-installer' | 'mac-32-installer' | 'mac-installer-no-corepack' | 'win-32-installer' | 'win-installer-no-corepack' | 'cc1'
+        | 'venue' | 'logic-limited-demo';
     export type HostApplication = {
         name: HostApplicationName;
         min_version?: string;
@@ -30,6 +32,7 @@ export namespace DigitalAssets {
         id?: number;
         name: string;
         type: ResourceType | 'manual' | 'quick_start_guide';
+        installer_type?: InstallerType;
         host_os_compatibility: ('win' | 'mac' | 'cc1')[];
         file_name: string;
         mime_type: string;

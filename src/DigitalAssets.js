@@ -3,7 +3,7 @@
 import Service from './Service'
 
 /**
- * @typedef {'serato_dj_pro' | 'serato_dj_lite' | 'serato_sample' | 'serato_studio' | 'scratch_live' | 'pitchntime_le' | 'pitchntime_pro'} HostApplicationName
+ * @typedef {'serato_dj_pro' | 'serato_dj_lite' | 'serato_sample' | 'serato_studio' | 'scratch_live' | 'pitchntime_le' | 'pitchntime_pro' | 'serato_hex_fx'} HostApplicationName
  * @typedef {'release' | 'publicbeta' | 'privatebeta'} ReleaseType
  * @typedef {'win' | 'mac'} HostOs
  * @typedef {'application_installer' | 'content_pack'} ResourceType
@@ -17,6 +17,7 @@ import Service from './Service'
  * @property {Number} [id = undefined] id Indentifier for a protected resource. One of `url` or `id` will be present.
  * @property {String} name
  * @property {ResourceType | 'manual' | 'quick_start_guide'} type
+ * @property {InstallerType} installer_type
  * @property {('win' | 'mac' | 'cc1')[]} host_os_compatibility List of compatible host operating systems.
  * @property {String} file_name Name of file resource
  * @property {String} mime_type Media type as defined in IETF's RFC 6838.
@@ -54,6 +55,25 @@ import Service from './Service'
  * @property {String} url Download URL
  * @property {String} url_created Creation time of the download URL expressed in ISO ISO 8061 date format.
  * @property {String} url_expires Expiry time of the download URL expressed in ISO ISO 8061 date format.
+ *
+ * @typedef {Object} AssetWithoutResources
+ * @property {Number} id
+ * @property {String} name
+ * @property {'application_installer' | 'content_pack'} type
+ * @property {ReleaseType} release_type
+ * @property {String} version
+ * @property {HostApplication[]} host_app_compatibility A list of compatible host applications
+ * @property {String} release_date Release date in ISO 8061 format
+ * @property {String} [webpage_url = undefined] Canonical URL for a webpage associated with the asset
+ * @property {Object<string, any>} [meta = undefined] Meta data associated with the asset
+ *
+ * @typedef {Object} DownloadHistory
+ * @property {AssetWithoutResources} asset
+ * @property {Resource} resource
+ *
+ * @typedef {Object} DownloadEmail
+ * @property {String} email_address Email address of the user
+ * @property {String} language User preferred language
  */
 
 /**
@@ -86,6 +106,7 @@ export default class DigitalAssetsService extends Service {
    * @return {Promise<AssetList>}
    */
   get ({ hostAppName, hostAppVersion, hostOs, type, releaseType, releaseDate, latestOnly } = {}) {
+    // If an access token is present, use bearer token. If no access token, return use basic auth header
     return this.fetch(
       this.bearerTokenAuthHeader(),
       '/api/v1/assets',
@@ -93,7 +114,7 @@ export default class DigitalAssetsService extends Service {
         host_app_name: hostAppName,
         host_app_version: hostAppVersion,
         host_app_os: hostOs,
-        type: type,
+        type,
         release_type: releaseType,
         release_date: releaseDate,
         latest_only: latestOnly
@@ -128,6 +149,38 @@ export default class DigitalAssetsService extends Service {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       '/api/v1/resources/' + resourceId + '/download',
+      null,
+      'POST'
+    )
+  }
+
+  /**
+   * Get user application installer download history
+   * @param  {Object} [param = undefined] param
+   * @param  {HostApplicationName} [param.hostAppName = undefined] param.hostAppName
+   * @return {Promise<DownloadHistory>}
+   */
+  getApplicationInstallerDownloads ({ hostAppName }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      '/api/v1/me/log/downloads/applicationinstaller',
+      this.toBody({
+        host_app_name: hostAppName
+      }),
+      'GET'
+    )
+  }
+
+  /**
+   * Send an email for resource download
+   * @param  {Object} param
+   * @param  {String} param.resourceId
+   * @return {Promise<DownloadEmail>}
+   */
+  sendResourceDownloadLink ({ resourceId }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      `/api/v1/resources/${resourceId}/download-email`,
       null,
       'POST'
     )

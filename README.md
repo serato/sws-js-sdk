@@ -13,6 +13,20 @@ resolve to a data object containing the response from the web service.
 > SDK v6 has some major breaking changes from v5.
 > Read the [changelist](./CHANGELIST-v6.md) for details.
 
+## Developer Notes
+
+All classes and data structures have corresponding Typescript definitions.
+
+Typescript definitions are primarily auto-generated from JSDoc annontations using the Typescript compiler, as described in the [Typescript documentation](https://www.typescriptlang.org/docs/handbook/declaration-files/dts-from-js.html). The [documentation](https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html) also describes which JSDoc annotations are supported.
+
+The initial `.d.ts` files produced by the Typescript compiler are output to the [types](./types) directory. The [tsbuilder](./tsbuilder.js) module then makes modifications to some auto-generated files.
+
+The entire build process can be initiated from the following npm script:
+
+```bash
+npm run build
+```
+
 ## Basic usage
 
 Basic usage consists of creating an `Sws` instance then calling a method on a service client:

@@ -1,5 +1,5 @@
 export default class NotificationsV1Service extends Service {
-    getNotifications({ hostAppName, hostAppVersion, hostAppOs, locale }?: NotificationsV1.GetNotificationsParams): Promise<NotificationsV1.NotificationList>;
+    getNotifications({ hostAppName, hostAppVersion, hostAppOs, locale, useAuth }?: NotificationsV1.GetNotificationsParams): Promise<NotificationsV1.NotificationList>;
 }
 export namespace NotificationsV1 {
     export type MessageType = 'sale' | 'generic' | 'none';
@@ -69,6 +69,7 @@ export namespace NotificationsV1 {
         hostAppVersion?: string;
         hostAppOs?: import("./Notifications").Notifications.OsName;
         locale?: string;
+        useAuth?: boolean;
     };
 }
 import Service from "./Service";

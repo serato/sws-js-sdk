@@ -84,12 +84,14 @@ export default class IdentityService extends Service {
    * Request a new access token
    *
    * @param {RawToken} refreshToken Refresh token
+   * @param {boolean} useRotation Flag to choose the endpoint; true for V2 with refresh token rotation, false for V1 without rotation
    * @returns {Promise<UserTokens>}
    */
-  tokenRefresh (refreshToken) {
+  tokenRefresh (refreshToken, useRotation = true) {
+    const endpoint = useRotation ? '/api/v2/tokens/refresh' : '/api/v1/tokens/refresh'
     return this.fetch(
       null,
-      '/api/v1/tokens/refresh',
+      endpoint,
       this.toBody({ refresh_token: refreshToken }),
       'POST'
     )
@@ -220,6 +222,42 @@ export default class IdentityService extends Service {
       this.userId === 0 ? '/api/v1/me/sendverifyemailaddress' : '/api/v1/users/' + this.userId + '/sendverifyemailaddress',
       this.toBody({ email_address: emailAddress, redirect_uri: redirectUri }),
       'POST'
+    )
+  }
+
+  /**
+   * Updates user's details (email address)
+   *
+   * @param {Object} param Options
+   * @param {String} param.emailAddress Email address to change to
+   * @returns {Promise<User>}
+   * **/
+  updateUser ({ emailAddress }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      '/api/v1/users/' + this.userId,
+      this.toBody({ email_address: emailAddress }),
+      'PUT'
+    )
+  }
+
+  /**
+   * Returns a list of users.
+   *
+   * @param {Object} param
+   * @param {String} param.emailAddress
+   * @param {String} [param.includeEmailAddressHistory = undefined]
+   * @returns {Promise<UserList>}
+   */
+  getUsers ({ emailAddress, includeEmailAddressHistory }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      '/api/v1/users',
+      this.toBody({
+        email_address: emailAddress,
+        include_email_address_history: includeEmailAddressHistory
+      }),
+      'GET'
     )
   }
 }

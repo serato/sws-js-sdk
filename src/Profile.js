@@ -167,6 +167,8 @@ export default class ProfileService extends Service {
    * @param   {String} [param.language = undefined] param.language
    * @param   {String} [param.displayName = undefined] param.displayName
    * @param   {String} [param.company = undefined] param.company
+   * @param   {String} [param.daw = undefined] param.daw
+   * @param   {String} [param.product = undefined] param.product
    * @returns {Promise<Profile>}
    */
   updateProfile ({
@@ -188,7 +190,9 @@ export default class ProfileService extends Service {
     threadsPerPage,
     language,
     displayName,
-    company
+    company,
+    daw,
+    product
   }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
@@ -212,7 +216,9 @@ export default class ProfileService extends Service {
         threads_per_page: threadsPerPage,
         language: language,
         display_name: displayName,
-        company: company
+        company: company,
+        daw: daw,
+        product: product
       }),
       'PUT'
     )

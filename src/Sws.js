@@ -74,7 +74,7 @@ export default class Sws {
    * @param {SwsConfiguration} config Configuration options
    * @return {void}
    */
-  constructor ({ appId, secret = '', timeout = 3000, serviceUri = {} }) {
+  constructor ({ appId, secret = '', timeout = 3000, serviceUri = {}, isServerSide }) {
     /** @private */
     this._appId = appId
     /** @private */
@@ -87,6 +87,8 @@ export default class Sws {
     this._refreshToken = ''
     /** @private */
     this._userId = 0
+    /** @private */
+    this._isServerSide = isServerSide
     /** @private */
     this._serviceUri = {
       id: serviceUri.id ? serviceUri.id : serviceUriDefault.id,
@@ -244,6 +246,23 @@ export default class Sws {
    */
   get userId () {
     return this._userId
+  }
+
+  /**
+   * Set the isServerSide property
+   * @param {Boolean} isServerSide
+   */
+  set isServerSide (isServerSide) {
+    this._isServerSide = isServerSide
+  }
+
+  /**
+   * Get the isServerSide property
+   *
+   * @return {Boolean}
+   */
+  get isServerSide () {
+    return this._isServerSide
   }
 
   /**

@@ -2,6 +2,7 @@
 
 import { Base64 } from 'js-base64'
 import axios from 'axios'
+import SwsError from './SwsError'
 
 /**
  * @typedef {'GET' | 'POST' | 'PUT' | 'DELETE' | 'OPTIONS'} HttpMethod
@@ -54,6 +55,10 @@ export default class Service {
    */
   bearerTokenAuthHeader () {
     return 'Bearer ' + this._sws.accessToken
+  }
+
+  xSeratoCdnAuthHeader () {
+    return Base64.encode(this._sws.appId + ':' + this._sws.appSecret)
   }
 
   /**
@@ -119,6 +124,7 @@ export default class Service {
     }
   ) {
     this._lastRequest = buildRequest(
+      this,
       auth,
       (this.serviceUri.indexOf('://') === -1 ? 'https://' : '') + this.serviceUri + endpoint,
       body,
@@ -347,13 +353,7 @@ export default class Service {
 function handleFetchError (request, err) {
   if (err.response) {
     const errText = err.response.data.error ? err.response.data.error : err.response.data.message
-    const error = new Error(errText)
-    error.httpStatus = err.response.status
-    if (err.response.data.code) {
-      error.code = err.response.data.code
-    }
-    error.response = err.response
-    throw error
+    throw new SwsError(errText, err.response.status, err.response, err.response.data.code)
   } else {
     // If response is undefined, re-throw the exception
     throw err
@@ -362,7 +362,7 @@ function handleFetchError (request, err) {
 
 /**
  * Constructs a Request object
- *
+ * @param  {String} service Service object.
  * @param  {String} auth Authorisation header value
  * @param  {String} endpoint API endpoint
  * @param  { import("./Sws").RequestParams } body Object to send in the body
@@ -372,16 +372,19 @@ function handleFetchError (request, err) {
  * @param  { import("./Sws").RequestHeaders } headers Custom headers (defaults to Accept/Content-Type json)
  * @return { import("./Sws").Request }
  */
-function buildRequest (auth, endpoint, body, method, timeout, responseType, headers) {
+function buildRequest (service, auth, endpoint, body, method, timeout, responseType, headers) {
   const request = {
-    timeout: timeout,
+    timeout,
     url: endpoint,
-    method: method,
-    responseType: responseType,
-    headers: headers
+    method,
+    responseType,
+    headers
   }
 
-  if (auth !== null) {
+  if (service._sws.isServerSide) {
+    request.headers['x-serato-cdn-auth'] = service.xSeratoCdnAuthHeader()
+    request.headers.Authorization = service.basicAuthHeader()
+  } else if (auth !== null) {
     request.headers.Authorization = auth
   }
 
