@@ -1,4 +1,5 @@
 export default class EcomService extends Service {
+    _serviceUri: any;
     getSubscriptions(): Promise<Ecom.SubscriptionList>;
     getOrders({ orderStatus }?: {
         orderStatus?: Ecom.OrderStatus;
@@ -53,15 +54,15 @@ export default class EcomService extends Service {
     }): Promise<Ecom.RecommendationsList>;
 }
 export namespace Ecom {
-    export type SubscriptionGroup = 'dj' | 'serato_producer_suite';
-    export type SubscriptionStatus = 'Active' | 'Canceled' | 'Past Due' | 'Expired' | 'Pending' | 'Expiring';
-    export type DiscountSource = 'order_promotion' | 'voucher_promotion' | 'voucher_retail' | 'voucher_offer';
-    export type OrderStatus = 'complete' | 'pending_payment' | 'cancel' | 'fraud';
-    export type CatalogProductFeature = 'dj' | 'dvs' | 'video' | 'fx' | 'pnt_dj' | 'flip' | 'play' | 'studio';
-    export type PaymentMethodType = 'CreditCard' | 'PayPal';
-    export type SubscriptionPlanChangeStatus = 'complete' | 'pending' | 'invalid';
-    export type VoucherTypeCategory = 'promotion' | 'retention-offer' | 'upsell-offer, `retail';
-    export type InvoiceMimeType = 'application/json' | 'application/pdf' | 'text/html';
+    export type SubscriptionGroup = "dj" | "serato_producer_suite";
+    export type SubscriptionStatus = "Active" | "Canceled" | "Past Due" | "Expired" | "Pending" | "Expiring";
+    export type DiscountSource = "order_promotion" | "voucher_promotion" | "voucher_retail" | "voucher_offer";
+    export type OrderStatus = "complete" | "pending_payment" | "cancel" | "fraud";
+    export type CatalogProductFeature = "dj" | "dvs" | "video" | "fx" | "pnt_dj" | "flip" | "play" | "studio";
+    export type PaymentMethodType = "CreditCard" | "PayPal";
+    export type SubscriptionPlanChangeStatus = "complete" | "pending" | "invalid";
+    export type VoucherTypeCategory = "promotion" | "retention-offer" | "upsell-offer, `retail";
+    export type InvoiceMimeType = "application/json" | "application/pdf" | "text/html";
     export type Discount = {
         name: string;
         amount: number;
@@ -248,4 +249,4 @@ export namespace Ecom {
         items: CatalogProduct[];
     };
 }
-import Service from "./Service";
+import Service from './Service';

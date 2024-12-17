@@ -1,4 +1,5 @@
 export default class RewardsService extends Service {
+    _serviceUri: any;
     getRewards(): Promise<Rewards.RewardList>;
     getReferralCampaigns(): Promise<Rewards.CampaignList>;
     getReferralCampaign({ id }: {
@@ -22,7 +23,7 @@ export default class RewardsService extends Service {
     }): Promise<Rewards.CampaignActivityLog>;
 }
 export namespace Rewards {
-    export type OwnedStatus = 'dj' | 'wailshark' | 'sample' | 'serato_studio';
+    export type OwnedStatus = "dj" | "wailshark" | "sample" | "serato_studio";
     export type CampaignGoal = {
         voucher_type_id: number;
         voucher_batch_id: string;
@@ -50,7 +51,7 @@ export namespace Rewards {
         light: string;
     };
     export type Template = {
-        type: 'light' | 'dark';
+        type: "light" | "dark";
         logos: TemplateLogo;
         background_colour?: string;
         background_image_url?: string;
@@ -105,4 +106,4 @@ export namespace Rewards {
         items: Campaign[];
     };
 }
-import Service from "./Service";
+import Service from './Service';

@@ -1,4 +1,5 @@
 export default class ProfileService extends Service {
+    _serviceUri: any;
     getProfiles({ emailAddress }: {
         emailAddress: string;
     }): Promise<Profile.ProfileList>;
@@ -46,6 +47,7 @@ export default class ProfileService extends Service {
     addSurvey({ survey }: {
         survey: any;
     }): Promise<any>;
+    trackingAllowed(): Promise<any>;
     getPartnerPromotions(): Promise<Profile.PartnerPromotionCodeList>;
     partnerPromotionAddUser({ userId, promotionName }: {
         userId: string;
@@ -140,4 +142,4 @@ export namespace Profile {
         items: PartnerPromotionCode[];
     };
 }
-import Service from "./Service";
+import Service from './Service';

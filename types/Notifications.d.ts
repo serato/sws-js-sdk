@@ -1,9 +1,10 @@
 export default class NotificationsService extends Service {
+    _serviceUri: any;
     getCampaigns({ status }?: Notifications.GetCampaignsParams): Promise<Notifications.CampaignList>;
     createCampaign({ name, anonymous, description, startsAt, endsAt }: Notifications.CreateCampaignParams): Promise<Notifications.Campaign>;
     updateCampaign({ campaignId, name, anonymous, description, status, startsAt, endsAt }: Notifications.UpdateCampaignParams): Promise<Notifications.Campaign>;
     getNotifications(): Promise<Notifications.NotificationList>;
-    getMeNotifications({ hostAppName, hostAppVersion, hostOsName, hostOsVersion, locale, deviceId, useAuth }: Notifications.GetMeNotificationsParams): Promise<Notifications.NotificationList>;
+    getMeNotifications({ hostAppName, hostAppVersion, hostOsName, hostOsVersion, locale, deviceId, useAuth }?: Notifications.GetMeNotificationsParams): Promise<Notifications.NotificationList>;
     createNotification({ name, campaignId, type, priority, templateName, templateOption, isPersistent, isTakeover, startsAt, endsAt }: Notifications.CreateNotificationParams): Promise<Notifications.Notification>;
     updateNotification({ notificationId, name, templateOption, type, priority, templateName, startsAt, endsAt, status, isPersistent, isTakeover, campaignId }: Notifications.UpdateNotificationParams): Promise<Notifications.Notification>;
     cloneNotification({ notificationId }: Notifications.CloneNotificationParams): Promise<Notifications.Notification>;
@@ -17,14 +18,14 @@ export default class NotificationsService extends Service {
     deleteTestUser({ userId }: Notifications.DeleteTestUserParams): Promise<any>;
 }
 export namespace Notifications {
-    export type Status = 'active' | 'draft' | 'archived' | 'testing';
-    export type NotificationType = 'licensing' | 'system' | 'promotion' | 'streaming' | 'device_connection';
-    export type TextContentType = 'text/plain' | 'text/html' | 'text/markdown';
-    export type MediaContentType = 'image/jpeg' | 'image/gif' | 'image/png' | 'image/webp';
-    export type OsName = 'mac' | 'win';
-    export type AppName = 'serato_dj_pro' | 'serato_dj_lite' | 'serato_sample' | 'serato_studio' | 'my_account' | 'express_checkout' | 'serato_com' | 'mega_nav';
-    export type Language = 'en' | 'de' | 'fr' | 'es' | 'pt' | 'it' | 'ja' | 'zh';
-    export type TemplateOptions = 'dark' | 'light' | 'dark-orange-button' | 'light-orange-button';
+    export type Status = "active" | "draft" | "archived" | "testing";
+    export type NotificationType = "licensing" | "system" | "promotion" | "streaming" | "device_connection";
+    export type TextContentType = "text/plain" | "text/html" | "text/markdown";
+    export type MediaContentType = "image/jpeg" | "image/gif" | "image/png" | "image/webp";
+    export type OsName = "mac" | "win";
+    export type AppName = "serato_dj_pro" | "serato_dj_lite" | "serato_sample" | "serato_studio" | "my_account" | "express_checkout" | "serato_com" | "mega_nav";
+    export type Language = "en" | "de" | "fr" | "es" | "pt" | "it" | "ja" | "zh";
+    export type TemplateOptions = "dark" | "light" | "dark-orange-button" | "light-orange-button";
     export type MediaSource = {
         small?: string;
         medium: string;
@@ -79,7 +80,7 @@ export namespace Notifications {
         language: Language;
         text: Text[];
         media?: Media[];
-        actions?: Action[];
+        action?: Action[];
     };
     export type Notification = {
         id: string;
@@ -154,6 +155,15 @@ export namespace Notifications {
         startsAt?: string;
         endsAt?: string;
     };
+    export type GetMeNotificationsParams = {
+        hostAppName: string;
+        hostAppVersion?: string;
+        hostOsName?: string;
+        hostOsVersion?: string;
+        locale?: string;
+        deviceId: string;
+        useAuth?: boolean;
+    };
     export type CreateNotificationParams = {
         name: string;
         campaignId: string;
@@ -165,15 +175,6 @@ export namespace Notifications {
         isTakeover?: boolean;
         startsAt?: string;
         endsAt?: string;
-    };
-    export type GetMeNotificationsParams = {
-        hostAppName: string,
-        hostAppVersion?: string,
-        hostOsName?: string,
-        hostOsVersion?: string,
-        locale?: string,
-        deviceId: string,
-        useAuth?: boolean
     };
     export type UpdateNotificationParams = {
         notificationId: string;
@@ -248,4 +249,4 @@ export namespace Notifications {
         content: ContentParam;
     };
 }
-import Service from "./Service";
+import Service from './Service';

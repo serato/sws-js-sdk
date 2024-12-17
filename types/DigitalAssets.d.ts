@@ -1,4 +1,5 @@
 export default class DigitalAssetsService extends Service {
+    _serviceUri: any;
     get({ hostAppName, hostAppVersion, hostOs, type, releaseType, releaseDate, latestOnly }?: {
         hostAppName?: DigitalAssets.HostApplicationName;
         hostAppVersion?: string;
@@ -13,16 +14,20 @@ export default class DigitalAssetsService extends Service {
         resourceId: number;
     }): Promise<DigitalAssets.AssetDownload>;
     getResourceDownload({ resourceId }: {
-      resourceId: number;
+        resourceId: number;
     }): Promise<DigitalAssets.ResourceDownload>;
+    getApplicationInstallerDownloads({ hostAppName }?: {
+        hostAppName?: DigitalAssets.HostApplicationName;
+    }): Promise<DigitalAssets.DownloadHistory>;
+    sendResourceDownloadLink({ resourceId }: {
+        resourceId: string;
+    }): Promise<DigitalAssets.DownloadEmail>;
 }
 export namespace DigitalAssets {
-    export type HostApplicationName = 'serato_dj_pro' | 'serato_dj_lite' | 'serato_sample' | 'serato_studio' | 'scratch_live' | 'pitchntime_le' | 'pitchntime_pro' | 'serato_hex_fx';
-    export type ReleaseType = 'release' | 'publicbeta' | 'privatebeta';
-    export type HostOs = 'win' | 'mac';
-    export type ResourceType = 'application_installer' | 'content_pack';
-    export type InstallerType = 'win-installer' | 'mac-installer' | 'mac-32-installer' | 'mac-installer-no-corepack' | 'win-32-installer' | 'win-installer-no-corepack' | 'cc1'
-        | 'venue' | 'logic-limited-demo';
+    export type HostApplicationName = "serato_dj_pro" | "serato_dj_lite" | "serato_sample" | "serato_studio" | "scratch_live" | "pitchntime_le" | "pitchntime_pro" | "serato_hex_fx";
+    export type ReleaseType = "release" | "publicbeta" | "privatebeta";
+    export type HostOs = "win" | "mac";
+    export type ResourceType = "application_installer" | "content_pack";
     export type HostApplication = {
         name: HostApplicationName;
         min_version?: string;
@@ -31,9 +36,9 @@ export namespace DigitalAssets {
     export type Resource = {
         id?: number;
         name: string;
-        type: ResourceType | 'manual' | 'quick_start_guide';
-        installer_type?: InstallerType;
-        host_os_compatibility: ('win' | 'mac' | 'cc1')[];
+        type: ResourceType | "manual" | "quick_start_guide";
+        installer_type: InstallerType;
+        host_os_compatibility: ("win" | "mac" | "cc1")[];
         file_name: string;
         mime_type: string;
         file_size?: number;
@@ -43,7 +48,7 @@ export namespace DigitalAssets {
     export type Asset = {
         id: number;
         name: string;
-        type: 'application_installer' | 'content_pack';
+        type: "application_installer" | "content_pack";
         release_type: ReleaseType;
         version: string;
         host_app_compatibility: HostApplication[];
@@ -73,5 +78,26 @@ export namespace DigitalAssets {
         url_created: string;
         url_expires: string;
     };
+    export type AssetWithoutResources = {
+        id: number;
+        name: string;
+        type: "application_installer" | "content_pack";
+        release_type: ReleaseType;
+        version: string;
+        host_app_compatibility: HostApplication[];
+        release_date: string;
+        webpage_url?: string;
+        meta?: {
+            [x: string]: any;
+        };
+    };
+    export type DownloadHistory = {
+        asset: AssetWithoutResources;
+        resource: Resource;
+    };
+    export type DownloadEmail = {
+        email_address: string;
+        language: string;
+    };
 }
-import Service from "./Service";
+import Service from './Service';
