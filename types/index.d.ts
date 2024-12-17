@@ -11,6 +11,6 @@ export * from "./Rewards";
 export * from "./AiProxy";
 export * from "./SwsError";
 export { default } from "./SwsClient";
-import Sws from "./Sws";
-import SwsError from "./SwsError";
+import Sws from './Sws';
+import SwsError from './SwsError';
 export { Sws, SwsError };

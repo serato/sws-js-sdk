@@ -1,10 +1,11 @@
 export default class NotificationsV1Service extends Service {
+    _serviceUri: any;
     getNotifications({ hostAppName, hostAppVersion, hostAppOs, locale, useAuth }?: NotificationsV1.GetNotificationsParams): Promise<NotificationsV1.NotificationList>;
 }
 export namespace NotificationsV1 {
-    export type MessageType = 'sale' | 'generic' | 'none';
-    export type MessageContentType = 'text/plain';
-    export type MediaType = 'img' | 'video' | '';
+    export type MessageType = "sale" | "generic" | "none";
+    export type MessageContentType = "text/plain";
+    export type MediaType = "img" | "video" | "";
     export type Schedule = {
         id: string;
         campaign_id: string;
@@ -72,4 +73,4 @@ export namespace NotificationsV1 {
         useAuth?: boolean;
     };
 }
-import Service from "./Service";
+import Service from './Service';

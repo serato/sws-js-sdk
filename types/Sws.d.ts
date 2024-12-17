@@ -6,9 +6,9 @@ export default class Sws {
     private _accessToken;
     private _refreshToken;
     private _userId;
+    private _isServerSide;
     private _serviceUri;
     private _service;
-    private _isServerSide;
     setInvalidAccessTokenHandler(f: RequestErrorHandler): void;
     setInvalidRefreshTokenHandler(f: RequestErrorHandler): void;
     setPasswordReEntryRequiredHandler(f: RequestErrorHandler): void;
@@ -19,14 +19,15 @@ export default class Sws {
     get appId(): string;
     get appSecret(): string;
     get serviceUri(): ServiceUri;
-    get isServerSide(): boolean;
-    set userId(arg: number);
+    set userId(userId: number);
     get userId(): number;
-    set accessToken(arg: string);
+    set isServerSide(isServerSide: boolean);
+    get isServerSide(): boolean;
+    set accessToken(data: string);
     get accessToken(): string;
-    set refreshToken(arg: string);
+    set refreshToken(data: string);
     get refreshToken(): string;
-    set timeout(arg: number);
+    set timeout(t: number);
     get timeout(): number;
     get license(): License;
     get id(): Identity;
@@ -36,8 +37,8 @@ export default class Sws {
     get notificationsV1(): NotificationsV1;
     get da(): DigitalAssets;
     get rewards(): Rewards;
+    get cloudlib(): CloudLib;
     get aiproxy(): AiProxy;
-    get cloudlib(): CloudLibrary;
 }
 export type RequestHeaders = {
     [x: string]: string;
@@ -64,23 +65,20 @@ export type ServiceUri = {
     da?: string;
     rewards?: string;
     aiproxy?: string;
-    cloudlib?: string;
 };
 export type SwsConfiguration = {
     appId: string;
     secret?: string;
     timeout?: number;
     serviceUri?: ServiceUri;
-    isServerSide?: boolean
 };
 export const serviceUriDefault: ServiceUri;
-import License from "./License";
-import Identity from "./Identity";
-import Ecom from "./Ecom";
-import Profile from "./Profile";
-import Notifications from "./Notifications";
-import NotificationsV1 from "./NotificationsV1";
-import DigitalAssets from "./DigitalAssets";
-import Rewards from "./Rewards";
-import AiProxy from "./AiProxy";
-import CloudLibrary from "./CloudLibrary";
+import License from './License';
+import Identity from './Identity';
+import Ecom from './Ecom';
+import Profile from './Profile';
+import Notifications from './Notifications';
+import NotificationsV1 from './NotificationsV1';
+import DigitalAssets from './DigitalAssets';
+import Rewards from './Rewards';
+import AiProxy from './AiProxy';

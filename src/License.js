@@ -5,7 +5,7 @@ import Service from './Service'
 /**
  * @typedef {String} RlmLicenseFileContents
  * @typedef {'permanent' | 'subscription' | 'trial' | 'timelimited'} LicenseTerm
- * @typedef {'dj' | 'dj_lite' | 'serato_sample' | 'wailshark' | 'serato_studio'} HostApplicationId
+ * @typedef {'dj' | 'dj_lite' | 'serato_sample' | 'wailshark' | 'serato_studio' | 'serato_hex_fx'} HostApplicationId
  *
  * @typedef {Object} HostApplication
  * @property {HostApplicationId} id Host application identifer
