@@ -191,13 +191,13 @@ export default class DigitalAssetsService extends Service {
    * @param  {Object} param
    * @param  {HostApplicationName} param.hostAppName
    * @param  {String} param.hostAppVersion This should be a semantic version number string, or `latest`.
-   * @param  {HostOs} param.hostAppOs
+   * @param  {HostOs} param.hostOs
    * @return {Promise<DownloadEmail>}
    */
-  getApplicationInstaller ({ hostAppName, hostAppVersion, hostAppOs }) {
+  getApplicationInstaller ({ hostAppName, hostAppVersion, hostOs }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      `/api/v1/download/applicationinstaller/${hostAppName}/${hostAppVersion}/${hostAppOs}`,
+      `/api/v1/download/applicationinstaller/${hostAppName}/${hostAppVersion}/${hostOs}`,
       null,
       'POST'
     )
