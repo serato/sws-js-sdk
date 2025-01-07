@@ -187,14 +187,14 @@ export default class DigitalAssetsService extends Service {
   }
 
   /**
-   * Get application installer asset.
+   * Get application installer resource.
    * @param  {Object} param
    * @param  {HostApplicationName} param.hostAppName
    * @param  {String} param.hostAppVersion This should be a semantic version number string, or `latest`.
    * @param  {HostOs} param.hostOs
    * @return {Promise<DownloadEmail>}
    */
-  getApplicationInstaller ({ hostAppName, hostAppVersion, hostOs }) {
+  getApplicationInstallerResource ({ hostAppName, hostAppVersion, hostOs }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       `/api/v1/download/applicationinstaller/${hostAppName}/${hostAppVersion}/${hostOs}`,
