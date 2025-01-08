@@ -1,8 +1,11 @@
 export default class IdentityService extends Service {
-    _serviceUri: any;
     tokenExchange(code: string, redirectUri: string, codeVerifier: string): Promise<Identity.UserLogin>;
-    tokenRefresh(refreshToken: RawToken, useRotation?: boolean): Promise<Identity.UserTokens>;
+    tokenRefresh(refreshToken: Identity.RawToken): Promise<Identity.UserTokens>;
     getUser(): Promise<Identity.User>;
+    getUsers({ emailAddress, includeEmailAddressHistory }: {
+        emailAddress: string;
+        includeEmailAddressHistory?: boolean;
+    }): Promise<Identity.UserList>;
     login({ emailAddress, password, deviceId, deviceName }: {
         emailAddress: string;
         password: string;
@@ -30,10 +33,6 @@ export default class IdentityService extends Service {
     updateUser({ emailAddress }: {
         emailAddress: string;
     }): Promise<Identity.User>;
-    getUsers({ emailAddress, includeEmailAddressHistory }: {
-        emailAddress: string;
-        includeEmailAddressHistory?: string;
-    }): Promise<UserList>;
 }
 export namespace Identity {
     export type RawToken = string;
@@ -43,12 +42,12 @@ export namespace Identity {
     export type RefreshToken = {
         token: RawToken;
         expires_at: number;
-        type: "Bearer";
+        type: 'Bearer';
     };
     export type AccessToken = {
         token: RawToken;
         expires_at: number;
-        type: "Bearer";
+        type: 'Bearer';
         scopes: Scopes;
     };
     export type UserTokens = {
@@ -63,6 +62,7 @@ export namespace Identity {
         date_created: string;
         locale: string;
         password_last_updated?: string;
+        email_address_history?: string[];
     };
     export type UserLogin = {
         user: User;
@@ -71,5 +71,8 @@ export namespace Identity {
     export type OkMessage = {
         message: string;
     };
+    export type UserList = {
+        items: User[];
+    }
 }
-import Service from './Service';
+import Service from "./Service";
