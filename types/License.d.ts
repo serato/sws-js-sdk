@@ -1,5 +1,4 @@
 export default class LicenseService extends Service {
-    _serviceUri: any;
     getLicenses({ appName, appVersion, term }?: {
         appName?: string;
         appVersion?: string;

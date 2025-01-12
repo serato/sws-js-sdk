@@ -1,5 +1,4 @@
 export default class EcomService extends Service {
-    _serviceUri: any;
     getSubscriptions(): Promise<Ecom.SubscriptionList>;
     getOrders({ orderStatus }?: {
         orderStatus?: Ecom.OrderStatus;
