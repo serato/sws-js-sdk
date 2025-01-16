@@ -3,7 +3,7 @@
 import Service from './Service'
 
 /**
- * @typedef {'dj' | 'wailshark' | 'sample' | 'serato_studio'} SubscriptionGroup
+ * @typedef {'dj' | 'serato_producer_suite'} SubscriptionGroup
  * @typedef {'Active' | 'Canceled' | 'Past Due' | 'Expired' | 'Pending' | 'Expiring'} SubscriptionStatus
  * @typedef {'order_promotion' | 'voucher_promotion' | 'voucher_retail' | 'voucher_offer'} DiscountSource
  * @typedef {'complete' | 'pending_payment' | 'cancel' | 'fraud'} OrderStatus

@@ -14,7 +14,7 @@ export default class LicenseService extends Service {
         appName?: string;
         appVersion?: string;
         term?: string;
-        showLicenceActivations?: 'true' | 'false';
+        showLicenceActivations?: "true" | "false";
     }): Promise<License.ProductList>;
     addProduct({ hostMachineId, productTypeId, productSerialNumber }: {
         hostMachineId?: string;
@@ -41,8 +41,8 @@ export default class LicenseService extends Service {
 }
 export namespace License {
     export type RlmLicenseFileContents = string;
-    export type LicenseTerm = 'permanent' | 'subscription' | 'trial' | 'timelimited';
-    export type HostApplicationId = 'dj' | 'dj_lite' | 'serato_sample' | 'wailshark' | 'serato_studio';
+    export type LicenseTerm = "permanent" | "subscription" | "trial" | "timelimited";
+    export type HostApplicationId = "dj" | "dj_lite" | "serato_sample" | "wailshark" | "serato_studio" | "serato_hex_fx";
     export type HostApplication = {
         id: HostApplicationId;
         version: string;
@@ -126,8 +126,8 @@ export namespace License {
         licenses: License[];
     };
     export type RefreshTokenList = {
-        result: 'true';
+        result: "true";
         refresh_token_id: string[];
     };
 }
-import Service from "./Service";
+import Service from './Service';
