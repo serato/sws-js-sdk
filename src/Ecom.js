@@ -203,7 +203,7 @@ import Service from './Service'
  * @property {String} vendor_name
  * @property {String} po_number
  * @property {String} moneyworks_id
- * @property {ProductVoucherBatchList} voucher_batches
+ * @property {ProductVoucherBatch[]} voucher_batches
  * @property {String} created_at
  * @property {String} product_vouchers_created_at
  * @property {String} destroyed_at
@@ -213,9 +213,6 @@ import Service from './Service'
  * 
  * @typedef {Object} ProductVoucherOrderList
  * @property {ProductVoucherOrder[]} items
- * 
- * @typedef {Object} ProductVoucherBatchList
- * @property {ProductVoucherBatch[]} items
  * 
  * @typedef {Object} ProductVoucherBatch
  * @property {String} id

@@ -253,7 +253,7 @@ export type ProductVoucherOrder = {
     vendor_name: string;
     po_number: string;
     moneyworks_id: string;
-    voucher_batches: ProductVoucherBatchList;
+    voucher_batches: ProductVoucherBatch[];
     created_at: string;
     product_vouchers_created_at: string;
     destroyed_at: string;
@@ -263,9 +263,6 @@ export type ProductVoucherOrder = {
 };
 export type ProductVoucherOrderList = {
     items: ProductVoucherOrder[];
-};
-export type ProductVoucherBatchList = {
-    items: ProductVoucherBatch[];
 };
 export type ProductVoucherBatch = {
     id: string;
