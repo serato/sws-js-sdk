@@ -199,7 +199,7 @@ import Service from './Service'
  * @property {UserVoucher[]} items
  * 
  * @typedef {Object} ProductVoucherOrder
- * @property {String} id
+ * @property {Number} id
  * @property {String} vendor_name
  * @property {String} po_number
  * @property {String} moneyworks_id

@@ -249,7 +249,7 @@ export namespace Ecom {
         items: UserVoucher[];
     };
     export type ProductVoucherOrder = {
-        id: string;
+        id: number;
         vendor_name: string;
         po_number: string;
         moneyworks_id: string;
