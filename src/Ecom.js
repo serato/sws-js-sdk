@@ -3,7 +3,7 @@
 import Service from './Service'
 
 /**
- * @typedef {'dj' | 'wailshark' | 'sample' | 'serato_studio'} SubscriptionGroup
+ * @typedef {'dj' | 'serato_producer_suite'} SubscriptionGroup
  * @typedef {'Active' | 'Canceled' | 'Past Due' | 'Expired' | 'Pending' | 'Expiring'} SubscriptionStatus
  * @typedef {'order_promotion' | 'voucher_promotion' | 'voucher_retail' | 'voucher_offer'} DiscountSource
  * @typedef {'complete' | 'pending_payment' | 'cancel' | 'fraud'} OrderStatus
@@ -12,9 +12,6 @@ import Service from './Service'
  * @typedef {'complete' | 'pending' | 'invalid'} SubscriptionPlanChangeStatus
  * @typedef {'promotion' | 'retention-offer' | 'upsell-offer, `retail'} VoucherTypeCategory
  * @typedef {'application/json' | 'application/pdf' | 'text/html'} InvoiceMimeType
- * @typedef {'pending' | 'in progress' | 'success' | 'failed'} Status
- * @typedef {'en' | 'es' | 'de' | 'fr' | 'pt' | 'pl' | 'ko' | 'blank'} Language
- * @typedef {'pdf_and_csv' | 'csv'} FileType
  *
  * @typedef {Object} Discount
  * @property {String} name
@@ -197,28 +194,7 @@ import Service from './Service'
  *
  * @typedef {Object} VoucherList
  * @property {UserVoucher[]} items
- * 
- * @typedef {Object} ProductVoucherOrder
- * @property {String} id
- * @property {String} vendor_name
- * @property {String} po_number
- * @property {String} moneyworks_id
- * @property {ProductVoucherBatch[]} voucher_batches
- * @property {String} created_at
- * @property {String} product_vouchers_created_at
- * @property {String} destroyed_at
- * @property {Language} language
- * @property {Status} status
- * @property {FileType} file_type
- * 
- * @typedef {Object} ProductVoucherOrderList
- * @property {ProductVoucherOrder[]} items
- * 
- * @typedef {Object} ProductVoucherBatch
- * @property {String} id
- * @property {String} product_name
- * @property {Number} size
- * 
+ *
  * @typedef {Object} RecommendationsList
  * @property {CatalogProduct[]} items
  */
@@ -577,20 +553,6 @@ export default class EcomService extends Service {
         app_version: appVersion,
         catalog_category: catalogCategory
       }),
-      'GET'
-    )
-  }
-
-  /**
-   * Get product voucher orders.
-   *
-   * @return {Promise<ProductVoucherOrderList>}
-   */
-  getProductVoucherOrders () {
-    return this.fetch(
-      this.bearerTokenAuthHeader(),
-      '/api/v1/productvoucherorders',
-      null,
       'GET'
     )
   }
