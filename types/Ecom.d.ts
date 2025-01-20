@@ -51,6 +51,7 @@ export default class EcomService extends Service {
         appVersion?: string;
         catalogCategory?: string;
     }): Promise<Ecom.RecommendationsList>;
+    getProductVoucherOrders(): Promise<Ecom.ProductVoucherOrderList>;
 }
 export namespace Ecom {
     export type SubscriptionGroup = 'dj' | 'wailshark' | 'sample' | 'serato_studio';
@@ -62,6 +63,9 @@ export namespace Ecom {
     export type SubscriptionPlanChangeStatus = 'complete' | 'pending' | 'invalid';
     export type VoucherTypeCategory = 'promotion' | 'retention-offer' | 'upsell-offer, `retail';
     export type InvoiceMimeType = 'application/json' | 'application/pdf' | 'text/html';
+    export type Status = 'pending' | 'in progress' | 'success' | 'failed';
+    export type Language = 'en' | 'es' | 'de' | 'fr' | 'pt' | 'pl' | 'ko' | 'blank';
+    export type FileType = 'pdf_and_csv' | 'csv';
     export type Discount = {
         name: string;
         amount: number;
@@ -243,6 +247,27 @@ export namespace Ecom {
     };
     export type VoucherList = {
         items: UserVoucher[];
+    };
+    export type ProductVoucherOrder = {
+        id: string;
+        vendor_name: string;
+        po_number: string;
+        moneyworks_id: string;
+        voucher_batches: ProductVoucherBatch[];
+        created_at: string;
+        product_vouchers_created_at: string;
+        destroyed_at: string;
+        language: Language;
+        status: Status;
+        file_type: FileType;
+    };
+    export type ProductVoucherOrderList = {
+        items: ProductVoucherOrder[];
+    };
+    export type ProductVoucherBatch = {
+        id: string;
+        product_name: string;
+        size: number;
     };
     export type RecommendationsList = {
         items: CatalogProduct[];
