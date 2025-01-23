@@ -12,9 +12,9 @@ import Service from './Service'
  * @typedef {'complete' | 'pending' | 'invalid'} SubscriptionPlanChangeStatus
  * @typedef {'promotion' | 'retention-offer' | 'upsell-offer, `retail'} VoucherTypeCategory
  * @typedef {'application/json' | 'application/pdf' | 'text/html'} InvoiceMimeType
- * @typedef {'pending' | 'in progress' | 'success' | 'failed'} Status
- * @typedef {'en' | 'es' | 'de' | 'fr' | 'pt' | 'pl' | 'ko' | 'blank'} Language
- * @typedef {'pdf_and_csv' | 'csv'} FileType
+ * @typedef {'pending' | 'in progress' | 'success' | 'failed'} ProductVoucherOrderStatus
+ * @typedef {'en' | 'es' | 'de' | 'fr' | 'pt' | 'pl' | 'ko' | 'blank'} ProductVoucherOrderLanguage
+ * @typedef {'pdf_and_csv' | 'csv'} ProductVoucherOrderFileType
  *
  * @typedef {Object} Discount
  * @property {String} name
@@ -207,9 +207,9 @@ import Service from './Service'
  * @property {String} created_at
  * @property {String} product_vouchers_created_at
  * @property {String} destroyed_at
- * @property {Language} language
- * @property {Status} status
- * @property {FileType} file_type
+ * @property {ProductVoucherOrderLanguage} language
+ * @property {ProductVoucherOrderStatus} status
+ * @property {ProductVoucherOrderFileType} file_type
  * 
  * @typedef {Object} ProductVoucherOrderList
  * @property {ProductVoucherOrder[]} items

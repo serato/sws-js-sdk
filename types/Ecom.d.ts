@@ -63,9 +63,9 @@ export namespace Ecom {
     export type SubscriptionPlanChangeStatus = "complete" | "pending" | "invalid";
     export type VoucherTypeCategory = "promotion" | "retention-offer" | "upsell-offer, `retail";
     export type InvoiceMimeType = "application/json" | "application/pdf" | "text/html";
-    export type Status = 'pending' | 'in progress' | 'success' | 'failed';
-    export type Language = 'en' | 'es' | 'de' | 'fr' | 'pt' | 'pl' | 'ko' | 'blank';
-    export type FileType = 'pdf_and_csv' | 'csv';
+    export type ProductVoucherOrderStatus = 'pending' | 'in progress' | 'success' | 'failed';
+    export type ProductVoucherOrderLanguage = 'en' | 'es' | 'de' | 'fr' | 'pt' | 'pl' | 'ko' | 'blank';
+    export type ProductVoucherOrderFileType = 'pdf_and_csv' | 'csv';
     export type Discount = {
         name: string;
         amount: number;
@@ -257,9 +257,9 @@ export namespace Ecom {
         created_at: string;
         product_vouchers_created_at: string;
         destroyed_at: string;
-        language: Language;
-        status: Status;
-        file_type: FileType;
+        language: ProductVoucherOrderLanguage;
+        status: ProductVoucherOrderStatus;
+        file_type: ProductVoucherOrderFileType;
     };
     export type ProductVoucherOrderList = {
         items: ProductVoucherOrder[];
