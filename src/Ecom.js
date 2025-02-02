@@ -197,7 +197,7 @@ import Service from './Service'
  *
  * @typedef {Object} VoucherList
  * @property {UserVoucher[]} items
- * 
+ *
  * @typedef {Object} ProductVoucherOrder
  * @property {Number} id
  * @property {String} vendor_name
@@ -210,15 +210,15 @@ import Service from './Service'
  * @property {ProductVoucherOrderLanguage} language
  * @property {ProductVoucherOrderStatus} status
  * @property {ProductVoucherOrderFileType} file_type
- * 
+ *
  * @typedef {Object} ProductVoucherOrderList
  * @property {ProductVoucherOrder[]} items
- * 
+ *
  * @typedef {Object} ProductVoucherBatch
  * @property {String} id
  * @property {String} product_name
  * @property {Number} size
- * 
+ *
  * @typedef {Object} RecommendationsList
  * @property {CatalogProduct[]} items
  */
@@ -595,4 +595,3 @@ export default class EcomService extends Service {
     )
   }
 }
-
