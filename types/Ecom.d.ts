@@ -52,7 +52,9 @@ export default class EcomService extends Service {
         catalogCategory?: string;
     }): Promise<Ecom.RecommendationsList>;
     getProductVoucherOrders(): Promise<Ecom.ProductVoucherOrderList>;
-    getProductVoucherOrderById({ productVoucherOrderId }): Promise<Ecom.ProductVoucherOrder>;
+    getProductVoucherOrderById({ productVoucherOrderId }: {
+        productVoucherOrderId: string;
+    }): Promise<Ecom.ProductVoucherOrder>;
 }
 export namespace Ecom {
     export type SubscriptionGroup = "dj" | "serato_producer_suite";
