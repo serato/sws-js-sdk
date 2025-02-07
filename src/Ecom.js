@@ -601,7 +601,7 @@ export default class EcomService extends Service {
    * @param {String} param.productVoucherOrderId
    * @return {Promise<ProductVoucherOrder>}
    */
-  getProductVoucherOrderById(productVoucherOrderId) {
+  getProductVoucherOrderById({productVoucherOrderId}) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       '/api/v1/productvoucherorders/' + productVoucherOrderId,
