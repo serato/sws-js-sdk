@@ -55,6 +55,12 @@ export default class EcomService extends Service {
     getProductVoucherOrderById({ productVoucherOrderId }: {
         productVoucherOrderId: string;
     }): Promise<Ecom.ProductVoucherOrder>;
+    updateProductVoucherOrder({ productVoucherOrderId, vendorName, moneyworksId, poNumber }: {
+        productVoucherOrderId: string;
+        vendorName: string;
+        moneyworksId: string|null;
+        poNumber: string|null;
+    }): Promise<Ecom.ProductVoucherOrder>;
 }
 export namespace Ecom {
     export type SubscriptionGroup = "dj" | "serato_producer_suite";
