@@ -214,6 +214,9 @@ import Service from './Service'
  * @typedef {Object} ProductVoucherOrderList
  * @property {ProductVoucherOrder[]} items
  *
+ * @typedef {Object} ProductVoucherOrderBlacklist
+ * @property {ProductVoucherOrder}
+ *
  * @typedef {Object} ProductVoucherBatch
  * @property {String} id
  * @property {String} product_name
@@ -592,6 +595,20 @@ export default class EcomService extends Service {
       '/api/v1/productvoucherorders',
       null,
       'GET'
+    )
+  }
+
+  /**
+   * Blacklist product voucher order
+   *
+   * @return {Promise<ProductVoucherOrderBlacklist>}
+   */
+  blacklistProductVoucherOrders (productVouchOrderId) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      '/api/v1/productvoucherorders/' + productVouchOrderId + '/vouchers',
+      null,
+      'DELETE'
     )
   }
 }

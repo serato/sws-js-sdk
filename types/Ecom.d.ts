@@ -52,6 +52,7 @@ export default class EcomService extends Service {
         catalogCategory?: string;
     }): Promise<Ecom.RecommendationsList>;
     getProductVoucherOrders(): Promise<Ecom.ProductVoucherOrderList>;
+    blacklistProductVoucherOrders(): Promise<Ecom.ProductVoucherOrderBlacklist>;
 }
 export namespace Ecom {
     export type SubscriptionGroup = "dj" | "serato_producer_suite";
@@ -264,6 +265,7 @@ export namespace Ecom {
     export type ProductVoucherOrderList = {
         items: ProductVoucherOrder[];
     };
+    export type ProductVoucherOrderBlacklist = ProductVoucherOrder;
     export type ProductVoucherBatch = {
         id: string;
         product_name: string;
