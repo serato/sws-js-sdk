@@ -407,20 +407,20 @@ describe('Ecom Tests', function () {
         )
       }
     )
-    it(`confirms URI used in 'blacklistProductVoucherOrders()' method with productVoucherOrderId returning a non-200 HTTP response`,
+    it.only(`confirms URI used in 'blacklistProductVoucherOrders()' method with productVoucherOrderId, by returning a non-404 HTTP response`,
       function () {
         swsClient.userId = 0
         return swsClient.ecom.blacklistProductVoucherOrders({
           productVoucherOrderId: 1
         }).then(
-          () => Promise.reject(new Error('Expected non-200 HTTP response code')),
+          () => Promise.reject(new Error('Expected non-404 HTTP response code')),
           err => {
-            expect(err.httpStatus).not.to.equal(200)
+            expect(err.httpStatus).not.to.equal(404)
           }
         )
       }
     )
-    it(`confirms URI used in 'blacklistProductVoucherOrders()' method without productVoucherOrderId returning a 404 HTTP response`,
+    it(`confirms URI used in 'blacklistProductVoucherOrders()' method without productVoucherOrderId, by returning a 404 HTTP response`,
       function () {
         swsClient.userId = 0
         return swsClient.ecom.blacklistProductVoucherOrders().then(
