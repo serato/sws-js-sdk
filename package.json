@@ -1,6 +1,6 @@
 {
   "name": "@serato/sws-sdk",
-  "version": "7.1.4",
+  "version": "7.2.1",
   "description": "Serato Web Services JS SDK",
   "main": "src/index.js",
   "types": "types/index.d.ts",
