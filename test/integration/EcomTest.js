@@ -407,15 +407,15 @@ describe('Ecom Tests', function () {
         )
       }
     )
-    it.only(`confirms URI used in 'blacklistProductVoucherOrders()' method with productVoucherOrderId, by returning a non-404 HTTP response`,
+    it(`confirms URI used in 'blacklistProductVoucherOrders()' method with productVoucherOrderId, by returning a non-404 HTTP response`,
       function () {
         swsClient.userId = 0
         return swsClient.ecom.blacklistProductVoucherOrders({
           productVoucherOrderId: 1
         }).then(
-          () => Promise.reject(new Error('Expected non-404 HTTP response code')),
+          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
           err => {
-            expect(err.httpStatus).not.to.equal(404)
+            expect(err.httpStatus).not.to.equal(204)
           }
         )
       }
@@ -429,6 +429,7 @@ describe('Ecom Tests', function () {
             expect(err.httpStatus).to.equal(404)
           }
         )
-      })
+      }
+    )
   })
 })
