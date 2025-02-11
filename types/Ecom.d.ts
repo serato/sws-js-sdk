@@ -52,7 +52,7 @@ export default class EcomService extends Service {
         catalogCategory?: string;
     }): Promise<Ecom.RecommendationsList>;
     getProductVoucherOrders(): Promise<Ecom.ProductVoucherOrderList>;
-    blacklistProductVoucherOrders({productVoucherOrderId}):
+    blacklistProductVoucherOrders({ productVoucherOrderId }):
         Promise<Ecom.ProductVoucherOrder>;
 }
 export namespace Ecom {
