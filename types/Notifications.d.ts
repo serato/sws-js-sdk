@@ -22,7 +22,7 @@ export namespace Notifications {
     export type TextContentType = 'text/plain' | 'text/html' | 'text/markdown';
     export type MediaContentType = 'image/jpeg' | 'image/gif' | 'image/png' | 'image/webp';
     export type OsName = 'mac' | 'win';
-    export type AppName = 'serato_dj_pro' | 'serato_dj_lite' | 'serato_sample' | 'serato_studio' | 'my_account' | 'express_checkout' | 'serato_com' | 'mega_nav';
+    export type AppName = 'serato_dj_pro' | 'serato_dj_lite' | 'serato_sample' | 'serato_studio' | 'my_account' | 'express_checkout' | 'serato_com' | 'mega_nav'| 'serato_hex_fx';
     export type Language = 'en' | 'de' | 'fr' | 'es' | 'pt' | 'it' | 'ja' | 'zh';
     export type TemplateOptions = 'dark' | 'light' | 'dark-orange-button' | 'light-orange-button';
     export type MediaSource = {
