@@ -599,7 +599,7 @@ export default class EcomService extends Service {
    * Blacklist product voucher order
    *
    * @param {Object} param Options
-   * @param {String} param.productVoucherOrderId
+   * @param {Number} param.productVoucherOrderId
    * @return {Promise<ProductVoucherOrder>}
    */
   blacklistProductVoucherOrders ({ productVoucherOrderId } = {}) {
