@@ -53,10 +53,10 @@ export default class EcomService extends Service {
     }): Promise<Ecom.RecommendationsList>;
     getProductVoucherOrders(): Promise<Ecom.ProductVoucherOrderList>;
     getProductVoucherOrderById({ productVoucherOrderId }: {
-        productVoucherOrderId: string;
+        productVoucherOrderId: Number;
     }): Promise<Ecom.ProductVoucherOrder>;
     updateProductVoucherOrder({ productVoucherOrderId, vendorName, moneyworksId, poNumber }: {
-        productVoucherOrderId: string;
+        productVoucherOrderId: Number;
         vendorName: string;
         moneyworksId: string|null;
         poNumber: string|null;
