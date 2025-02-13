@@ -598,7 +598,7 @@ export default class EcomService extends Service {
   /**
    * Get product voucher orders.
    * @param {Object} param Options
-   * @param {Number} param.productVoucherOrderId
+   * @param {number} param.productVoucherOrderId
    * @return {Promise<ProductVoucherOrder>}
    */
   getProductVoucherOrderById({productVoucherOrderId}) {
@@ -613,7 +613,7 @@ export default class EcomService extends Service {
   /**
    * Update a product voucher order.
    * @param {Object} param Options
-   * @param {Number} param.productVoucherOrderId
+   * @param {number} param.productVoucherOrderId
    * @param {String} param.vendorName
    * @param {String|null} param.moneyworksId
    * @param {String|null} param.poNumber
