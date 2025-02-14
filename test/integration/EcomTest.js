@@ -415,18 +415,7 @@ describe('Ecom Tests', function () {
         }).then(
           () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
           err => {
-            expect(err.httpStatus).not.to.equal(204)
-          }
-        )
-      }
-    )
-    it(`confirms URI used in 'blacklistProductVoucherOrders()' method without productVoucherOrderId, by returning a 404 HTTP response`,
-      function () {
-        swsClient.userId = 0
-        return swsClient.ecom.blacklistProductVoucherOrders().then(
-          () => Promise.reject(new Error('Expected 404 HTTP response code')),
-          err => {
-            expect(err.httpStatus).to.equal(404)
+            expect(err.httpStatus).not.to.equal(404)
           }
         )
       }

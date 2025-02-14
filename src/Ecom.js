@@ -602,7 +602,7 @@ export default class EcomService extends Service {
    * @param {Number} param.productVoucherOrderId
    * @return {Promise<ProductVoucherOrder>}
    */
-  blacklistProductVoucherOrders ({ productVoucherOrderId } = {}) {
+  blacklistProductVoucherOrders ({ productVoucherOrderId }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       '/api/v1/productvoucherorders/' + productVoucherOrderId + '/vouchers',
