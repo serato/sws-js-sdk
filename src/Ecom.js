@@ -594,4 +594,20 @@ export default class EcomService extends Service {
       'GET'
     )
   }
+
+  /**
+   * Blacklist product voucher order
+   *
+   * @param {Object} param Options
+   * @param {Number} param.productVoucherOrderId
+   * @return {Promise<ProductVoucherOrder>}
+   */
+  blacklistProductVoucherOrders ({ productVoucherOrderId }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      '/api/v1/productvoucherorders/' + productVoucherOrderId + '/vouchers',
+      null,
+      'DELETE'
+    )
+  }
 }
