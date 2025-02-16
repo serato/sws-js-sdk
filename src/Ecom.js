@@ -206,7 +206,7 @@ import Service from './Service'
  * @property {ProductVoucherBatch[]} voucher_batches
  * @property {String} created_at
  * @property {String} product_vouchers_created_at
- * @property {String} destroyed_at
+ * @property {String} blacklisted_at
  * @property {ProductVoucherOrderLanguage} language
  * @property {ProductVoucherOrderStatus} status
  * @property {ProductVoucherOrderFileType} file_type

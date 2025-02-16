@@ -259,7 +259,7 @@ export namespace Ecom {
         voucher_batches: ProductVoucherBatch[];
         created_at: string;
         product_vouchers_created_at: string;
-        destroyed_at: string;
+        blacklisted_at: string;
         language: ProductVoucherOrderLanguage;
         status: ProductVoucherOrderStatus;
         file_type: ProductVoucherOrderFileType;
