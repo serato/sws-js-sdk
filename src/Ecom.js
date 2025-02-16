@@ -586,7 +586,7 @@ export default class EcomService extends Service {
    *
    * @return {Promise<ProductVoucherOrderList>}
    */
-  getProductVoucherOrders() {
+  getProductVoucherOrders () {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       '/api/v1/productvoucherorders',
@@ -601,7 +601,7 @@ export default class EcomService extends Service {
    * @param {Number} param.productVoucherOrderId
    * @return {Promise<ProductVoucherOrder>}
    */
-  getProductVoucherOrderById({productVoucherOrderId}) {
+  getProductVoucherOrderById ({ productVoucherOrderId }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       '/api/v1/productvoucherorders/' + productVoucherOrderId,
@@ -619,7 +619,7 @@ export default class EcomService extends Service {
    * @param {String|null} param.poNumber
    * @return {Promise<ProductVoucherOrder>}
    */
-  updateProductVoucherOrder({productVoucherOrderId, vendorName, moneyworksId, poNumber}) {
+  updateProductVoucherOrder ({ productVoucherOrderId, vendorName, moneyworksId, poNumber }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       '/api/v1/productvoucherorders/' + productVoucherOrderId,
