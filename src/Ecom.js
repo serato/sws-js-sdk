@@ -594,4 +594,41 @@ export default class EcomService extends Service {
       'GET'
     )
   }
+
+  /**
+   * Get product voucher orders.
+   * @param {Object} param Options
+   * @param {Number} param.productVoucherOrderId
+   * @return {Promise<ProductVoucherOrder>}
+   */
+  getProductVoucherOrderById ({ productVoucherOrderId }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      '/api/v1/productvoucherorders/' + productVoucherOrderId,
+      null,
+      'GET'
+    )
+  }
+
+  /**
+   * Update a product voucher order.
+   * @param {Object} param Options
+   * @param {Number} param.productVoucherOrderId
+   * @param {String} param.vendorName
+   * @param {String|null} param.moneyworksId
+   * @param {String|null} param.poNumber
+   * @return {Promise<ProductVoucherOrder>}
+   */
+  updateProductVoucherOrder ({ productVoucherOrderId, vendorName, moneyworksId, poNumber }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      '/api/v1/productvoucherorders/' + productVoucherOrderId,
+      this.toBody({
+        vendor_name: vendorName,
+        moneyworks_id: moneyworksId,
+        po_number: poNumber
+      }),
+      'PUT'
+    )
+  }
 }
