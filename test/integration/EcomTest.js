@@ -420,5 +420,46 @@ describe('Ecom Tests', function () {
         )
       }
     )
+    it(`confirms URI used in 'getProductVoucherOrders()' method, by returning a non-404 HTTP response`,
+      function () {
+        swsClient.userId = 0
+        return swsClient.ecom.getProductVoucherOrders()
+        .then(
+          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+          err => {
+            expect(err.httpStatus).not.to.equal(404)
+          }
+        )
+      }
+    )
+
+    it(`confirms URI used in 'getProductVoucherOrderById()' method with product voucher order ID, by returning a non-404 HTTP response`,
+      function () {
+        swsClient.userId = 0
+        return swsClient.ecom.getProductVoucherOrderById({
+          productVoucherOrderId: '1'
+        }).then(
+          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+          err => {
+            expect(err.httpStatus).not.to.equal(404)
+          }
+        )
+      }
+    )
+
+    it(`confirms URI used in 'updateProductVoucherOrder()' method with product voucher order ID and vendor name, by returning a non-404 HTTP response`,
+      function () {
+        swsClient.userId = 0
+        return swsClient.ecom.updateProductVoucherOrder({
+          productVoucherOrderId: '1',
+          vendorName: "vendor_name"
+        }).then(
+          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+          err => {
+            expect(err.httpStatus).not.to.equal(404)
+          }
+        )
+      }
+    )
   })
 })
