@@ -312,7 +312,7 @@ export default class EcomService extends Service {
    * @param {String} param.provider A payment gateway provider
    * @return {Promise<PaymentGatewayToken>}
    */
-  paymentGatewayToken () {
+  paymentGatewayToken ({ provider }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       '/api/v1/paymentgateway',
