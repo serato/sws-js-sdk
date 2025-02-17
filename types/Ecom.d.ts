@@ -61,6 +61,14 @@ export default class EcomService extends Service {
         moneyworksId: string|null;
         poNumber: string|null;
     }): Promise<Ecom.ProductVoucherOrder>;
+    createProductVoucherOrder ({ vendorName, poNumber, moneyworksId, language, fileType, voucherBatches }: {
+        vendorName: string;
+        poNumber: string|null;
+        moneyworksId: string|null;
+        language: Ecom.ProductVoucherOrderLanguage;
+        fileType: Ecom.ProductVoucherOrderFileType;
+        voucherBatches: Ecom.ProductVoucherBatchParams[];
+    }): Promise<Ecom.ProductVoucherOrder>;
 }
 export namespace Ecom {
     export type SubscriptionGroup = "dj" | "serato_producer_suite";
@@ -278,6 +286,10 @@ export namespace Ecom {
         product_name: string;
         size: number;
     };
+    export type ProductVoucherBatchParams = {
+        product_name: string;
+        size: number;
+    }
     export type RecommendationsList = {
         items: CatalogProduct[];
     };

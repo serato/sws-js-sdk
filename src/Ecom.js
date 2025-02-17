@@ -218,6 +218,10 @@ import Service from './Service'
  * @property {String} id
  * @property {String} product_name
  * @property {Number} size
+ * 
+ * @typedef {Object} ProductVoucherBatchParams
+ * @property {String} product_name
+ * @property {Number} size
  *
  * @typedef {Object} RecommendationsList
  * @property {CatalogProduct[]} items
@@ -629,6 +633,33 @@ export default class EcomService extends Service {
         po_number: poNumber
       }),
       'PUT'
+    )
+  }
+
+  /**
+   * Create a product voucher order.
+   * @param {Object} param Options
+   * @param {String} param.vendorName
+   * @param {String|null} param.poNumber
+   * @param {String|null} param.moneyworksId
+   * @param {ProductVoucherOrderLanguage} param.language
+   * @param {ProductVoucherOrderFileType} param.fileType
+   * @param {ProductVoucherBatchParams[]} param.voucherBatches
+   * @return {Promise<ProductVoucherOrder>}
+   */
+  createProductVoucherOrder ({ vendorName, poNumber, moneyworksId, language, fileType, voucherBatches }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      '/api/v1/productvoucherorders',
+      this.toBody({
+        vendor_name: vendorName,
+        po_number: poNumber,
+        moneyworks_id: moneyworksId,
+        language: language,
+        file_type: fileType,
+        voucher_batches: voucherBatches
+      }),
+      'POST'
     )
   }
 }
