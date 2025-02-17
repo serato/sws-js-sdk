@@ -220,7 +220,7 @@ import Service from './Service'
  * @property {Number} size
  * 
  * @typedef {Object} ProductVoucherBatchParams
- * @property {String} product_name
+ * @property {Number} product_voucher_type_id
  * @property {Number} size
  *
  * @typedef {Object} RecommendationsList

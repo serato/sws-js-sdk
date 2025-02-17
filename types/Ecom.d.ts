@@ -287,7 +287,7 @@ export namespace Ecom {
         size: number;
     };
     export type ProductVoucherBatchParams = {
-        product_name: string;
+        product_voucher_type_id: number;
         size: number;
     }
     export type RecommendationsList = {
