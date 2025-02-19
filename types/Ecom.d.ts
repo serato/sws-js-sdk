@@ -55,6 +55,9 @@ export default class EcomService extends Service {
     blacklistProductVoucherOrders({ productVoucherOrderId }: {
         productVoucherOrderId: number;
     }): Promise<Ecom.ProductVoucherOrder>;
+    downloadProductVoucherOrders({ productVoucherOrderId }: {
+        productVoucherOrderId: number;
+    }): Promise<Ecom.ProductVoucherOrder>
     getProductVoucherOrderById({ productVoucherOrderId }: {
         productVoucherOrderId: number;
     }): Promise<Ecom.ProductVoucherOrder>;
