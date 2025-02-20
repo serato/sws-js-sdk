@@ -672,7 +672,7 @@ export default class EcomService extends Service {
   generateProductVoucherOrder ({ productVoucherOrderId }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      '/api/v1/productvoucherorders' + productVoucherOrderId + '/generate',
+      '/api/v1/productvoucherorders/' + productVoucherOrderId + '/generate',
       null,
       'POST'
     )
