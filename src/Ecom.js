@@ -662,4 +662,19 @@ export default class EcomService extends Service {
       'POST'
     )
   }
+
+  /**
+   * Generate a product voucher order.
+   * @param {Object} param Options
+   * @param {Number} param.productVoucherOrderId
+   * @return {Promise<ProductVoucherOrder>}
+   */
+  generateProductVoucherOrder ({ productVoucherOrderId }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      '/api/v1/productvoucherorders' + productVoucherOrderId + '/generate',
+      null,
+      'POST'
+    )
+  }
 }

@@ -69,6 +69,9 @@ export default class EcomService extends Service {
         fileType: Ecom.ProductVoucherOrderFileType;
         voucherBatches: Ecom.ProductVoucherBatchParams[];
     }): Promise<Ecom.ProductVoucherOrder>;
+    generateProductVoucherOrder ({ productVoucherOrderId }: {
+        productVoucherOrderId: number;
+    }) : Promise<Ecom.ProductVoucherOrder>;
 }
 export namespace Ecom {
     export type SubscriptionGroup = "dj" | "serato_producer_suite";
