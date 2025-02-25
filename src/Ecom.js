@@ -15,6 +15,7 @@ import Service from './Service'
  * @typedef {'pending' | 'in progress' | 'success' | 'failed'} ProductVoucherOrderStatus
  * @typedef {'en' | 'es' | 'de' | 'fr' | 'pt' | 'pl' | 'ko' | 'blank'} ProductVoucherOrderLanguage
  * @typedef {'pdf_and_csv' | 'csv'} ProductVoucherOrderFileType
+ * @typedef {'promotion' | 'retention-offer' | 'upsell-offer' | 'retail'} ProductVoucherTypeType
  *
  * @typedef {Object} Discount
  * @property {String} name
@@ -222,6 +223,11 @@ import Service from './Service'
  * @typedef {Object} ProductVoucherBatchParams
  * @property {Number} product_voucher_type_id
  * @property {Number} quantity
+ * 
+ * @typedef {Object} ProductVoucherType
+ * @property {Number} id
+ * @property {String} title
+ * @property {ProductVoucherTypeType} type
  *
  * @typedef {Object} RecommendationsList
  * @property {CatalogProduct[]} items
@@ -689,6 +695,19 @@ export default class EcomService extends Service {
     return this.fetch(
       this.bearerTokenAuthHeader(),
       '/api/v1/productvoucherorders/' + productVoucherOrderId + '/generate',
+      null,
+      'POST'
+    )
+  }
+
+  /**
+   * List all product voucher types.
+   * @return {Promise<ProductVoucherType>}
+   */
+  getProductVoucherTypes () {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      '/api/v1/productvoucherorders/productvouchertypes',
       null,
       'POST'
     )
