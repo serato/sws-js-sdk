@@ -52,6 +52,9 @@ export default class EcomService extends Service {
         catalogCategory?: string;
     }): Promise<Ecom.RecommendationsList>;
     getProductVoucherOrders(): Promise<Ecom.ProductVoucherOrderList>;
+    blacklistProductVoucherOrders({ productVoucherOrderId }: {
+        productVoucherOrderId: number;
+    }): Promise<Ecom.ProductVoucherOrder>;
     getProductVoucherOrderById({ productVoucherOrderId }: {
         productVoucherOrderId: number;
     }): Promise<Ecom.ProductVoucherOrder>;
@@ -276,7 +279,7 @@ export namespace Ecom {
         voucher_batches: ProductVoucherBatch[];
         created_at: string;
         product_vouchers_created_at: string;
-        destroyed_at: string;
+        blacklisted_at: string;
         language: ProductVoucherOrderLanguage;
         status: ProductVoucherOrderStatus;
         file_type: ProductVoucherOrderFileType;
