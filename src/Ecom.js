@@ -228,6 +228,9 @@ import Service from './Service'
  * @property {Number} id
  * @property {String} title
  * @property {ProductVoucherTypeType} type
+ * 
+ * @typedef {Object} ProductVoucherTypeList
+ * @property {ProductVoucherType[]} items
  *
  * @typedef {Object} RecommendationsList
  * @property {CatalogProduct[]} items
@@ -702,7 +705,7 @@ export default class EcomService extends Service {
 
   /**
    * List all product voucher types.
-   * @return {Promise<ProductVoucherType>}
+   * @return {Promise<ProductVoucherTypeList>}
    */
   getProductVoucherTypes () {
     return this.fetch(

@@ -75,7 +75,7 @@ export default class EcomService extends Service {
     generateProductVoucherOrder({ productVoucherOrderId }: {
         productVoucherOrderId: number;
     }) : Promise<Ecom.ProductVoucherOrder>;
-    getProductVoucherTypes(): Promise<ProductVoucherType>;
+    getProductVoucherTypes(): Promise<ProductVoucherTypeList>;
 }
 export namespace Ecom {
     export type SubscriptionGroup = "dj" | "serato_producer_suite";
@@ -302,10 +302,12 @@ export namespace Ecom {
         id: number,
         title: string,
         type: ProductVoucherTypeType
+    };
+    export type ProductVoucherTypeList = {
+        items: ProductVoucherType[];
     }
     export type RecommendationsList = {
         items: CatalogProduct[];
     };
 }
-import { ProductVoucherType } from '../src';
 import Service from './Service';
