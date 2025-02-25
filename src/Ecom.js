@@ -709,7 +709,7 @@ export default class EcomService extends Service {
       this.bearerTokenAuthHeader(),
       '/api/v1/productvoucherorders/productvouchertypes',
       null,
-      'POST'
+      'GET'
     )
   }
 }
