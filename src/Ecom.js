@@ -618,7 +618,7 @@ export default class EcomService extends Service {
    * @param {Number} param.productVoucherOrderId
    * @return {Promise<Blob>} - Returns a Promise that resolves with the ZIP file Blob.
    */
-    downloadProductVoucherOrders ({ productVoucherOrderId }) {
+    downloadProductVoucherOrder ({ productVoucherOrderId }) {
       return this.fetch(
         this.bearerTokenAuthHeader(),
         '/api/v1/productvoucherorders/' + productVoucherOrderId + '/download',
