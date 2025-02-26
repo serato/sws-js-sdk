@@ -9,7 +9,7 @@ export default class EcomService extends Service {
         deviceData?: string;
         billingAddressId?: string;
     }): Promise<Ecom.PaymentMethod>;
-    paymentGatewayToken(): Promise<Ecom.PaymentGatewayToken>;
+    paymentGatewayToken({ provider }): Promise<Ecom.PaymentGatewayToken>;
     getPaymentMethods(): Promise<Ecom.PaymentMethodList>;
     updateSubscription({ subscriptionId, paymentToken, numberOfBillingCycle }: {
         subscriptionId: string;
