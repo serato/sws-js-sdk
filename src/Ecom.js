@@ -627,8 +627,7 @@ export default class EcomService extends Service {
         null,
         'blob',
         {
-          Accept: 'application/zip',
-          'Content-Type': 'application/zip'
+          Accept: 'application/zip'
         }
       )
     }
