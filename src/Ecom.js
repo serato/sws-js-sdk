@@ -206,7 +206,7 @@ import Service from './Service'
  * @property {ProductVoucherBatch[]} voucher_batches
  * @property {String} created_at
  * @property {String} product_vouchers_created_at
- * @property {String} destroyed_at
+ * @property {String} blacklisted_at
  * @property {ProductVoucherOrderLanguage} language
  * @property {ProductVoucherOrderStatus} status
  * @property {ProductVoucherOrderFileType} file_type
@@ -597,6 +597,22 @@ export default class EcomService extends Service {
       '/api/v1/productvoucherorders',
       null,
       'GET'
+    )
+  }
+
+  /**
+   * Blacklist product voucher order
+   *
+   * @param {Object} param Options
+   * @param {Number} param.productVoucherOrderId
+   * @return {Promise<ProductVoucherOrder>}
+   */
+  blacklistProductVoucherOrders ({ productVoucherOrderId }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      '/api/v1/productvoucherorders/' + productVoucherOrderId + '/vouchers',
+      null,
+      'DELETE'
     )
   }
 
