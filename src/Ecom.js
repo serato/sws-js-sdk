@@ -219,16 +219,16 @@ import Service from './Service'
  * @property {String} id
  * @property {String} product_name
  * @property {Number} size
- * 
+ *
  * @typedef {Object} ProductVoucherBatchParams
  * @property {Number} product_voucher_type_id
  * @property {Number} quantity
- * 
+ *
  * @typedef {Object} ProductVoucherType
  * @property {Number} id
  * @property {String} title
  * @property {ProductVoucherTypeType} type
- * 
+ *
  * @typedef {Object} ProductVoucherTypeList
  * @property {ProductVoucherType[]} items
  *
