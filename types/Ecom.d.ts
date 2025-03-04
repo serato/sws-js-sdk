@@ -9,7 +9,9 @@ export default class EcomService extends Service {
         deviceData?: string;
         billingAddressId?: string;
     }): Promise<Ecom.PaymentMethod>;
-    paymentGatewayToken(): Promise<Ecom.PaymentGatewayToken>;
+    paymentGatewayToken({ provider }: {
+        provider: string;
+    }): Promise<Ecom.PaymentGatewayToken>;
     getPaymentMethods(): Promise<Ecom.PaymentMethodList>;
     updateSubscription({ subscriptionId, paymentToken, numberOfBillingCycle }: {
         subscriptionId: string;
@@ -64,9 +66,21 @@ export default class EcomService extends Service {
     updateProductVoucherOrder({ productVoucherOrderId, vendorName, moneyworksId, poNumber }: {
         productVoucherOrderId: number;
         vendorName: string;
-        moneyworksId: string|null;
-        poNumber: string|null;
+        moneyworksId: string | null;
+        poNumber: string | null;
     }): Promise<Ecom.ProductVoucherOrder>;
+    createProductVoucherOrder({ vendorName, poNumber, moneyworksId, language, fileType, voucherBatches }: {
+        vendorName: string;
+        poNumber: string|null;
+        moneyworksId: string|null;
+        language: Ecom.ProductVoucherOrderLanguage;
+        fileType: Ecom.ProductVoucherOrderFileType;
+        voucherBatches: Ecom.ProductVoucherBatchParams[];
+    }): Promise<Ecom.ProductVoucherOrder>;
+    generateProductVoucherOrder({ productVoucherOrderId }: {
+        productVoucherOrderId: number;
+    }) : Promise<Ecom.ProductVoucherOrder>;
+    getProductVoucherTypes(): Promise<Ecom.ProductVoucherTypeList>;
 }
 export namespace Ecom {
     export type SubscriptionGroup = "dj" | "serato_producer_suite";
@@ -81,6 +95,7 @@ export namespace Ecom {
     export type ProductVoucherOrderStatus = 'pending' | 'in progress' | 'success' | 'failed';
     export type ProductVoucherOrderLanguage = 'en' | 'es' | 'de' | 'fr' | 'pt' | 'pl' | 'ko' | 'blank';
     export type ProductVoucherOrderFileType = 'pdf_and_csv' | 'csv';
+    export type ProductVoucherTypeType = 'promotion' | 'retention-offer' | 'upsell-offer' | 'retail';
     export type Discount = {
         name: string;
         amount: number;
@@ -284,6 +299,18 @@ export namespace Ecom {
         product_name: string;
         size: number;
     };
+    export type ProductVoucherBatchParams = {
+        product_voucher_type_id: number;
+        quantity: number;
+    }
+    export type ProductVoucherType = {
+        id: number,
+        title: string,
+        type: ProductVoucherTypeType
+    };
+    export type ProductVoucherTypeList = {
+        items: ProductVoucherType[];
+    }
     export type RecommendationsList = {
         items: CatalogProduct[];
     };

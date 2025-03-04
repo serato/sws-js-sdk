@@ -15,6 +15,7 @@ import Service from './Service'
  * @typedef {'pending' | 'in progress' | 'success' | 'failed'} ProductVoucherOrderStatus
  * @typedef {'en' | 'es' | 'de' | 'fr' | 'pt' | 'pl' | 'ko' | 'blank'} ProductVoucherOrderLanguage
  * @typedef {'pdf_and_csv' | 'csv'} ProductVoucherOrderFileType
+ * @typedef {'promotion' | 'retention-offer' | 'upsell-offer' | 'retail'} ProductVoucherTypeType
  *
  * @typedef {Object} Discount
  * @property {String} name
@@ -219,6 +220,18 @@ import Service from './Service'
  * @property {String} product_name
  * @property {Number} size
  *
+ * @typedef {Object} ProductVoucherBatchParams
+ * @property {Number} product_voucher_type_id
+ * @property {Number} quantity
+ *
+ * @typedef {Object} ProductVoucherType
+ * @property {Number} id
+ * @property {String} title
+ * @property {ProductVoucherTypeType} type
+ *
+ * @typedef {Object} ProductVoucherTypeList
+ * @property {ProductVoucherType[]} items
+ *
  * @typedef {Object} RecommendationsList
  * @property {CatalogProduct[]} items
  */
@@ -308,13 +321,17 @@ export default class EcomService extends Service {
   /**
    * Create a token resource for payment gateway integration
    *
+   * @param {Object} param Options
+   * @param {String} param.provider A payment gateway provider
    * @return {Promise<PaymentGatewayToken>}
    */
-  paymentGatewayToken () {
+  paymentGatewayToken ({ provider }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      '/api/v1/paymentgateway/token',
-      null,
+      '/api/v1/paymentgateway',
+      this.toBody({
+        provider: provider
+      }),
       'POST'
     )
   }
@@ -667,6 +684,61 @@ export default class EcomService extends Service {
         po_number: poNumber
       }),
       'PUT'
+    )
+  }
+
+  /**
+   * Create a product voucher order.
+   * @param {Object} param Options
+   * @param {String} param.vendorName
+   * @param {String|null} param.poNumber
+   * @param {String|null} param.moneyworksId
+   * @param {ProductVoucherOrderLanguage} param.language
+   * @param {ProductVoucherOrderFileType} param.fileType
+   * @param {ProductVoucherBatchParams[]} param.voucherBatches
+   * @return {Promise<ProductVoucherOrder>}
+   */
+  createProductVoucherOrder ({ vendorName, poNumber, moneyworksId, language, fileType, voucherBatches }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      '/api/v1/productvoucherorders',
+      this.toBody({
+        vendor_name: vendorName,
+        po_number: poNumber,
+        moneyworks_id: moneyworksId,
+        language: language,
+        file_type: fileType,
+        voucher_batches: voucherBatches
+      }),
+      'POST'
+    )
+  }
+
+  /**
+   * Generate a product voucher order.
+   * @param {Object} param Options
+   * @param {Number} param.productVoucherOrderId
+   * @return {Promise<ProductVoucherOrder>}
+   */
+  generateProductVoucherOrder ({ productVoucherOrderId }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      '/api/v1/productvoucherorders/' + productVoucherOrderId + '/generate',
+      null,
+      'POST'
+    )
+  }
+
+  /**
+   * List all product voucher types.
+   * @return {Promise<ProductVoucherTypeList>}
+   */
+  getProductVoucherTypes () {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      '/api/v1/productvoucherorders/productvouchertypes',
+      null,
+      'GET'
     )
   }
 }
