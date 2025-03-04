@@ -336,7 +336,6 @@ export default class EcomService extends Service {
     )
   }
 
-
   /**
    * Return payment methods added by a logged-in user.
    *
