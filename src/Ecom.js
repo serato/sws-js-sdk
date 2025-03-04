@@ -321,16 +321,21 @@ export default class EcomService extends Service {
   /**
    * Create a token resource for payment gateway integration
    *
+   * @param {Object} param Options
+   * @param {String} param.provider A payment gateway provider
    * @return {Promise<PaymentGatewayToken>}
    */
-  paymentGatewayToken () {
+  paymentGatewayToken ({ provider }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      '/api/v1/paymentgateway/token',
-      null,
+      '/api/v1/paymentgateway',
+      this.toBody({
+        provider: provider
+      }),
       'POST'
     )
   }
+
 
   /**
    * Return payment methods added by a logged-in user.
