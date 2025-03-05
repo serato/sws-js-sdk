@@ -9,7 +9,9 @@ export default class EcomService extends Service {
         deviceData?: string;
         billingAddressId?: string;
     }): Promise<Ecom.PaymentMethod>;
-    paymentGatewayToken(): Promise<Ecom.PaymentGatewayToken>;
+    paymentGatewayToken({ provider }: {
+        provider: string;
+    }): Promise<Ecom.PaymentGatewayToken>;
     getPaymentMethods(): Promise<Ecom.PaymentMethodList>;
     updateSubscription({ subscriptionId, paymentToken, numberOfBillingCycle }: {
         subscriptionId: string;
@@ -66,17 +68,49 @@ export default class EcomService extends Service {
         cartId: string;
         couponCode?: string | null;
     }): Promise<Ecom.Cart>;
+    getProductVoucherOrders(): Promise<Ecom.ProductVoucherOrderList>;
+    blacklistProductVoucherOrders({ productVoucherOrderId }: {
+        productVoucherOrderId: number;
+    }): Promise<Ecom.ProductVoucherOrder>;
+    downloadProductVoucherOrder({ productVoucherOrderId }: {
+        productVoucherOrderId: number;
+    }): Promise<Blob>
+    getProductVoucherOrderById({ productVoucherOrderId }: {
+        productVoucherOrderId: number;
+    }): Promise<Ecom.ProductVoucherOrder>;
+    updateProductVoucherOrder({ productVoucherOrderId, vendorName, moneyworksId, poNumber }: {
+        productVoucherOrderId: number;
+        vendorName: string;
+        moneyworksId: string | null;
+        poNumber: string | null;
+    }): Promise<Ecom.ProductVoucherOrder>;
+    createProductVoucherOrder({ vendorName, poNumber, moneyworksId, language, fileType, voucherBatches }: {
+        vendorName: string;
+        poNumber: string|null;
+        moneyworksId: string|null;
+        language: Ecom.ProductVoucherOrderLanguage;
+        fileType: Ecom.ProductVoucherOrderFileType;
+        voucherBatches: Ecom.ProductVoucherBatchParams[];
+    }): Promise<Ecom.ProductVoucherOrder>;
+    generateProductVoucherOrder({ productVoucherOrderId }: {
+        productVoucherOrderId: number;
+    }) : Promise<Ecom.ProductVoucherOrder>;
+    getProductVoucherTypes(): Promise<Ecom.ProductVoucherTypeList>;
 }
 export namespace Ecom {
-    export type SubscriptionGroup = 'dj' | 'wailshark' | 'sample' | 'serato_studio';
-    export type SubscriptionStatus = 'Active' | 'Canceled' | 'Past Due' | 'Expired' | 'Pending' | 'Expiring';
-    export type DiscountSource = 'order_promotion' | 'voucher_promotion' | 'voucher_retail' | 'voucher_offer';
-    export type OrderStatus = 'complete' | 'pending_payment' | 'cancel' | 'fraud';
-    export type CatalogProductFeature = 'dj' | 'dvs' | 'video' | 'fx' | 'pnt_dj' | 'flip' | 'play' | 'studio';
-    export type PaymentMethodType = 'CreditCard' | 'PayPal';
-    export type SubscriptionPlanChangeStatus = 'complete' | 'pending' | 'invalid';
-    export type VoucherTypeCategory = 'promotion' | 'retention-offer' | 'upsell-offer, `retail';
-    export type InvoiceMimeType = 'application/json' | 'application/pdf' | 'text/html';
+    export type SubscriptionGroup = "dj" | "serato_producer_suite";
+    export type SubscriptionStatus = "Active" | "Canceled" | "Past Due" | "Expired" | "Pending" | "Expiring";
+    export type DiscountSource = "order_promotion" | "voucher_promotion" | "voucher_retail" | "voucher_offer";
+    export type OrderStatus = "complete" | "pending_payment" | "cancel" | "fraud";
+    export type CatalogProductFeature = "dj" | "dvs" | "video" | "fx" | "pnt_dj" | "flip" | "play" | "studio";
+    export type PaymentMethodType = "CreditCard" | "PayPal";
+    export type SubscriptionPlanChangeStatus = "complete" | "pending" | "invalid";
+    export type VoucherTypeCategory = "promotion" | "retention-offer" | "upsell-offer, `retail";
+    export type InvoiceMimeType = "application/json" | "application/pdf" | "text/html";
+    export type ProductVoucherOrderStatus = 'pending' | 'in progress' | 'success' | 'failed';
+    export type ProductVoucherOrderLanguage = 'en' | 'es' | 'de' | 'fr' | 'pt' | 'pl' | 'ko' | 'blank';
+    export type ProductVoucherOrderFileType = 'pdf_and_csv' | 'csv';
+    export type ProductVoucherTypeType = 'promotion' | 'retention-offer' | 'upsell-offer' | 'retail';
     export type Discount = {
         name: string;
         amount: number;
@@ -259,6 +293,39 @@ export namespace Ecom {
     export type VoucherList = {
         items: UserVoucher[];
     };
+    export type ProductVoucherOrder = {
+        id: number;
+        vendor_name: string;
+        po_number: string;
+        moneyworks_id: string;
+        voucher_batches: ProductVoucherBatch[];
+        created_at: string;
+        product_vouchers_created_at: string;
+        blacklisted_at: string;
+        language: ProductVoucherOrderLanguage;
+        status: ProductVoucherOrderStatus;
+        file_type: ProductVoucherOrderFileType;
+    };
+    export type ProductVoucherOrderList = {
+        items: ProductVoucherOrder[];
+    };
+    export type ProductVoucherBatch = {
+        id: string;
+        product_name: string;
+        size: number;
+    };
+    export type ProductVoucherBatchParams = {
+        product_voucher_type_id: number;
+        quantity: number;
+    }
+    export type ProductVoucherType = {
+        id: number,
+        title: string,
+        type: ProductVoucherTypeType
+    };
+    export type ProductVoucherTypeList = {
+        items: ProductVoucherType[];
+    }
     export type RecommendationsList = {
         items: CatalogProduct[];
     };
@@ -317,4 +384,4 @@ export namespace Ecom {
         quantity: number;
     };
 }
-import Service from "./Service";
+import Service from './Service';

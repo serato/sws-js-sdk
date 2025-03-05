@@ -3,7 +3,7 @@
 import Service from './Service'
 
 /**
- * @typedef {'dj' | 'wailshark' | 'sample' | 'serato_studio'} SubscriptionGroup
+ * @typedef {'dj' | 'serato_producer_suite'} SubscriptionGroup
  * @typedef {'Active' | 'Canceled' | 'Past Due' | 'Expired' | 'Pending' | 'Expiring'} SubscriptionStatus
  * @typedef {'order_promotion' | 'voucher_promotion' | 'voucher_retail' | 'voucher_offer'} DiscountSource
  * @typedef {'complete' | 'pending_payment' | 'cancel' | 'fraud'} OrderStatus
@@ -12,6 +12,10 @@ import Service from './Service'
  * @typedef {'complete' | 'pending' | 'invalid'} SubscriptionPlanChangeStatus
  * @typedef {'promotion' | 'retention-offer' | 'upsell-offer, `retail'} VoucherTypeCategory
  * @typedef {'application/json' | 'application/pdf' | 'text/html'} InvoiceMimeType
+ * @typedef {'pending' | 'in progress' | 'success' | 'failed'} ProductVoucherOrderStatus
+ * @typedef {'en' | 'es' | 'de' | 'fr' | 'pt' | 'pl' | 'ko' | 'blank'} ProductVoucherOrderLanguage
+ * @typedef {'pdf_and_csv' | 'csv'} ProductVoucherOrderFileType
+ * @typedef {'promotion' | 'retention-offer' | 'upsell-offer' | 'retail'} ProductVoucherTypeType
  *
  * @typedef {Object} Discount
  * @property {String} name
@@ -195,6 +199,39 @@ import Service from './Service'
  * @typedef {Object} VoucherList
  * @property {UserVoucher[]} items
  *
+ * @typedef {Object} ProductVoucherOrder
+ * @property {Number} id
+ * @property {String} vendor_name
+ * @property {String} po_number
+ * @property {String} moneyworks_id
+ * @property {ProductVoucherBatch[]} voucher_batches
+ * @property {String} created_at
+ * @property {String} product_vouchers_created_at
+ * @property {String} blacklisted_at
+ * @property {ProductVoucherOrderLanguage} language
+ * @property {ProductVoucherOrderStatus} status
+ * @property {ProductVoucherOrderFileType} file_type
+ *
+ * @typedef {Object} ProductVoucherOrderList
+ * @property {ProductVoucherOrder[]} items
+ *
+ * @typedef {Object} ProductVoucherBatch
+ * @property {String} id
+ * @property {String} product_name
+ * @property {Number} size
+ *
+ * @typedef {Object} ProductVoucherBatchParams
+ * @property {Number} product_voucher_type_id
+ * @property {Number} quantity
+ *
+ * @typedef {Object} ProductVoucherType
+ * @property {Number} id
+ * @property {String} title
+ * @property {ProductVoucherTypeType} type
+ *
+ * @typedef {Object} ProductVoucherTypeList
+ * @property {ProductVoucherType[]} items
+ *
  * @typedef {Object} RecommendationsList
  * @property {CatalogProduct[]} items
  *
@@ -338,13 +375,17 @@ export default class EcomService extends Service {
   /**
    * Create a token resource for payment gateway integration
    *
+   * @param {Object} param Options
+   * @param {String} param.provider A payment gateway provider
    * @return {Promise<PaymentGatewayToken>}
    */
-  paymentGatewayToken () {
+  paymentGatewayToken ({ provider }) {
     return this.fetch(
       this.bearerTokenAuthHeader(),
-      '/api/v1/paymentgateway/token',
-      null,
+      '/api/v1/paymentgateway',
+      this.toBody({
+        provider: provider
+      }),
       'POST'
     )
   }
@@ -679,6 +720,149 @@ export default class EcomService extends Service {
         coupon_code: couponCode
       }, true), // Set allowNullValues to true
       'PUT'
+    )
+  }
+
+  /**
+   * Get product voucher orders.
+   *
+   * @return {Promise<ProductVoucherOrderList>}
+   */
+  getProductVoucherOrders () {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      '/api/v1/productvoucherorders',
+      null,
+      'GET'
+    )
+  }
+
+  /**
+   * Blacklist product voucher order
+   *
+   * @param {Object} param Options
+   * @param {Number} param.productVoucherOrderId
+   * @return {Promise<ProductVoucherOrder>}
+   */
+  blacklistProductVoucherOrders ({ productVoucherOrderId }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      '/api/v1/productvoucherorders/' + productVoucherOrderId + '/vouchers',
+      null,
+      'DELETE'
+    )
+  }
+
+  /**
+   * Download product voucher order resources
+   *
+   * @param {Object} param Options
+   * @param {Number} param.productVoucherOrderId
+   * @return {Promise<Blob>} - Returns a Promise that resolves with the ZIP file Blob.
+   */
+  downloadProductVoucherOrder ({ productVoucherOrderId }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      '/api/v1/productvoucherorders/' + productVoucherOrderId + '/download',
+      null,
+      'GET',
+      null,
+      'blob',
+      {
+        Accept: 'application/zip'
+      }
+    )
+  }
+
+  /**
+   * Get product voucher orders.
+   * @param {Object} param Options
+   * @param {Number} param.productVoucherOrderId
+   * @return {Promise<ProductVoucherOrder>}
+   */
+  getProductVoucherOrderById ({ productVoucherOrderId }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      '/api/v1/productvoucherorders/' + productVoucherOrderId,
+      null,
+      'GET'
+    )
+  }
+
+  /**
+   * Update a product voucher order.
+   * @param {Object} param Options
+   * @param {Number} param.productVoucherOrderId
+   * @param {String} param.vendorName
+   * @param {String|null} param.moneyworksId
+   * @param {String|null} param.poNumber
+   * @return {Promise<ProductVoucherOrder>}
+   */
+  updateProductVoucherOrder ({ productVoucherOrderId, vendorName, moneyworksId, poNumber }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      '/api/v1/productvoucherorders/' + productVoucherOrderId,
+      this.toBody({
+        vendor_name: vendorName,
+        moneyworks_id: moneyworksId,
+        po_number: poNumber
+      }),
+      'PUT'
+    )
+  }
+
+  /**
+   * Create a product voucher order.
+   * @param {Object} param Options
+   * @param {String} param.vendorName
+   * @param {String|null} param.poNumber
+   * @param {String|null} param.moneyworksId
+   * @param {ProductVoucherOrderLanguage} param.language
+   * @param {ProductVoucherOrderFileType} param.fileType
+   * @param {ProductVoucherBatchParams[]} param.voucherBatches
+   * @return {Promise<ProductVoucherOrder>}
+   */
+  createProductVoucherOrder ({ vendorName, poNumber, moneyworksId, language, fileType, voucherBatches }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      '/api/v1/productvoucherorders',
+      this.toBody({
+        vendor_name: vendorName,
+        po_number: poNumber,
+        moneyworks_id: moneyworksId,
+        language: language,
+        file_type: fileType,
+        voucher_batches: voucherBatches
+      }),
+      'POST'
+    )
+  }
+
+  /**
+   * Generate a product voucher order.
+   * @param {Object} param Options
+   * @param {Number} param.productVoucherOrderId
+   * @return {Promise<ProductVoucherOrder>}
+   */
+  generateProductVoucherOrder ({ productVoucherOrderId }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      '/api/v1/productvoucherorders/' + productVoucherOrderId + '/generate',
+      null,
+      'POST'
+    )
+  }
+
+  /**
+   * List all product voucher types.
+   * @return {Promise<ProductVoucherTypeList>}
+   */
+  getProductVoucherTypes () {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      '/api/v1/productvoucherorders/productvouchertypes',
+      null,
+      'GET'
     )
   }
 }

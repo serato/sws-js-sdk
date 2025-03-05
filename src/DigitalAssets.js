@@ -185,4 +185,25 @@ export default class DigitalAssetsService extends Service {
       'POST'
     )
   }
+
+  /**
+   * Get application installer resource.
+   * @param  {Object} param
+   * @param  {HostApplicationName} param.hostAppName
+   * @param  {String} param.hostAppVersion This should be a semantic version number string.
+   * @param  {HostOs} param.hostOs
+   * @param  {String} param.includeCorePack Used to distinguish between corepack and non corepack downloads.
+   * Only applicable fot `studio`.Ignored for other products.
+   * @return {Promise<DownloadEmail>}
+   */
+  getApplicationInstallerResource ({ hostAppName, hostAppVersion, hostOs, includeCorePack }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      `/api/v1/download/applicationinstaller/${hostAppName}/${hostAppVersion}/${hostOs}`,
+      this.toBody({
+        include_core_pack: includeCorePack
+      }),
+      'POST'
+    )
+  }
 }

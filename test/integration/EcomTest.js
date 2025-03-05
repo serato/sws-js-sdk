@@ -422,5 +422,121 @@ describe('Ecom Tests', function () {
         )
       }
     )
+    it(`confirms URI used in 'blacklistProductVoucherOrders()' method with productVoucherOrderId, by returning a non-404 HTTP response`,
+      function () {
+        swsClient.userId = 0
+        return swsClient.ecom.blacklistProductVoucherOrders({
+          productVoucherOrderId: 1
+        }).then(
+          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+          err => {
+            expect(err.httpStatus).not.to.equal(404)
+          }
+        )
+      }
+    )
+    it(`confirms URI used in 'downloadProductVoucherOrder()' method with productVoucherOrderId, by returning a non-404 HTTP response`,
+      function () {
+        swsClient.userId = 0
+        return swsClient.ecom.downloadProductVoucherOrder({
+          productVoucherOrderId: 1
+        }).then(
+          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+          err => {
+            expect(err.httpStatus).not.to.equal(404)
+          }
+        )
+      }
+    )
+    it(`confirms URI used in 'getProductVoucherOrders()' method, by returning a non-404 HTTP response`,
+      function () {
+        swsClient.userId = 0
+        return swsClient.ecom.getProductVoucherOrders()
+        .then(
+          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+          err => {
+            expect(err.httpStatus).not.to.equal(404)
+          }
+        )
+      }
+    )
+
+    it(`confirms URI used in 'getProductVoucherOrderById()' method with product voucher order ID, by returning a non-404 HTTP response`,
+      function () {
+        swsClient.userId = 0
+        return swsClient.ecom.getProductVoucherOrderById({
+          productVoucherOrderId: '1'
+        }).then(
+          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+          err => {
+            expect(err.httpStatus).not.to.equal(404)
+          }
+        )
+      }
+    )
+
+    it(`confirms URI used in 'updateProductVoucherOrder()' method with product voucher order ID and vendor name, by returning a non-404 HTTP response`,
+      function () {
+        swsClient.userId = 0
+        return swsClient.ecom.updateProductVoucherOrder({
+          productVoucherOrderId: '1',
+          vendorName: "vendor_name"
+        }).then(
+          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+          err => {
+            expect(err.httpStatus).not.to.equal(404)
+          }
+        )
+      }
+    )
+
+    it(`confirms URI used in 'createProductVoucherOrder()' method with product voucher order create params, by returning a non-404 HTTP response`,
+      function () {
+        swsClient.userId = 0
+        return swsClient.ecom.createProductVoucherOrder({
+          vendorName: 'vendor',
+          poNumber: 'PO123456789',
+          moneyworksId: '123456789',
+          language: 'en',
+          fileType: 'csv',
+          voucher_batches: {
+            productVoucherOrderId: 400,
+            quantity: 1
+          }
+        }).then(
+          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+          err => {
+            expect(err.httpStatus).not.to.equal(404)
+          }
+        )
+      }
+    )
+
+    it(`confirms URI used in 'generateProductVoucherOrder()' method with product voucher order ID by returning a non-404 HTTP response`,
+      function () {
+        swsClient.userId = 0
+        return swsClient.ecom.generateProductVoucherOrder({
+          productVoucherOrderId: '1'
+        }).then(
+          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+          err => {
+            expect(err.httpStatus).not.to.equal(404)
+          }
+        )
+      }
+    )
+
+    it(`confirms URI used in 'getProductVoucherOrders()' method, by returning a non-404 HTTP response`,
+      function () {
+        swsClient.userId = 0
+        return swsClient.ecom.getProductVoucherTypes()
+        .then(
+          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+          err => {
+            expect(err.httpStatus).not.to.equal(404)
+          }
+        )
+      }
+    )
   })
 })
