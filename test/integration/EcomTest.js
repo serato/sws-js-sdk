@@ -406,6 +406,21 @@ describe('Ecom Tests', function () {
           }
         )
       }
+    ),
+    it(`confirms URI used in 'createCart()' method with no user ID, with products param by returning a non-404 HTTP response`,
+      function () {
+        return swsClient.ecom.createCart({
+          products: [{
+            product_type_id: 0,
+            quantity: 1
+          }]
+        }).then(
+          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+          err => {
+            expect(err.httpStatus).not.to.equal(404)
+          }
+        )
+      }
     )
     it(`confirms URI used in 'blacklistProductVoucherOrders()' method with productVoucherOrderId, by returning a non-404 HTTP response`,
       function () {
