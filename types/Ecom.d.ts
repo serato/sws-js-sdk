@@ -69,6 +69,9 @@ export default class EcomService extends Service {
         moneyworksId: string | null;
         poNumber: string | null;
     }): Promise<Ecom.ProductVoucherOrder>;
+    getVoucherDetailsById({ voucherId }: {
+        voucherId: string;
+    }): Promise<Ecom.VoucherDetails>;
     createProductVoucherOrder({ vendorName, poNumber, moneyworksId, language, fileType, voucherBatches }: {
         vendorName: string;
         poNumber: string|null;
@@ -274,6 +277,15 @@ export namespace Ecom {
         voucher_type: VoucherType;
         is_redeemable: boolean;
         redeems_to?: VoucherRedeemsTo;
+    };
+    export type VoucherDetails = {
+        voucher_id: string;
+        user_id: number;
+        product_id?: string;
+        subscription_id?: string;
+        redeemed_at?: string;
+        product_voucher_order: ProductVoucherOrder;
+        product_voucher_batch: ProductVoucherBatch;
     };
     export type VoucherList = {
         items: UserVoucher[];
