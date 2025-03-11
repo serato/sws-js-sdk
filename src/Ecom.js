@@ -205,8 +205,8 @@ import Service from './Service'
  * @property {String} [product_id = undefined] product_id The ID of the product that was created when the voucher was redeemed.
  * @property {String} [subscription_id = undefined] subscription_id The ID of the subscription to which a discount was applied when the voucher was redeemed.
  * @property {String} [redeemed_at = undefined] redeemed_at Date redeemed expressed in ISO 8061 format.
- * @property {ProductVoucherOrder} product_voucher_order
- * @property {ProductVoucherBatch} product_voucher_batch
+ * @property {ProductVoucherOrder} [product_voucher_order = undefined] product_voucher_order The order of the voucher
+ * @property {ProductVoucherBatch} [product_voucher_batch = undefined] product_voucher_batch The batch of the voucher
  *
  * @typedef {Object} ProductVoucherOrder
  * @property {Number} id

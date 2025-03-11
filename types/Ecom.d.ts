@@ -284,8 +284,8 @@ export namespace Ecom {
         product_id?: string;
         subscription_id?: string;
         redeemed_at?: string;
-        product_voucher_order: ProductVoucherOrder;
-        product_voucher_batch: ProductVoucherBatch;
+        product_voucher_order?: ProductVoucherOrder;
+        product_voucher_batch?: ProductVoucherBatch;
     };
     export type VoucherList = {
         items: UserVoucher[];
