@@ -201,7 +201,7 @@ import Service from './Service'
  *
  * @typedef {Object} VoucherDetails
  * @property {String} voucher_id
- * @property {Number} user_id
+ * @property {Number} [user_id = undefined] user_id the user who owns the voucher
  * @property {String} [product_id = undefined] product_id The ID of the product that was created when the voucher was redeemed.
  * @property {String} [subscription_id = undefined] subscription_id The ID of the subscription to which a discount was applied when the voucher was redeemed.
  * @property {String} [redeemed_at = undefined] redeemed_at Date redeemed expressed in ISO 8061 format.

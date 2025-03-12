@@ -280,7 +280,7 @@ export namespace Ecom {
     };
     export type VoucherDetails = {
         voucher_id: string;
-        user_id: number;
+        user_id?: number;
         product_id?: string;
         subscription_id?: string;
         redeemed_at?: string;
