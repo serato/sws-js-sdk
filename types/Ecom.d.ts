@@ -296,6 +296,7 @@ export namespace Ecom {
         moneyworks_id: string;
         voucher_batches: ProductVoucherBatch[];
         created_at: string;
+        created_by: number;
         product_vouchers_created_at: string;
         blacklisted_at: string;
         language: ProductVoucherOrderLanguage;
