@@ -16,6 +16,7 @@ import Service from './Service'
  * @typedef {'en' | 'es' | 'de' | 'fr' | 'pt' | 'pl' | 'ko' | 'blank'} ProductVoucherOrderLanguage
  * @typedef {'pdf_and_csv' | 'csv'} ProductVoucherOrderFileType
  * @typedef {'promotion' | 'retention-offer' | 'upsell-offer' | 'retail'} ProductVoucherTypeType
+ * @typedef {'braintree'} PaymentProvider
  *
  * @typedef {Object} Discount
  * @property {String} name
@@ -135,7 +136,8 @@ import Service from './Service'
  * @property {Order[]} items
  *
  * @typedef {Object} PaymentMethod
- * @property {String} token The payment method unique ID
+ * @property {Number} id Unique ID for the payment method
+ * @property {String} token Payment provider specific token for the payment method
  * @property {Number} user_id
  * @property {String} [image_url = undefined] image_url A URL that points to a payment method image resource
  * @property {PaymentMethodType} type One of `CreditCard` or `PayPal`.
@@ -155,8 +157,9 @@ import Service from './Service'
  * @property {PaymentMethod[]} items
  *
  * @typedef {Object} PaymentGatewayToken
- * @property {String} token
+ * @property {String} client_token
  * @property {String} paypal_environment
+ * @property {PaymentProvider} provider
  *
  * @typedef {Object} VoucherType
  * @property {String} name
