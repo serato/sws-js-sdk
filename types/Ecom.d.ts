@@ -111,6 +111,7 @@ export namespace Ecom {
     export type ProductVoucherOrderLanguage = 'en' | 'es' | 'de' | 'fr' | 'pt' | 'pl' | 'ko' | 'blank';
     export type ProductVoucherOrderFileType = 'pdf_and_csv' | 'csv';
     export type ProductVoucherTypeType = 'promotion' | 'retention-offer' | 'upsell-offer' | 'retail';
+    export type PaymentProvider = 'braintree';
     export type Discount = {
         name: string;
         amount: number;
@@ -229,6 +230,7 @@ export namespace Ecom {
         items: Order[];
     };
     export type PaymentMethod = {
+        id: number;
         token: string;
         user_id: number;
         image_url?: string;
@@ -249,8 +251,9 @@ export namespace Ecom {
         items: PaymentMethod[];
     };
     export type PaymentGatewayToken = {
-        token: string;
+        client_token: string;
         paypal_environment: string;
+        provider: PaymentProvider;
     };
     export type VoucherType = {
         name: string;
