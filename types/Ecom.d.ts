@@ -280,12 +280,12 @@ export namespace Ecom {
     };
     export type VoucherDetails = {
         voucher_id: string;
-        user_id?: number;
-        product_id?: string;
-        subscription_id?: string;
-        redeemed_at?: string;
-        product_voucher_order?: ProductVoucherOrder;
-        product_voucher_batch?: ProductVoucherBatch;
+        user_id: number | null;
+        product_id: string | null;
+        subscription_id: string | null;
+        redeemed_at: string | null;
+        product_voucher_order: ProductVoucherOrder | null;
+        product_voucher_batch: ProductVoucherBatch | null;
     };
     export type VoucherList = {
         items: UserVoucher[];
