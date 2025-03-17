@@ -462,7 +462,6 @@ describe('Ecom Tests', function () {
 
     it(`confirms URI used in 'getVoucherDetailsById()' method with voucher ID, by returning a non-404 HTTP response`,
       function () {
-        swsClient.userId = 0
         return swsClient.ecom.getVoucherDetailsById({
           voucherId: '1'
         }).then(
