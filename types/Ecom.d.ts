@@ -246,6 +246,7 @@ export namespace Ecom {
         created_at: string;
         updated_at: string;
         billing_address_id?: string;
+        in_use: boolean;
     };
     export type PaymentMethodList = {
         items: PaymentMethod[];
