@@ -152,6 +152,7 @@ import Service from './Service'
  * @property {String} created_at Date of creation expressed in ISO 8061 format
  * @property {String} updated_at Date updated expressed in ISO 8061 format
  * @property {String} [billing_address_id = undefined] billing_address_id
+ * @property {Boolean} in_use Whether the payment method is currently used or not
  *
  * @typedef {Object} PaymentMethodList
  * @property {PaymentMethod[]} items
