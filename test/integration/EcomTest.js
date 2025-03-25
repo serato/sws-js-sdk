@@ -447,6 +447,19 @@ describe('Ecom Tests', function () {
       }
     )
 
+    it(`confirms URI used in 'getVoucherDetailsById()' method with voucher ID, by returning a non-404 HTTP response`,
+      function () {
+        return swsClient.ecom.getVoucherDetailsById({
+          voucherId: '1'
+        }).then(
+          () => Promise.reject(new Error('Expected non-2xx HTTP response code')),
+          err => {
+            expect(err.httpStatus).not.to.equal(404)
+          }
+        )
+      }
+    )
+
     it(`confirms URI used in 'updateProductVoucherOrder()' method with product voucher order ID and vendor name, by returning a non-404 HTTP response`,
       function () {
         swsClient.userId = 0

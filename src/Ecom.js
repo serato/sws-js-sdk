@@ -202,6 +202,15 @@ import Service from './Service'
  * @typedef {Object} VoucherList
  * @property {UserVoucher[]} items
  *
+ * @typedef {Object} VoucherDetails
+ * @property {String} voucher_id The unique ID of the voucher.
+ * @property {Number|null} user_id the user who owns the voucher
+ * @property {String|null} product_id The ID of the product that was created when the voucher was redeemed.
+ * @property {String|null} subscription_id The ID of the subscription to which a discount was applied when the voucher was redeemed.
+ * @property {String|null} redeemed_at Date redeemed expressed in ISO 8061 format.
+ * @property {ProductVoucherOrder|null} product_voucher_order The order of the voucher
+ * @property {ProductVoucherBatch|null} product_voucher_batch The batch of the voucher
+ *
  * @typedef {Object} ProductVoucherOrder
  * @property {Number} id
  * @property {String} vendor_name
@@ -542,6 +551,22 @@ export default class EcomService extends Service {
       this.bearerTokenAuthHeader(),
       this.userId === 0 ? '/api/v1/me/vouchers' : '/api/v1/users/' + this.userId + '/vouchers',
       null
+    )
+  }
+
+  /**
+   * Get voucher details by voucher_id.
+   *
+   * @param {Object} param Options
+   * @param {String} param.voucherId The voucher ID.
+   * @return {Promise<VoucherDetails>}
+   */
+  getVoucherDetailsById ({ voucherId }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      `/api/v1/vouchers/${voucherId}`,
+      null,
+      'GET'
     )
   }
 
