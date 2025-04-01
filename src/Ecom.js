@@ -246,7 +246,7 @@ import Service from './Service'
  *
  * @typedef {Object} RecommendationsList
  * @property {CatalogProduct[]} items
- * 
+ *
  * @typedef {Object} BillingAddress
  * @property {String} country_code 2 letter country code (ISO 3166).
  * @property {String} [first_name = undefined] first name
@@ -782,7 +782,7 @@ export default class EcomService extends Service {
 
   /**
    * Update user billing address.
-   * 
+   *
    * @param {Object} param Options
    * @param {String} [param.countryCode = undefined]  2 letter country code (ISO 3166).
    * @param {String} [param.firstName = undefined] First name
