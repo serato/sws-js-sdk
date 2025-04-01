@@ -84,6 +84,27 @@ export default class EcomService extends Service {
         productVoucherOrderId: number;
     }) : Promise<Ecom.ProductVoucherOrder>;
     getProductVoucherTypes(): Promise<Ecom.ProductVoucherTypeList>;
+    updateBillingAddress({
+        countryCode,
+        firstName,
+        lastName,
+        region,
+        postCode,
+        city,
+        company,
+        address,
+        addressExtended
+    }: {
+        countryCode: string;
+        firstName?: string;
+        lastName?: string;
+        region?: string;
+        postCode?: string;
+        city?: string;
+        company?: string;
+        address?: string;
+        addressExtended?: string;
+    }): Promise<Ecom.BillingAddress>;
 }
 export namespace Ecom {
     export type SubscriptionGroup = "dj" | "serato_producer_suite";
@@ -330,5 +351,16 @@ export namespace Ecom {
     export type RecommendationsList = {
         items: CatalogProduct[];
     };
+    export type BillingAddress = {
+        country_code: string;
+        first_name?: string;
+        last_name?: string;
+        region?: string;
+        post_code?: string;
+        city?: string;
+        company?: string;
+        address?: string;
+        address_extended?: string;
+    }
 }
 import Service from './Service';
