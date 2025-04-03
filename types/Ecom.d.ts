@@ -94,7 +94,7 @@ export default class EcomService extends Service {
             city?: string;
             company?:string;
             address?: string;
-            ddressExtended?: string;
+            addressExtended?: string;
         }
     ): Promise<Ecom.BillingAddress>;
 }
