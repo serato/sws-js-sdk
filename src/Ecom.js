@@ -246,6 +246,17 @@ import Service from './Service'
  *
  * @typedef {Object} RecommendationsList
  * @property {CatalogProduct[]} items
+ *
+ * @typedef {Object} BillingAddress
+ * @property {String} country_code 2 letter country code (ISO 3166).
+ * @property {String} [first_name = undefined] first name
+ * @property {String} [last_name = undefined] last name
+ * @property {String} [company = undefined] company
+ * @property {String} [address = undefined] address
+ * @property {String} [address_extended = undefined] address_extended
+ * @property {String} [city = undefined] city name
+ * @property {String} [region = undefined] region name
+ * @property {String} [post_code = undefined] post code or zip code
  */
 
 /**
@@ -766,6 +777,50 @@ export default class EcomService extends Service {
       '/api/v1/productvoucherorders/productvouchertypes',
       null,
       'GET'
+    )
+  }
+
+  /**
+   * Update user billing address.
+   *
+   * @param {Object} param Options
+   * @param {String} [param.countryCode = undefined]  2 letter country code (ISO 3166).
+   * @param {String} [param.firstName = undefined] First name
+   * @param {String} [param.lastName = undefined] Last name
+   * @param {String} [param.region = undefined] Region name
+   * @param {String} [param.postCode = undefined] Post code or zip code
+   * @param {String} [param.city = undefined] City name
+   * @param {String} [param.company = undefined] Company name
+   * @param {String} [param.address = undefined] Address
+   * @param {String} [param.addressExtended = undefined] Extended address
+   * @returns {Promise<BillingAddress>}
+   */
+  updateBillingAddress ({
+    countryCode,
+    firstName,
+    lastName,
+    region,
+    postCode,
+    city,
+    company,
+    address,
+    addressExtended
+  }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      this.userId === 0 ? '/api/v1/me/billingaddress' : '/api/v1/users/' + this.userId + '/billingaddress',
+      this.toBody({
+        country_code: countryCode,
+        first_name: firstName,
+        last_name: lastName,
+        region: region,
+        post_code: postCode,
+        city: city,
+        company: company,
+        address: address,
+        address_extended: addressExtended
+      }),
+      'PUT'
     )
   }
 }
