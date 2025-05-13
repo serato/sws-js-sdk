@@ -848,7 +848,7 @@ export default class EcomService extends Service {
    * @param {Object} param - Order creation options
    * @param {String} param.cartUuid - Required cart UUID
    * @param {Number} [param.paymentMethodId = undefined] - Optional payment method ID
-   * @param {String} [param.paymentMethodData = undefined] - Optional payment nonce or token
+   * @param {String} [param.paymentMethodData = undefined] - Optional payment nonce
    * @param {String} [param.deviceData = undefined] - Optional device fingerprinting data for fraud detection
    * @param {Boolean} [param.storePaymentDetails = undefined] - Optional flag indicating whether to store payment details
    * @returns {Promise<Number>} Resolves to the created order's ID
