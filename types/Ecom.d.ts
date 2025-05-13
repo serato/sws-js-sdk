@@ -94,11 +94,11 @@ export default class EcomService extends Service {
     }): Promise<Ecom.ProductVoucherOrder>;
     createOrder({ cartUuid, paymentMethodId, paymentMethodData, deviceData, storePaymentDetails }: {
         cartUuid: string;
-        paymentMethodId: number|null;
-        paymentMethodData: string|null;
-        deviceData: string|null;
-        storePaymentDetails: boolean|null;
-    }): Promise<Ecom.Order>;
+        paymentMethodId?: number;
+        paymentMethodData?: string;
+        deviceData?: string;
+        storePaymentDetails?: boolean;
+    }): Promise<number>;
     generateProductVoucherOrder({ productVoucherOrderId }: {
         productVoucherOrderId: number;
     }) : Promise<Ecom.ProductVoucherOrder>;
