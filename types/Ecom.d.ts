@@ -92,6 +92,13 @@ export default class EcomService extends Service {
         fileType: Ecom.ProductVoucherOrderFileType;
         voucherBatches: Ecom.ProductVoucherBatchParams[];
     }): Promise<Ecom.ProductVoucherOrder>;
+    createOrder({ cartUuid, paymentMethodId, paymentMethodData, deviceData, storePaymentDetails }: {
+        cartUuid: string;
+        paymentMethodId?: number;
+        paymentMethodData?: string;
+        deviceData?: string;
+        storePaymentDetails?: boolean;
+    }): Promise<Ecom.OrderId>;
     generateProductVoucherOrder({ productVoucherOrderId }: {
         productVoucherOrderId: number;
     }) : Promise<Ecom.ProductVoucherOrder>;
@@ -225,6 +232,9 @@ export namespace Ecom {
         status: OrderStatus;
         created_at: string;
         updated_at: string;
+    };
+    export type OrderId = {
+        id: number;
     };
     export type OrderList = {
         items: Order[];

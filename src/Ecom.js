@@ -843,6 +843,38 @@ export default class EcomService extends Service {
   }
 
   /**
+   * Creates an order.
+   *
+   * @param {Object} param - Order creation options
+   * @param {String} param.cartUuid - Required cart UUID
+   * @param {Number} [param.paymentMethodId = undefined] - Optional payment method ID
+   * @param {String} [param.paymentMethodData = undefined] - Optional payment nonce
+   * @param {String} [param.deviceData = undefined] - Optional device fingerprinting data for fraud detection
+   * @param {Boolean} [param.storePaymentDetails = undefined] - Optional flag indicating whether to store payment details
+   * @returns {Promise<Number>} Resolves to the created order's ID
+   */
+  createOrder ({
+    cartUuid,
+    paymentMethodId,
+    paymentMethodData,
+    deviceData,
+    storePaymentDetails
+  }) {
+    return this.fetch(
+      this.bearerTokenAuthHeader(),
+      '/api/v1/orders',
+      this.toBody({
+        cart_uuid: cartUuid,
+        payment_method_id: paymentMethodId,
+        payment_method_data: paymentMethodData,
+        device_data: deviceData,
+        store_payment_details: storePaymentDetails
+      }),
+      'POST'
+    )
+  }
+
+  /**
    * Generate a product voucher order.
    * @param {Object} param Options
    * @param {Number} param.productVoucherOrderId
