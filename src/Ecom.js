@@ -875,6 +875,20 @@ export default class EcomService extends Service {
   }
 
   /**
+   * Return an order owned by a user.
+   *
+   * @param {Object} [param] param Options
+   * @param {Number} [param.orderId] param.orderId
+   * @returns {Promise<Order>}
+   */
+    getOrder ({ orderId }) {
+      return this.fetch(
+        this.bearerTokenAuthHeader(),
+        this.userId === 0 ? '/api/v1/me/orders/' + orderId : '/api/v1/users/' + this.userId + '/orders/' + orderId
+      )
+    }
+
+  /**
    * Generate a product voucher order.
    * @param {Object} param Options
    * @param {Number} param.productVoucherOrderId

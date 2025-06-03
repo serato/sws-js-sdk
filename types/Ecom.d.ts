@@ -99,6 +99,9 @@ export default class EcomService extends Service {
         deviceData?: string;
         storePaymentDetails?: boolean;
     }): Promise<Ecom.OrderId>;
+    getOrder({ orderId }: {
+        orderId: number;
+    }): Promise<Ecom.Order>;
     generateProductVoucherOrder({ productVoucherOrderId }: {
         productVoucherOrderId: number;
     }) : Promise<Ecom.ProductVoucherOrder>;
@@ -232,6 +235,7 @@ export namespace Ecom {
         status: OrderStatus;
         created_at: string;
         updated_at: string;
+        cart_id: string;
     };
     export type OrderId = {
         id: number;
